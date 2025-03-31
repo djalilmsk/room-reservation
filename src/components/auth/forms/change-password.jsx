@@ -8,9 +8,46 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { formSchema } from "@/utils/forms/forget-password-schema";
+import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 
-export function ChangePassword({ form, label = null }) {
+const passwordSchema = formSchema
+  .pick({
+    password: true,
+    confirmPassword: true,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
+
+export function ChangePassword({ label = null }) {
+  const navigate = useNavigate()
   const [passwordStrength, setPasswordStrength] = useState("weak");
+
+  const form = useForm({
+    resolver: zodResolver(passwordSchema),
+    defaultValues: {
+      password: "djalilmsk",
+      confirmPassword: "djalilmsk",
+    },
+  });
+
+  const isSubmitting = form.formState.isSubmitting;
+  const buttonLabel = { true: "Processing...", false: "Change Password" }[
+    isSubmitting
+  ];
+
+  const onSubmit = (data) => {
+    console.log("Form submitted with data:", data);
+  };
+
+  const onError = (errors) => {
+    console.error("Form errors:", errors);
+  };
 
   const handleChange = (value) => {
     let strength;
@@ -38,7 +75,10 @@ export function ChangePassword({ form, label = null }) {
 
   return (
     <Form {...form}>
-      <div className="space-y-4">
+      <form
+        className="space-y-4"
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+      >
         <FormField
           control={form.control}
           name="password"
@@ -75,7 +115,7 @@ export function ChangePassword({ form, label = null }) {
             </FormItem>
           )}
         />
-        <div className="items-top -mb-1 flex flex-col gap-1">
+        <div className="items-top flex flex-col gap-1">
           <p className="text-secondary-foreground text-xs">
             Your password is{" "}
             <span
@@ -104,7 +144,10 @@ export function ChangePassword({ form, label = null }) {
             ></span>
           </div>
         </div>
-      </div>
+        <Button className="w-full" type="submit" disabled={isSubmitting}>
+          {buttonLabel}
+        </Button>
+      </form>
     </Form>
   );
 }

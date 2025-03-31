@@ -12,11 +12,43 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { formSchema } from "@/utils/forms/forget-password-schema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
-export function OTPForm({ form }) {
+const otpSchema = formSchema.pick({
+  OTP: true,
+});
+
+export function OTPForm() {
+  const navigate = useNavigate()
+  const form = useForm({
+    resolver: zodResolver(otpSchema),
+    defaultValues: {
+      OTP: "",
+    },
+  });
+
+  const isSubmitting = form.formState.isSubmitting;
+  const buttonLabel = { true: "Processing...", false: "Next" }[isSubmitting];
+
+  const onSubmit = (data) => {
+    console.log("Form submitted with data:", data);
+    navigate("/auth/login/forget-password/change-password");
+  };
+
+  const onError = (errors) => {
+    console.error("Form errors:", errors);
+  };
+
   return (
     <Form {...form}>
-      <div className="space-y-4">
+      <form
+        className="space-y-4"
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+      >
         <FormField
           control={form.control}
           name="OTP"
@@ -56,11 +88,14 @@ export function OTPForm({ form }) {
                   </InputOTPGroup>
                 </InputOTP>
               </FormControl>
-              <FormMessage className={'text-center'} />
+              <FormMessage className={"text-center"} />
             </FormItem>
           )}
         />
-      </div>
+        <Button className="w-full" type="submit" disabled={isSubmitting}>
+          {buttonLabel}
+        </Button>
+      </form>
     </Form>
   );
 }

@@ -6,6 +6,14 @@ import CardFooter from "./CardFooter";
 import { LoginForm } from "@/components/auth/forms/login-form";
 import { formSchema } from "@/utils/forms/login-schema";
 
+const { buttonLabel, title, description, separator, footer } = {
+  buttonLabel: "Log In",
+  title: "Log in to manage your reservations!",
+  description: "Smart reservations for modern workspaces.",
+  separator: true,
+  footer: { display: true, content: <CardFooter /> },
+};
+
 function LogIn() {
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -16,34 +24,28 @@ function LogIn() {
     },
   });
 
-  const content = <LoginForm form={form} />;
-
-  const handleNext = async () => {};
-
   const onSubmit = (data) => {
     console.log("Form submitted successfully:", data);
   };
 
-  const { buttonLabel, title, description, separator, footer } = {
-    buttonLabel: "Log In",
-    title: "Log in to manage your reservations!",
-    description: "Smart reservations for modern workspaces.",
-    separator: true,
-    footer: { display: true, content: <CardFooter /> },
+  const onError = (errors) => {
+    console.error("Form errors:", errors);
   };
 
   return (
-    <Body
-      title={title}
-      description={description}
-      separator={separator}
-      footer={footer}
-    >
-      {content}
-      <Button className="w-full" onClick={handleNext}>
-        {buttonLabel}
-      </Button>
-    </Body>
+    <form onSubmit={form.handleSubmit(onSubmit, onError)}>
+      <Body
+        title={title}
+        description={description}
+        separator={separator}
+        footer={footer}
+      >
+        <LoginForm form={form} />
+        <Button className="w-full" type="submit">
+          {buttonLabel}
+        </Button>
+      </Body>
+    </form>
   );
 }
 

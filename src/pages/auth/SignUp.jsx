@@ -1,15 +1,7 @@
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
 import Body from "./Body";
-import { FirstContent } from "@/components/auth/forms/signup-form";
-import { SecondContent } from "@/components/auth/forms/password-form";
-import { ThirdContent } from "@/components/auth/forms/image-form";
-import { FourthContent } from "@/components/auth/forms/extra-data-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import CardFooter from "./CardFooter";
-import { formSchema } from "@/utils/forms/signup-schema";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 const stepConfig = [
   {

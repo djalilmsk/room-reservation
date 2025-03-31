@@ -114,8 +114,7 @@ export function FourthContent() {
   };
 
   const onError = (errors) => {
-    if (errors.image.message === "")
-      navigate("/auth/signup/extra-data");
+    console.error("Form errors:", errors);
   };
 
   return (

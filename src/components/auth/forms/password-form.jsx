@@ -14,18 +14,23 @@ import { formSchema } from "@/utils/forms/signup-schema";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
-const passwordSchema = formSchema.pick({
-  password: true,
-  confirmPassword: true,
-});
+const passwordSchema = formSchema
+  .pick({
+    password: true,
+    confirmPassword: true,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
 
 export function SecondContent({ label = null }) {
   const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
-      password: "123456789",
-      confirmPassword: "123456789",
+      password: "",
+      confirmPassword: "",
     },
   });
 
@@ -66,7 +71,10 @@ export function SecondContent({ label = null }) {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+        className="space-y-4"
+      >
         <FormField
           control={form.control}
           name="password"
@@ -79,6 +87,10 @@ export function SecondContent({ label = null }) {
                   placeholder="Password"
                   className="w-full"
                   {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleChange(e.target.value);
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -98,8 +110,7 @@ export function SecondContent({ label = null }) {
                   {...field}
                 />
               </FormControl>
-              <FormMessage />{" "}
-              {/* This will show the "Passwords don't match" error */}
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -132,8 +143,8 @@ export function SecondContent({ label = null }) {
             ></span>
           </div>
         </div>
-        <Button className="w-full" type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Processing..." : "Next"}
+        <Button className="w-full" type="submit">
+          Next
         </Button>
       </form>
     </Form>
