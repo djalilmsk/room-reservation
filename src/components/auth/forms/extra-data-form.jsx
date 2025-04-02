@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { formSchema } from "@/utils/forms/signup-schema";
+import { setData } from "@/utils/redux/form-cache";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   BriefcaseBusiness,
@@ -32,8 +33,9 @@ import {
   Tv,
   UsersIcon,
 } from "lucide-react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const extraDataSchema = formSchema.pick({
@@ -77,11 +79,28 @@ function CustomSelect({ control, selfSelection, title, name = "" }) {
 
 export function FourthContent() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.formCache.data);
+
+  useEffect(() => {
+    const { firstName, lastName, email, agreedToTerms, password, confirmPassword } = data;
+
+    if (!(firstName && lastName && email && agreedToTerms)) {
+      navigate("/auth/signup", { replace: true });
+    }
+
+    if (!(password && confirmPassword)) {
+      navigate("/auth/signup/password", { replace: true });
+    }
+  }, []);
+
+  const { userType = "", referralSource = "" } =  data;
+
   const form = useForm({
     resolver: zodResolver(extraDataSchema),
     defaultValues: {
-      userType: "Student",
-      referralSource: "Online Ads",
+      userType: userType,
+      referralSource: referralSource,
     },
   });
 
@@ -109,6 +128,7 @@ export function FourthContent() {
   ];
 
   const onSubmit = (data) => {
+    dispatch(setData(data));
     console.log("Form submitted with data:", data);
     navigate("/auth/signup/extra-data");
   };

@@ -1,8 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { z } from "zod";
-
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
@@ -15,28 +13,34 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Primary } from "@/components/ui/global";
 import { formSchema } from "@/utils/forms/signup-schema";
+import { useDispatch, useSelector } from "react-redux";
+import { setData } from "@/utils/redux/form-cache";
 
 const signingSchema = formSchema.pick({
   firstName: true,
   lastName: true,
   email: true,
   agreedToTerms: true,
-})
+});
 
 export function FirstContent() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.formCache.data);
+  const { firstName = "", lastName = "", email = "", agreedToTerms = false } = data;
 
   const form = useForm({
     resolver: zodResolver(signingSchema),
     defaultValues: {
-      firstName: "djalil",
-      lastName: "msk",
-      email: "djalil.meskali@gmail.com",
-      agreedToTerms: true,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      agreedToTerms: agreedToTerms,
     },
   });
 
   const onSubmit = (data) => {
+    dispatch(setData(data));
     console.log("Form submitted with data:", data);
     navigate("/auth/signup/password");
   };
@@ -47,7 +51,10 @@ export function FirstContent() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+        className="space-y-4"
+      >
         <div className="flex justify-between gap-5 md:gap-3">
           <FormField
             control={form.control}
@@ -100,11 +107,13 @@ export function FirstContent() {
                 <FormControl>
                   <Checkbox
                     checked={field.value}
-                    onCheckedChange={(checked) => field.onChange(checked === true)}
+                    onCheckedChange={(checked) =>
+                      field.onChange(checked === true)
+                    }
                   />
                 </FormControl>
                 <div className="space-y-1 leading-none">
-                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  <label className="text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                     I agree to <Primary>terms</Primary> and{" "}
                     <Primary>privacy policy</Primary>.
                   </label>

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import Body from "./Body";
 import CardFooter from "./CardFooter";
 import { Outlet, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearData } from "@/utils/redux/form-cache";
 
 const stepConfig = [
   {
@@ -31,7 +33,7 @@ const stepConfig = [
 ];
 
 const steps = [
-  "/auth/signup/",
+  "/auth/signup",
   "/auth/signup/password",
   "/auth/signup/profile-picture",
   "/auth/signup/extra-data",
@@ -40,6 +42,11 @@ const steps = [
 function SignUp() {
   const [contentCounter, setContentCounter] = useState(0);
   const location = useLocation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearData());
+  }, []);
 
   useEffect(() => {
     const currentStepIndex = steps.indexOf(location.pathname);

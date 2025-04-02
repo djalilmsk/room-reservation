@@ -13,6 +13,8 @@ import { useForm } from "react-hook-form";
 import { formSchema } from "@/utils/forms/signup-schema";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setData } from "@/utils/redux/form-cache";
 
 const passwordSchema = formSchema
   .pick({
@@ -26,11 +28,24 @@ const passwordSchema = formSchema
 
 export function SecondContent({ label = null }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.formCache.data);
+
+  useEffect(() => {
+    const { firstName, lastName, email, agreedToTerms } = data;
+
+    if (!(firstName && lastName && email && agreedToTerms)) {
+      navigate("/auth/signup", { replace: true });
+    }
+  }, []);
+
+  const { password = "", confirmPassword = "" } = data;
+
   const form = useForm({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
-      password: "",
-      confirmPassword: "",
+      password: password,
+      confirmPassword: confirmPassword,
     },
   });
 
@@ -61,6 +76,7 @@ export function SecondContent({ label = null }) {
   }, [passwordValue]);
 
   const onSubmit = (data) => {
+    dispatch(setData(data));
     console.log("Form submitted with data:", data);
     navigate("/auth/signup/profile-picture");
   };
