@@ -65,7 +65,7 @@ export function ThirdContent() {
   const form = useForm({
     resolver: zodResolver(imageSchema),
     defaultValues: {
-      image: data,
+      image: data || null,
     },
   });
 
