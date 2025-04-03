@@ -37,7 +37,7 @@ export function SecondContent({ label = null }) {
     if (!(firstName && lastName && email && agreedToTerms)) {
       navigate("/auth/signup", { replace: true });
     }
-  }, []);
+  }, [data]);
 
   const { password = "", confirmPassword = "" } = data;
 

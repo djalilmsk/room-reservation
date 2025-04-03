@@ -92,7 +92,7 @@ export function FourthContent() {
     if (!(password && confirmPassword)) {
       navigate("/auth/signup/password", { replace: true });
     }
-  }, []);
+  }, [data]);
 
   const { userType = "", referralSource = "" } =  data;
 

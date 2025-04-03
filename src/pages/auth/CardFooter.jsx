@@ -4,13 +4,6 @@ import { Primary } from "@/components/ui/global";
 import google from "@/assets/google.svg";
 import { useLocation } from "react-router-dom";
 
-const initialContent = {
-  to: "#",
-  link: "link",
-  text: "text before link",
-  exist: false,
-};
-
 function CardFooter({ children }) {
   const location = useLocation();
   const pathSegments = location.pathname.split("/").filter(Boolean)[1];
