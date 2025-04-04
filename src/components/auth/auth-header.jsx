@@ -2,9 +2,17 @@ import Logo from "@/assets/Logo.svg";
 import { Button } from "../ui/button";
 import { Link, useLocation } from "react-router-dom";
 
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { useRef } from "react";
+import NavLinks from "../navigation/nav-links";
+
+gsap.registerPlugin(useGSAP);
+
 function Header() {
   const location = useLocation();
   const pathSegments = location.pathname.split("/").filter(Boolean)[1];
+  const headerRef = useRef(null);
 
   const link = {
     login: {
@@ -17,9 +25,18 @@ function Header() {
     },
   }[pathSegments];
 
+  useGSAP(() => {
+    gsap.timeline().from(headerRef.current, {
+      padding: 40,
+    });
+  });
+
   return (
     <div className="px-6 md:px-10">
-      <div className="flex w-full items-center justify-between py-4 max-md:border-b-1 xl:py-5">
+      <div
+        ref={headerRef}
+        className="flex w-full items-center justify-between py-4 max-md:border-b-1 xl:py-5"
+      >
         <Link to={"/"}>
           <img src={Logo} alt="logo" className="h-8 md:h-10" />
         </Link>

@@ -10,9 +10,9 @@ const NAV_LINKS = [
   { id: 4, to: "/Contact", label: "Contact" },
 ];
 
-function NavLinks({ className = "", oneLinkClasses = "", children }) {
+function NavLinks({ className = "", oneLinkClasses = "", children, innerRef = null }) {
   return (
-    <ul className={className}>
+    <ul ref={innerRef} className={className}>
       {children}
       {NAV_LINKS.map(({ id, to, label }) => (
         <li key={id} className={oneLinkClasses}>

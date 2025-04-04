@@ -1,12 +1,17 @@
 import Header from "@/components/home/Header";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { useRef } from "react";
 import { Outlet } from "react-router-dom";
 
 function HomeLayout() {
   return (
-    <div >
+    <div>
       <Header />
-      {/* 
-      <Main>
+
+      <Outlet />
+
+      {/* <Main>
         <Outlet />
       </Main>
       <Footer /> */}

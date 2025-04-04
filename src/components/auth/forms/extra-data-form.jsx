@@ -130,7 +130,6 @@ export function FourthContent() {
   const onSubmit = (data) => {
     dispatch(setData(data));
     console.log("Form submitted with data:", data);
-    navigate("/auth/signup/extra-data");
   };
 
   const onError = (errors) => {

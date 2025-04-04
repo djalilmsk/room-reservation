@@ -5,35 +5,39 @@ import { Link } from "react-router-dom";
 
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(ScrollTrigger);
 
 function Header() {
   const navbar = useRef(null);
-  // useGSAP(() => {
-  //   gsap.set(navbar.current, {
-  //     backgroundColor: "#000",
-  //     opacity: 0,
-  //   });
 
-  //   const tl = gsap.timeline({
-  //     scrollTrigger: {
-  //       start: "top+=200",
-  //       end: "+=1",
-  //       toggleActions: "play none none reverse",
-  //       scrub: true,
-  //     },
-  //   });
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: navbar.current,
+        start: "top+=100 top+=100",
+        end: "bottom+=200",
+        scrub: true,
+        // markers: true,
+        toggleActions: "play resume resume reverse",
+      },
+    });
 
-  //   tl.to(navbar.current, {
-  //     opacity: 1,
-  //   });
-  // });
+    tl.to(navbar.current, {
+      paddingLeft: 40,
+      paddingRight: 40,
+      paddingTop: 20,
+      paddingBottom: 20,
+      duration: 1,
+    });
+  }, []);
+
   return (
     <div
       ref={navbar}
-      className="fixed flex w-full items-center justify-between px-20 py-10"
+      className="fixed flex w-full items-center justify-between px-20 py-10 transition-all"
     >
       <img src={Logo} alt="logo" className="h-10" />
       <NavLinks
