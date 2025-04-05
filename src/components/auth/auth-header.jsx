@@ -27,12 +27,13 @@ function Header() {
 
   useGSAP(() => {
     gsap.timeline().from(headerRef.current, {
-      padding: 40,
+      paddingTop: 40,
+      paddingBottom: 40,
     });
   });
 
   return (
-    <div className="px-6 md:px-10">
+    <div className="xl:w-6xl max-xl:w-[90%] mx-auto">
       <div
         ref={headerRef}
         className="flex w-full items-center justify-between py-4 max-md:border-b-1 xl:py-5"

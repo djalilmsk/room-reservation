@@ -26,10 +26,11 @@ function Header() {
     });
 
     tl.to(navbar.current, {
-      paddingLeft: 40,
-      paddingRight: 40,
+      // paddingLeft: 40,
+      // paddingRight: 40,
       paddingTop: 20,
       paddingBottom: 20,
+      borderBottom: 1,
       duration: 1,
     });
   }, []);
@@ -37,11 +38,11 @@ function Header() {
   return (
     <div
       ref={navbar}
-      className="fixed flex w-full items-center justify-between px-20 py-10 transition-all"
+      className="fixed flex bg-background w-6xl max-xl:w-[90%] items-center justify-between py-10 transition-all"
     >
       <img src={Logo} alt="logo" className="h-10" />
       <NavLinks
-        className={"flex items-center justify-between gap-15 font-medium"}
+        className={"flex items-center justify-between gap-15 font-medium max-lg:hidden"}
         oneLinkClasses="hover:text-primary duration-300"
       />
       <div className="space-x-3">

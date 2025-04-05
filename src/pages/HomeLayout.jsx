@@ -6,9 +6,8 @@ import { Outlet } from "react-router-dom";
 
 function HomeLayout() {
   return (
-    <div>
+    <div className="xl:w-6xl max-xl:w-[90%] mx-auto relative">
       <Header />
-
       <Outlet />
 
       {/* <Main>
