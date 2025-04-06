@@ -5,9 +5,9 @@ import { Button } from "../ui/button";
 
 const NAV_LINKS = [
   { id: 1, to: "/#", label: "Home" },
-  { id: 2, to: "/Rooms", label: "Rooms" },
-  { id: 3, to: "/About", label: "About" },
-  { id: 4, to: "/Contact", label: "Contact" },
+  { id: 2, to: "/rooms", label: "Rooms" },
+  { id: 3, to: "/about", label: "About" },
+  { id: 4, to: "/contact", label: "Contact" },
 ];
 
 function NavLinks({ className = "", oneLinkClasses = "", children, innerRef = null }) {

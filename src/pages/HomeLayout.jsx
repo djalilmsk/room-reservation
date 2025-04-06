@@ -1,19 +1,22 @@
+import HomeFooter from "@/components/home/Footer";
+
 import Header from "@/components/home/Header";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
 import { useRef } from "react";
 import { Outlet } from "react-router-dom";
 
 function HomeLayout() {
   return (
-    <div className="xl:w-6xl max-xl:w-[90%] mx-auto relative">
-      <Header />
-      <Outlet />
-
-      {/* <Main>
+    <div className="overflow-x-hidden">
+      <div className="relative mx-auto max-xl:w-[90%] xl:w-6xl">
+        <Header />
         <Outlet />
-      </Main>
-      <Footer /> */}
+        <HomeFooter />
+
+        {/* <Main>
+        <Outlet />
+        </Main>
+        <Footer /> */}
+      </div>
     </div>
   );
 }

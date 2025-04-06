@@ -6,7 +6,7 @@ function Body() {
   return (
     <div className="relative">
       <ImageBackground />
-      <div className="xl:w-6xl max-xl:w-[90%] max-md:w-full mx-auto">
+      <div className="xl:w-6xl max-xl:w-[90%] max-md:w-full mx-auto ">
       <Outlet />
       </div>
     </div>
@@ -24,7 +24,7 @@ function ImageBackground() {
       <img
         src={meetingTable2}
         alt="Meeting Table"
-        className="absolute bottom-1/2 left-3/5 hidden h-[90dvh] max-w-full translate-y-4/11 object-contain xl:left-3/6 2xl:left-3/7 dark:block"
+        className="absolute bottom-1/2 left-3/5 hidden h-[90dvh] max-w-full translate-y-4/11 object-contain xl:left-3/5 2xl:left-2/4 dark:block"
       />
     </div>
   );

@@ -10,9 +10,9 @@ function Footer() {
     { label: "What We Offer", link: "#" },
   ];
   return (
-    <footer className="xl:w-6xl max-xl:w-[90%] mx-auto pb-5">
-      <Separator />
-      <div className="flex items-end justify-between pt-5 max-md:justify-center">
+    <footer className="pb-5 border-t-1">
+      {/* <Separator /> */}
+      <div className="mx-auto flex items-end justify-between pt-5 max-xl:w-[90%] max-md:justify-center xl:w-6xl">
         <div className="flex justify-between gap-8 text-sm max-md:hidden lg:gap-14">
           {links.map(({ index, label, link }) => {
             return (

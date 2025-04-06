@@ -4,7 +4,7 @@ import Footer from "@/components/auth/auth-footer";
 
 function AuthLayout() {
   return (
-    <div className=" flex min-h-dvh flex-col justify-between">
+    <div className="flex min-h-dvh flex-col justify-between">
       <div className="h-full">
         <Header />
         <Body />

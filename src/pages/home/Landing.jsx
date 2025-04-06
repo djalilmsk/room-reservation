@@ -1,12 +1,16 @@
+import Features from "@/components/home/Features";
 import Hero from "@/components/home/Hero";
+import Reviews from "@/components/home/Reviews";
+import Rooms from "@/components/home/Rooms";
 
 function Landing() {
   return (
-    <div>
+    <div className="space-y-32">
       <Hero />
-      <div className="h-dvh"></div>
-      <div className="h-dvh"></div>
-      <div className="h-dvh"></div>
+      <Features />
+      <Rooms />
+      <Reviews />
+      <div></div>
     </div>
   );
 }

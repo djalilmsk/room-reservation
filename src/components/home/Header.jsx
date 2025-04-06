@@ -18,7 +18,7 @@ function Header() {
       scrollTrigger: {
         trigger: navbar.current,
         start: "top+=100 top+=100",
-        end: "bottom+=200",
+        end: "bottom+=100",
         scrub: true,
         // markers: true,
         toggleActions: "play resume resume reverse",
@@ -36,24 +36,25 @@ function Header() {
   }, []);
 
   return (
-    <div
-      ref={navbar}
-      className="fixed flex bg-background w-6xl max-xl:w-[90%] items-center justify-between py-10 transition-all"
-    >
-      <img src={Logo} alt="logo" className="h-10" />
-      <NavLinks
-        className={"flex items-center justify-between gap-15 font-medium max-lg:hidden"}
-        oneLinkClasses="hover:text-primary duration-300"
-      />
-      <div className="space-x-3">
-        <Link to={"auth/login"}>
-          <Button className="text-primary" variant="link">
-            Log In
-          </Button>
-        </Link>
-        <Link to={"auth/signup"}>
-          <Button>Sign Up</Button>
-        </Link>
+    <div ref={navbar} className="bg-background left-0 fixed py-10 w-dvw flex justify-center z-100">
+      <div className="flex w-6xl items-center justify-between transition-all max-xl:w-[90%]">
+        <img src={Logo} alt="logo" className="h-10" />
+        <NavLinks
+          className={
+            "flex items-center justify-between gap-15 font-medium max-lg:hidden"
+          }
+          oneLinkClasses="hover:text-primary duration-300"
+        />
+        <div className="space-x-3">
+          <Link to={"auth/login"}>
+            <Button className="text-primary" variant="link">
+              Log In
+            </Button>
+          </Link>
+          <Link to={"auth/signup"}>
+            <Button>Sign Up</Button>
+          </Link>
+        </div>
       </div>
     </div>
   );
