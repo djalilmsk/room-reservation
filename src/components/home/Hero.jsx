@@ -5,7 +5,7 @@ import H1 from "../ui/header1";
 
 function Text() {
   const Br = () => <br className="hidden md:block" />;
-  const Primary = ({ children }) => <span className="text-primary max-md:text-3xl">{children}</span>;
+  const Primary = ({ children }) => <span className="text-primary">{children}</span>;
   const Description = ({ children }) => (
     <p className="text-secondary-foreground w-full text-xs lg:w-[90%] lg:text-sm xl:text-xl 2xl:w-xl">
       {children}
@@ -13,7 +13,7 @@ function Text() {
   );
 
   return (
-    <div className="flex flex-col items-start justify-start gap-4 max-md:text-center md:mt-5 xl:mt-10 xl:gap-8">
+    <div className="flex flex-col items-start justify-start gap-4 md:mt-5 xl:mt-10 xl:gap-8">
       <H1>
         Modern Workflows
         <Br /> with <Primary>Seamless Booking</Primary>
