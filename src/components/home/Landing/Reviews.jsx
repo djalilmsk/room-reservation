@@ -1,7 +1,7 @@
 import { Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
-import { Section, SectionTitle } from "../ui/section";
+import { Section, SectionTitle } from "@/components/ui/section";
 import { useExpendAnimation } from "@/hooks/use-expand-animation";
 
 const reviews = [

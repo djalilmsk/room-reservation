@@ -1,7 +1,7 @@
-import Features from "@/components/home/Features";
-import Hero from "@/components/home/Hero";
-import Reviews from "@/components/home/Reviews";
-import Rooms from "@/components/home/Rooms";
+import Features from "@/components/home/Landing/Features";
+import Hero from "@/components/home/Landing/Hero";
+import Reviews from "@/components/home/Landing/Reviews";
+import Rooms from "@/components/home/Landing/Rooms";
 
 function Landing() {
   return (

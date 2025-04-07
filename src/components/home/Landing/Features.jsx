@@ -1,5 +1,5 @@
 import { CalendarCheck, CalendarClock, Rotate3D, Search } from "lucide-react";
-import { Section, SectionTitle } from "../ui/section";
+import { Section, SectionTitle } from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import { useUpRevealAnimation } from "@/hooks/use-up-reveal-animation";
 

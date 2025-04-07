@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
-import { Section, SectionTitle } from "../ui/section";
+import { Button } from "@/components/ui/button";
+import { Section, SectionTitle } from "@/components/ui/section";
 
 import { useExpendAnimation } from "@/hooks/use-expand-animation";
 

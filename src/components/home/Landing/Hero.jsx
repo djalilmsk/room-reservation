@@ -1,7 +1,7 @@
 import { CalendarClock } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import image from "@/assets/hero.png";
-import H1 from "../ui/header1";
+import H1 from "@/components/ui/header1";
 import { useExpendAnimation } from "@/hooks/use-expand-animation";
 
 function Text() {

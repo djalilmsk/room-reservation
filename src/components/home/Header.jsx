@@ -1,6 +1,6 @@
 import Logo from "@/assets/Logo.svg";
 import NavLinks from "../navigation/nav-links";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 import { gsap } from "gsap";
