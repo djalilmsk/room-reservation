@@ -2,6 +2,7 @@ import { CalendarClock } from "lucide-react";
 import { Button } from "../ui/button";
 import image from "@/assets/hero.png";
 import H1 from "../ui/header1";
+import { useExpendAnimation } from "@/hooks/use-expand-animation";
 
 function Text() {
   const Br = () => <br className="hidden md:block" />;

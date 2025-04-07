@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Section, SectionTitle } from "../ui/section";
 
+import { useExpendAnimation } from "@/hooks/use-expand-animation";
+
+
 const rooms = [
   { image: "https://picsum.photos/200/600" },
   { image: "https://picsum.photos/200/700" },
@@ -39,6 +42,8 @@ function RoomCard({ room, index }) {
 }
 
 function Rooms() {
+  const roomsRef = useExpendAnimation(null);
+
   return (
     <Section>
       <div className="flex items-center justify-between">
@@ -50,7 +55,7 @@ function Rooms() {
         </Link>
       </div>
 
-      <div className="grid gap-2 md:grid-cols-4 lg:gap-3">
+      <div ref={roomsRef} className="grid gap-2 md:grid-cols-4 lg:gap-3">
         {rooms.map((room, index) => (
           <RoomCard key={index} room={room} index={index} />
         ))}

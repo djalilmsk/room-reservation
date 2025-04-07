@@ -1,7 +1,9 @@
 import { CalendarCheck, CalendarClock, Rotate3D, Search } from "lucide-react";
 import { Section, SectionTitle } from "../ui/section";
+import { cn } from "@/lib/utils";
+import { useUpRevealAnimation } from "@/hooks/use-up-reveal-animation";
 
-const card = [
+const cards = [
   {
     title: "Real-Time Room Availability Check",
     icon: CalendarCheck,
@@ -24,11 +26,18 @@ const card = [
   },
 ];
 
-function FeatureCard({ item }) {
+function CardContent({ item, className }) {
   const { title, image } = item;
+
   return (
-    <div className="bg-secondary relative flex flex-col justify-between p-5 text-white md:p-8">
-      <div className="absolute top-0 left-0 -z-2 h-full w-full bg-[#191919] opacity-70 dark:hidden" />
+    <div
+      className={cn(
+        "absolute top-0 left-0 flex h-full w-full flex-col justify-between p-5 text-white md:p-8",
+        className,
+      )}
+    >
+      <div className="bg-secondary absolute top-0 left-0 -z-1 h-full w-full" />
+      <div className="absolute top-0 left-0 -z-4 h-full w-full bg-[#191919] opacity-70" />
       <img
         src={image}
         className="absolute top-0 left-0 -z-2 h-full w-full text-center mix-blend-multiply"
@@ -42,12 +51,25 @@ function FeatureCard({ item }) {
   );
 }
 
-function Features() {
+function FeatureCard({ item }) {
   return (
-    <Section>
+    <div className="relative h-full overflow-hidden">
+      <CardContent className="first-features" item={item} />
+    </div>
+  );
+}
+
+function Features() {
+  const cardRef = useUpRevealAnimation(null);
+
+  return (
+    <Section className="flex flex-col justify-center">
       <SectionTitle>We Provide</SectionTitle>
-      <div className="grid h-96 grid-cols-2 gap-1 lg:h-70 lg:grid-cols-4">
-        {card.map((item, index) => (
+      <div
+        ref={cardRef}
+        className="grid h-96 grid-cols-2 gap-1 overflow-hidden lg:h-70 lg:grid-cols-4"
+      >
+        {cards.map((item, index) => (
           <FeatureCard key={index} item={item} />
         ))}
       </div>
