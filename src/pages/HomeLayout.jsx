@@ -1,3 +1,4 @@
+import Footer from "@/components/auth/auth-footer";
 import HomeFooter from "@/components/home/Footer";
 
 import Header from "@/components/home/Header";
@@ -6,12 +7,12 @@ import { Outlet } from "react-router-dom";
 
 function HomeLayout() {
   return (
-    <div className="overflow-x-hidden">
-      <div className="relative mx-auto max-xl:w-[90%] xl:w-6xl">
+    <div className="flex flex-col items-center overflow-x-hidden">
+      <div className="relative max-xl:w-[90%] xl:w-6xl">
         <Header />
         <Outlet />
-        <HomeFooter />
 
+        <HomeFooter /> 
         {/* <Main>
         <Outlet />
         </Main>

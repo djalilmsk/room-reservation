@@ -26,8 +26,6 @@ function Header() {
     });
 
     tl.to(navbar.current, {
-      // paddingLeft: 40,
-      // paddingRight: 40,
       paddingTop: 20,
       paddingBottom: 20,
       borderBottom: 1,
@@ -36,8 +34,8 @@ function Header() {
   }, []);
 
   return (
-    <div ref={navbar} className="bg-background left-0 fixed py-10 w-dvw flex justify-center z-100">
-      <div className="flex w-6xl items-center justify-between transition-all max-xl:w-[90%]">
+    <div ref={navbar} className="bg-background left-0 fixed md:py-10 py-5 w-dvw flex justify-center z-10">
+      <div className="flex xl:w-6xl items-center justify-between transition-all max-xl:w-[90%]">
         <img src={Logo} alt="logo" className="h-10" />
         <NavLinks
           className={

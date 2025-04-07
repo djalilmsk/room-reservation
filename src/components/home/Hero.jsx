@@ -3,32 +3,50 @@ import { Button } from "../ui/button";
 import image from "@/assets/hero.png";
 import H1 from "../ui/header1";
 
+function Text() {
+  const Br = () => <br className="hidden md:block" />;
+  const Primary = ({ children }) => <span className="text-primary max-md:text-3xl">{children}</span>;
+  const Description = ({ children }) => (
+    <p className="text-secondary-foreground w-full text-xs lg:w-[90%] lg:text-sm xl:text-xl 2xl:w-xl">
+      {children}
+    </p>
+  );
+
+  return (
+    <div className="flex flex-col items-start justify-start gap-4 max-md:text-center md:mt-5 xl:mt-10 xl:gap-8">
+      <H1>
+        Modern Workflows
+        <Br /> with <Primary>Seamless Booking</Primary>
+        <Br /> for Productive Days
+      </H1>
+
+      <Description>
+        Transform your workplace experience with our intelligent meeting room
+        management system. Book, manage, and optimize your spaces effortlessly.
+      </Description>
+
+      <Button className="max-md:w-full">
+        <CalendarClock />
+        Start Booking Your Space for Free
+      </Button>
+    </div>
+  );
+}
+
+function Image() {
+  return (
+    <div className="flex items-start justify-start">
+      <img src={image} className="object-contain" />
+    </div>
+  );
+}
+
 function Hero() {
   return (
-    <>
-      <div className="flex flex-col items-center justify-center 2xl:h-[60px]"></div>
-      <div className="grid grid-cols-2 ">
-        <div className="lg:mt-10 md:mt-5 flex flex-col items-start justify-start gap-4 xl:gap-8">
-          <H1>
-            Modern Workflows <br />
-            with <span className="text-primary">Seamless Booking</span>
-            <br /> for Productive Days
-          </H1>
-          <p className="text-secondary-foreground w-[90%] text-[1px] md:text-xs lg:text-sm xl:text-xl 2xl:w-xl">
-            Transform your workplace experience with our intelligent meeting
-            room management system. Book, manage, and optimize your spaces
-            effortlessly.
-          </p>
-          <Button>
-            <CalendarClock />
-            Start Booking Your Space for Free
-          </Button>
-        </div>
-        <div className="flex items-start justify-start">
-          <img src={image} className="object-contain" />
-        </div>
-      </div>
-    </>
+    <div className="grid md:grid-cols-2 md:pt-10 max-md:space-y-5">
+      <Text />
+      <Image />
+    </div>
   );
 }
 

@@ -5,7 +5,8 @@ import Rooms from "@/components/home/Rooms";
 
 function Landing() {
   return (
-    <div className="space-y-32">
+    <div className="space-y-12 max-sm:pt-12 sm:space-y-24 lg:space-y-32">
+      <div></div>
       <Hero />
       <Features />
       <Rooms />

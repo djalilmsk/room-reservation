@@ -1,62 +1,61 @@
 import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-import SectionTitle from "../ui/section-title";
+import { Section, SectionTitle } from "../ui/section";
 
 const rooms = [
-  [
-    {
-      image: "",
-    },
-    {
-      image: "",
-    },
-    {
-      image: "",
-    },
-    {
-      image: "",
-    },
-  ],
-  [
-    {
-      image: "",
-    },
-    {
-      image: "",
-    },
-  ],
+  { image: "https://picsum.photos/200/600" },
+  { image: "https://picsum.photos/200/700" },
+  { image: "https://picsum.photos/200/800" },
+  { image: "https://picsum.photos/200/900" },
+  { image: "https://picsum.photos/200/1000" },
+  { image: "https://picsum.photos/200/1100" },
 ];
+
+const getGridClass = (index) => {
+  if (index < 4) {
+    return "bg-secondary rounded-xl max-lg:aspect-square lg:h-64 overflow-hidden";
+  }
+  return "bg-secondary col-span-2 rounded-xl overflow-hidden";
+};
+
+const getImageClass = (index) => {
+  if (index < 4) {
+    return "w-full h-full object-cover text-center";
+  }
+  return "max-h-64 w-full object-cover text-center";
+};
+
+function RoomCard({ room, index }) {
+  const { image } = room;
+  return (
+    <div className={getGridClass(index)}>
+      <img
+        src={image}
+        alt={`Meeting room ${index + 1}`}
+        className={getImageClass(index)}
+      />
+    </div>
+  );
+}
 
 function Rooms() {
   return (
-    <div className="space-y-10">
+    <Section>
       <div className="flex items-center justify-between">
         <SectionTitle>Explore Our Meeting Rooms</SectionTitle>
-        <Link to={"/rooms"}>
-          <Button variant="link" className="text-base">
+        <Link to="/rooms">
+          <Button variant="link" className="sm:text-base">
             More
           </Button>
         </Link>
       </div>
-      <div className="grid md:grid-cols-4 gap-4">
-        {rooms[0].map((image, index) => (
-          <div
-            key={index}
-            className="bg-secondary max-lg:aspect-square lg:h-64 rounded-xl opacity-40"
-          >
-            <img src={image.image} alt="image" className="object w-full" />
-          </div>
-        ))}
-        {rooms[1].map((image, index) => (
-          <div
-            key={index}
-            className="bg-secondary col-span-2 rounded-xl opacity-40"
-          >
-            <img src={image.image} alt="image" className="object h-64 w-full" />
-          </div>
+
+      <div className="grid gap-2 md:grid-cols-4 lg:gap-3">
+        {rooms.map((room, index) => (
+          <RoomCard key={index} room={room} index={index} />
         ))}
       </div>
-    </div>
+    </Section>
   );
 }
 
