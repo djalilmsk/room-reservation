@@ -8,11 +8,11 @@ import { Outlet } from "react-router-dom";
 function HomeLayout() {
   return (
     <div className="flex flex-col items-center overflow-x-hidden">
-      <div className="relative max-xl:w-[90%] xl:w-6xl">
+      <div className="relative max-xl:w-[90%] xl:w-6xl min-h-screen flex flex-col justify-between">
         <Header />
         <Outlet />
 
-        <HomeFooter /> 
+        <HomeFooter />
         {/* <Main>
         <Outlet />
         </Main>

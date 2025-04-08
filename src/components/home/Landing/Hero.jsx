@@ -44,7 +44,7 @@ function Image() {
 
 function Hero() {
   return (
-    <div className="grid md:grid-cols-2 md:pt-10 max-md:space-y-5">
+    <div className="grid md:grid-cols-2 max-md:space-y-5">
       <Text />
       <Image />
     </div>

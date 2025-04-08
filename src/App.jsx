@@ -5,6 +5,7 @@ import AuthLayout from "./pages/AuthLayout";
 import SignUp from "./pages/auth/SignUp";
 import LogIn from "./pages/auth/LogIn";
 import ForgetPassword from "./pages/auth/ForgetPassword";
+import Rooms from "./pages/home/Rooms";
 import { FirstContent } from "./components/auth/forms/signup-form";
 import { SecondContent } from "./components/auth/forms/password-form";
 import { ThirdContent } from "./components/auth/forms/image-form";
@@ -12,7 +13,6 @@ import { FourthContent } from "./components/auth/forms/extra-data-form";
 import { EmailForm } from "./components/auth/forms/email-form";
 import { OTPForm } from "./components/auth/forms/OTP-form";
 import { ChangePassword } from "./components/auth/forms/change-password";
-import Rooms from "./pages/home/Rooms";
 
 const router = createBrowserRouter([
   {
