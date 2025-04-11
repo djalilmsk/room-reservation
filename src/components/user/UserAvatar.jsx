@@ -3,18 +3,33 @@ import { useUser } from "@/hooks/useUser";
 import { cn } from "@/lib/utils";
 import { Bell, Bookmark } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-function IconLabel({ className, to, children }) {
+function IconLabel({ className, to, children, content }) {
   return (
-    <Link
-      to={to}
-      className={cn(
-        "relative flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full border-1 text-sm hover:bg-muted",
-        className,
-      )}
-    >
-      {children}
-    </Link>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Link
+            to={to}
+            className={cn(
+              "hover:bg-muted relative flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full border-1 text-sm",
+              className,
+            )}
+          >
+            {children}
+          </Link>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{content}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
@@ -27,10 +42,10 @@ function UserAvatar({ className, moreLinks = true }) {
     <div className="flex items-center justify-between gap-2">
       {moreLinks && (
         <>
-          <IconLabel to={"/dashboard/saved"}>
+          <IconLabel to={"/dashboard/saved"} content="Wish list">
             <Bookmark className="p-1" />
           </IconLabel>
-          <IconLabel to={"/dashboard/notification"}>
+          <IconLabel to={"/dashboard/notification"} content="Notification">
             <Bell className="p-1" />
           </IconLabel>
         </>

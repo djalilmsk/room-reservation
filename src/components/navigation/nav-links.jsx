@@ -10,20 +10,23 @@ const NAV_LINKS = [
   { id: 4, to: "/contact", label: "Contact" },
 ];
 
-function NavLinks({ className = "", oneLinkClasses = "", children, innerRef = null }) {
+function NavLinks({
+  className = "",
+  oneLinkClasses = "",
+  children,
+  innerRef = null,
+}) {
   return (
     <ul ref={innerRef} className={className}>
       {children}
       {NAV_LINKS.map(({ id, to, label }) => (
-        <li key={id} className={oneLinkClasses}>
-          <NavLink to={to}>{label}</NavLink>
-        </li>
+        <NavLink key={id} className={oneLinkClasses} to={to}>
+          <li>{label}</li>
+        </NavLink>
       ))}
       <li className={oneLinkClasses}>
         <ModeToggle>
-            <p className={`flex cursor-pointer`}>
-              Theme
-            </p>
+          <p className={`flex cursor-pointer`}>Theme</p>
         </ModeToggle>
       </li>
     </ul>

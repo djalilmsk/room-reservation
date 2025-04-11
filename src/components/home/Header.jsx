@@ -14,6 +14,7 @@ import { Separator } from "../ui/separator";
 import { SidebarTrigger } from "../ui/sidebar";
 import { Menu } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { MenuTrigger } from "../navigation/menu-trigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,19 +39,6 @@ function AuthLinks() {
         </Button>
       </Link>
     </div>
-  );
-}
-
-function MenuTrigger() {
-  return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="hover:text-primary hover:bg-transparent max-md:-ml-2 lg:hidden 2xl:ml-2"
-    >
-      <Menu className="size-7" />
-      <span className="sr-only">Toggle Sidebar</span>
-    </Button>
   );
 }
 

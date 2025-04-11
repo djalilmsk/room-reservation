@@ -12,6 +12,7 @@ import {
   LayoutDashboard,
   LayoutGrid,
   Lock,
+  LogOut,
   Map,
   MessageCircleMore,
   PieChart,
@@ -30,6 +31,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { NavFooter } from "./nav-footer";
 
 // This is sample data.
 const data = {
@@ -103,11 +106,14 @@ const data = {
 
 export function AppSidebar({ ...props }) {
   return (
-    <Sidebar collapsible="icon" {...props} className="pt-18">
+    <Sidebar collapsible="icon" {...props} className="">
       <SidebarContent>
         <NavMain items={data.navMain} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
+      <SidebarFooter>
+        <NavFooter />
+      </SidebarFooter>
     </Sidebar>
   );
 }
