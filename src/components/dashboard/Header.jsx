@@ -10,6 +10,8 @@ import { useRef } from "react";
 import { useSelector } from "react-redux";
 import { useUser } from "@/hooks/useUser";
 import UserAvatar from "../user/UserAvatar";
+import { SidebarTrigger } from "../ui/sidebar";
+import { Separator } from "../ui/separator";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -57,18 +59,16 @@ function Header() {
   return (
     <div
       ref={navbar}
-      className="bg-background fixed left-0 z-10 flex w-dvw justify-center py-5 md:py-10"
+      className="bg-background fixed left-0 z-10 flex w-dvw justify-center py-5 border-b-1"
     >
       <div className="flex items-center justify-between transition-all max-xl:w-[90%] xl:w-6xl">
-        <Link to="/">
-          <img src={Logo} alt="logo" className="h-10" />
-        </Link>
-        <NavLinks
-          className={
-            "flex items-center justify-between gap-15 font-medium max-lg:hidden"
-          }
-          oneLinkClasses="hover:text-primary duration-300"
-        />
+        <div className="flex items-center justify-between gap-2 h-full">
+          <SidebarTrigger className="2xl:ml-2 max-md:-ml-2" />
+          <Separator orientation="vertical" className="h-full" />
+          <Link to="/">
+            <img src={Logo} alt="logo" className="h-7 ml-2" />
+          </Link>
+        </div>
         {data ? <UserAvatar /> : <AuthLinks />}
       </div>
     </div>

@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Default initial data if Local Storage is empty
 const initialData = {
-  firstName: 'djalil',
-  lastName: 'msk',
-  email: 'djalil.msk@gmail.com',
+  firstName: "djalil",
+  lastName: "msk",
+  email: "djalil.msk@gmail.com",
   agreedToTerms: true,
-  password: '12345678',
-  confirmPassword: '12345678',
+  password: "12345678",
+  confirmPassword: "12345678",
+  userType: "Student",
+  referralSource: "Social Media",
 };
 
 const getDataFromLocalStorage = () => {

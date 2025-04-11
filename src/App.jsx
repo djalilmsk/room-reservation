@@ -13,6 +13,8 @@ import { FourthContent } from "./components/auth/forms/extra-data-form";
 import { EmailForm } from "./components/auth/forms/email-form";
 import { OTPForm } from "./components/auth/forms/OTP-form";
 import { ChangePassword } from "./components/auth/forms/change-password";
+import DashboardLayout from "./pages/DashboardLayout";
+import Profile from "./pages/dashboard/Profile";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +28,7 @@ const router = createBrowserRouter([
         // errorElement: <ErrorElement />,
       },
       {
-        path: '/rooms',
+        path: "/rooms",
         element: <Rooms />,
         // errorElement: <ErrorElement />,
       },
@@ -90,6 +92,18 @@ const router = createBrowserRouter([
             // errorElement: <ErrorElement />,
           },
         ],
+      },
+    ],
+  },
+  {
+    path: "/dashboard/profile",
+    element: <DashboardLayout />,
+    // errorElement: <Error />,
+    children: [
+      {
+        index: true,
+        element: <Profile />,
+        // errorElement: <ErrorElement />,
       },
     ],
   },

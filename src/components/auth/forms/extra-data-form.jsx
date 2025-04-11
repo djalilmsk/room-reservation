@@ -33,7 +33,7 @@ import {
   Tv,
   UsersIcon,
 } from "lucide-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +42,29 @@ const extraDataSchema = formSchema.pick({
   userType: true,
   referralSource: true,
 });
+
+export const selfSelection = [
+  { label: "Student", icon: GraduationCap },
+  { label: "Freelancers/Consultants", icon: BriefcaseBusiness },
+  { label: "Event Organizers", icon: MicVocal },
+  { label: "Tech Support Teams", icon: Laptop },
+  { label: "Researchers/Academics", icon: Search },
+  { label: "Employees", icon: UsersIcon },
+  { label: "Managers/Supervisors", icon: ChartBarIcon },
+  { label: "HR Representatives", icon: HandshakeIcon },
+  { label: "Other", icon: MoreHorizontal },
+];
+
+export const roomSelection = [
+  { label: "Social Media", icon: Smartphone },
+  { label: "Search Engine", icon: Search },
+  { label: "Tech Blogs or Reviews", icon: PanelsTopLeft },
+  { label: "Online Ads", icon: Tv },
+  { label: "Events or Webinars", icon: MicVocal },
+  { label: "App Store or Marketplace", icon: Store },
+  { label: "Company Referral", icon: Building2 },
+  { label: "Other", icon: MoreHorizontal },
+];
 
 function CustomSelect({ control, selfSelection, title, name = "" }) {
   return (
@@ -81,9 +104,17 @@ export function FourthContent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.formCache.data);
+  const [postData, setPostData] = useState(data);
 
   useEffect(() => {
-    const { firstName, lastName, email, agreedToTerms, password, confirmPassword } = data;
+    const {
+      firstName,
+      lastName,
+      email,
+      agreedToTerms,
+      password,
+      confirmPassword,
+    } = data;
 
     if (!(firstName && lastName && email && agreedToTerms)) {
       navigate("/auth/signup", { replace: true });
@@ -94,7 +125,7 @@ export function FourthContent() {
     }
   }, [data]);
 
-  const { userType = "", referralSource = "" } =  data;
+  const { userType = "", referralSource = "" } = data;
 
   const form = useForm({
     resolver: zodResolver(extraDataSchema),
@@ -104,32 +135,13 @@ export function FourthContent() {
     },
   });
 
-  const selfSelection = [
-    { label: "Student", icon: GraduationCap },
-    { label: "Freelancers/Consultants", icon: BriefcaseBusiness },
-    { label: "Event Organizers", icon: MicVocal },
-    { label: "Tech Support Teams", icon: Laptop },
-    { label: "Researchers/Academics", icon: Search },
-    { label: "Employees", icon: UsersIcon },
-    { label: "Managers/Supervisors", icon: ChartBarIcon },
-    { label: "HR Representatives", icon: HandshakeIcon },
-    { label: "Other", icon: MoreHorizontal },
-  ];
-
-  const roomSelection = [
-    { label: "Social Media", icon: Smartphone },
-    { label: "Search Engine", icon: Search },
-    { label: "Tech Blogs or Reviews", icon: PanelsTopLeft },
-    { label: "Online Ads", icon: Tv },
-    { label: "Events or Webinars", icon: MicVocal },
-    { label: "App Store or Marketplace", icon: Store },
-    { label: "Company Referral", icon: Building2 },
-    { label: "Other", icon: MoreHorizontal },
-  ];
-
   const onSubmit = (data) => {
     dispatch(setData(data));
+    setPostData((prv) => {
+      return { ...prv, ...data };
+    });
     console.log("Form submitted with data:", data);
+    console.log(postData);
   };
 
   const onError = (errors) => {
@@ -138,7 +150,10 @@ export function FourthContent() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+        className="space-y-4"
+      >
         <CustomSelect
           control={form.control}
           selfSelection={selfSelection}
@@ -152,7 +167,7 @@ export function FourthContent() {
           name="referralSource"
         />
         <Button
-          className="w-full mt-4"
+          className="mt-4 w-full"
           type="submit"
           disabled={form.formState.isSubmitting}
         >

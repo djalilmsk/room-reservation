@@ -2,23 +2,21 @@ import Footer from "@/components/auth/auth-footer";
 import HomeFooter from "@/components/home/Footer";
 
 import Header from "@/components/home/Header";
-import { useRef } from "react";
+import { LayoutContainer } from "@/components/ui/layout-container";
 import { Outlet } from "react-router-dom";
 
 function HomeLayout() {
   return (
-    <div className="flex flex-col items-center overflow-x-hidden">
-      <div className="relative max-xl:w-[90%] xl:w-6xl min-h-screen flex flex-col justify-between">
-        <Header />
-        <Outlet />
+    <LayoutContainer>
+      <Header />
+      <Outlet />
 
-        <HomeFooter />
-        {/* <Main>
+      <HomeFooter />
+      {/* <Main>
         <Outlet />
         </Main>
         <Footer /> */}
-      </div>
-    </div>
+    </LayoutContainer>
   );
 }
 
