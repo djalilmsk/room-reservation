@@ -13,21 +13,17 @@ import NavLinks from "./nav-links";
 
 function Trigger() {
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className="hover:text-primary hover:bg-transparent max-md:-ml-2 lg:hidden 2xl:ml-2"
-    >
+    <div className="hover:text-primary hover:bg-secondary rounded-md max-md:-ml-2 lg:hidden 2xl:ml-2 cursor-pointer">
       <Menu className="size-7" />
       <span className="sr-only">Toggle Sidebar</span>
-    </Button>
+    </div>
   );
 }
 
 export function MenuTrigger() {
   return (
     <Sheet>
-      <SheetTrigger className='flex items-center'>
+      <SheetTrigger className="flex items-center">
         <Trigger />
       </SheetTrigger>
       <SheetContent side="left">
