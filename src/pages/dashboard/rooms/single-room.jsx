@@ -15,7 +15,7 @@ const rooms = [
     rating: 4.6,
     pricing: 2000,
     status: "Booked",
-    amenities: ["Wi-Fi", "TV", "Air Conditioning"],
+    amenities: "Wi-Fi, TV, Air Conditioning",
     image: "https://picsum.photos/200/100",
   },
   {
@@ -26,7 +26,7 @@ const rooms = [
     rating: 4.6,
     pricing: 2000,
     status: "Booked",
-    amenities: ["Wi-Fi", "TV", "Air Conditioning"],
+    amenities: "Wi-Fi, TV, Air Conditioning",
     image: "https://picsum.photos/200/100",
   },
   {
@@ -37,7 +37,7 @@ const rooms = [
     rating: 4.6,
     pricing: 2000,
     status: "Booked",
-    amenities: ["Wi-Fi", "TV", "Air Conditioning"],
+    amenities: "Wi-Fi, TV, Air Conditioning",
     image: "https://picsum.photos/200/100",
   },
   {
@@ -48,7 +48,7 @@ const rooms = [
     rating: 4.6,
     pricing: 2000,
     status: "Booked",
-    amenities: ["Wi-Fi", "TV", "Air Conditioning"],
+    amenities: "Wi-Fi, TV, Air Conditioning",
     image: "https://picsum.photos/200/100",
   },
   {
@@ -59,7 +59,7 @@ const rooms = [
     rating: 4.6,
     pricing: 2000,
     status: "Booked",
-    amenities: ["Wi-Fi", "TV", "Air Conditioning"],
+    amenities: "Wi-Fi, TV, Air Conditioning",
     image: "https://picsum.photos/200/100",
   },
 ];
@@ -83,6 +83,8 @@ function SingleRoom() {
     amenities,
     image,
   } = room;
+
+  const amenitiesArray = amenities.split(",").map((item) => item.trim());
 
   const AmenityLabel = ({ amenity, label }) => (
     <div className="text-secondary-foreground text-sm">
@@ -127,7 +129,7 @@ function SingleRoom() {
           <h2 className="flex items-center justify-between text-lg">
             {" "}
             <span className="font-bold">Amenities:</span>
-            {amenities.map((amenity, index) => (
+            {amenitiesArray.map((amenity, index) => (
               <AmenityLabel key={index} amenity={amenity} />
             ))}
           </h2>

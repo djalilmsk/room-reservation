@@ -31,7 +31,7 @@ function RoomForm({ onSubmit: externalOnSubmit, defaultValues }) {
     defaultValues: defaultValues || {
       name: "",
       capacity: 0,
-      amenities: [], // Changed to empty array instead of string
+      amenities: "",
       type: "",
       note: "",
       description: "",
@@ -48,18 +48,6 @@ function RoomForm({ onSubmit: externalOnSubmit, defaultValues }) {
 
   const onError = (errors) => {
     console.error(errors);
-  };
-
-  // Handle amenities input change to convert comma-separated string to array
-  const handleAmenitiesChange = (e) => {
-    const value = e.target.value;
-    form.setValue(
-      "amenities",
-      value
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean),
-    );
   };
 
   return (
@@ -110,11 +98,7 @@ function RoomForm({ onSubmit: externalOnSubmit, defaultValues }) {
             <FormItem>
               <FormLabel>Amenities</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Enter amenities "
-                  onChange={handleAmenitiesChange}
-                  value={field.value ? field.value.join(", ") : ""}
-                />
+                <Input placeholder="Enter amenities " type="text" {...field} />
               </FormControl>
               <FormDescription>
                 Enter amenities separated by commas (e.g., WiFi, TV, AC)

@@ -28,6 +28,7 @@ import {
 import { Ellipsis } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 const data = [
   {
@@ -91,16 +92,16 @@ export function DataTable({ columns, data }) {
   });
 
   return (
-    <div className="rounded-md border">
+    <div className="overflow-hidden rounded-lg">
       <Table>
-        <TableHeader className="border-0">
+        <TableHeader className="overflow-hidden rounded-lg">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
-              className="bg-secondary hover:bg-secondary"
+              className="bg-secondary hover:bg-secondary border-0"
               key={headerGroup.id}
             >
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead className="px-4 py-4" key={header.id}>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -118,9 +119,10 @@ export function DataTable({ columns, data }) {
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                className="hover:bg-background"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell className="px-4 py-3 font-light" key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
@@ -172,7 +174,7 @@ const ManagmentMenu = ({ userId, currentRole, onRoleChange, onDelete }) => {
         </DropdownMenuRadioGroup>
         <DropdownMenuItem
           onClick={() => onDelete(userId)}
-          className="text-destructive focus:bg-destructive/30 text-center focus:text-destructive"
+          className="text-destructive focus:bg-destructive/30 focus:text-destructive text-center"
         >
           Delete
         </DropdownMenuItem>
@@ -201,7 +203,20 @@ function UsersList() {
     {
       accessorKey: "role_name",
       header: "Role",
-      cell: ({ row }) => <div>{row.getValue("role_name")}</div>,
+      cell: ({ row }) => (
+        <div
+          className={cn(
+            "w-fit rounded-md px-4 py-1 text-center",
+            {
+              client: "bg-muted-foreground/40",
+              admin: "bg-secondary text-primary",
+            }[row.getValue("role_name").toLowerCase()] ||
+              "bg-[#fbbc05]/20 text-[#fbbc05]",
+          )}
+        >
+          {row.getValue("role_name")}
+        </div>
+      ),
     },
     {
       accessorKey: "edit",

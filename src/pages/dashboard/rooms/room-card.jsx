@@ -1,5 +1,7 @@
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { formatPrice } from "@/utils/format/formatPrice";
+import { formatStatus } from "@/utils/format/formatStatus";
 import { Star } from "lucide-react";
 
 function RoomCard({ data }) {
@@ -16,36 +18,16 @@ function RoomCard({ data }) {
     image,
   } = data;
 
+  const amenitiesArray = amenities.split(",").map((item) => item.trim());
+
   const AmenityLabel = ({ amenity, label }) => (
     <div className="text-secondary-foreground text-sm">
       {amenity} {label}
     </div>
   );
 
-  const formatPrice = (price) => (
-    <div className="flex gap-1">
-      <h1 className="text-2xl font-semibold md:text-3xl">{price} DZD</h1>
-      <p className="text-secondary-foreground mt-auto pb-1 text-sm">
-        /pre hour
-      </p>
-    </div>
-  );
-
-  const formatStatus = (status) => (
-    <div
-      className={cn(
-        "rounded-lg px-3 py-1 text-sm",
-        {
-          Booked: "bg-destructive/25 text-destructive",
-        }[status],
-      )}
-    >
-      {status}
-    </div>
-  );
-
   return (
-    <div className="bg-secondary/20 dark:bg-secondary/80 dark:hover:bg-secondary hover:bg-secondary/60 relative flex flex-col overflow-hidden rounded-xl transition-all duration-150">
+    <div className="hover:bg-primary/10 dark:bg-card dark:hover:bg-primary/10 relative flex flex-col overflow-hidden rounded-xl border-1 transition-all duration-200 hover:shadow-sm dark:border-0">
       <Separator className="absolute top-49" />
       <img
         src={image}
@@ -55,7 +37,7 @@ function RoomCard({ data }) {
       <div className="px-6 pb-4">
         <div className="flex gap-4 py-2">
           <AmenityLabel amenity={capacity} label={"People"} />
-          {amenities.map((amenity, index) => (
+          {amenitiesArray.map((amenity, index) => (
             <AmenityLabel amenity={amenity} key={index} />
           ))}
         </div>

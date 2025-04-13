@@ -3,27 +3,19 @@
 import * as React from "react";
 import {
   AlignHorizontalSpaceAround,
-  AudioWaveform,
   Bell,
   BookOpen,
-  Bot,
   Calendar,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
   History,
   Home,
   LayoutDashboard,
   LayoutGrid,
   Loader,
   Lock,
-  LogOut,
-  Map,
   MessageCircleMore,
   PieChart,
   Settings,
   Settings2,
-  SquareTerminal,
   UserCircle2,
   Users2,
 } from "lucide-react";
@@ -159,6 +151,7 @@ export function AppSidebar({ ...props }) {
   return (
     <Sidebar collapsible="icon" {...props} className="">
       <SidebarContent>
+        {/* <SheetOverlay /> */}
         <NavMain label="General Settings" items={data.global} />
         <NavMain label="Rooms Management" items={data.roomsManagment} />
         <NavMain label="Booking Management" items={data.bookingManager} />

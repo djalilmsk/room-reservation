@@ -11,8 +11,8 @@ const rooms = [
     capacity: 12,
     rating: 4.6,
     pricing: 2000,
-    status: "Booked",
-    amenities: ["Wi-Fi", "TV", "Air Conditioning"],
+    status: "Available",
+    amenities: "Wi-Fi, TV, Air Conditioning",
     image: "https://picsum.photos/200/100",
   },
   {
@@ -22,8 +22,8 @@ const rooms = [
     capacity: 12,
     rating: 4.6,
     pricing: 2000,
-    status: "Booked",
-    amenities: ["Wi-Fi", "TV", "Air Conditioning"],
+    status: "Maintenance",
+    amenities: "Wi-Fi, TV, Air Conditioning",
     image: "https://picsum.photos/200/100",
   },
   {
@@ -33,8 +33,8 @@ const rooms = [
     capacity: 12,
     rating: 4.6,
     pricing: 2000,
-    status: "Booked",
-    amenities: ["Wi-Fi", "TV", "Air Conditioning"],
+    status: "Available",
+    amenities: "Wi-Fi, TV, Air Conditioning",
     image: "https://picsum.photos/200/100",
   },
   {
@@ -44,8 +44,8 @@ const rooms = [
     capacity: 12,
     rating: 4.6,
     pricing: 2000,
-    status: "Booked",
-    amenities: ["Wi-Fi", "TV", "Air Conditioning"],
+    status: "Available",
+    amenities: "Wi-Fi, TV, Air Conditioning",
     image: "https://picsum.photos/200/100",
   },
   {
@@ -56,7 +56,7 @@ const rooms = [
     rating: 4.6,
     pricing: 2000,
     status: "Booked",
-    amenities: ["Wi-Fi", "TV", "Air Conditioning"],
+    amenities: "Wi-Fi, TV, Air Conditioning",
     image: "https://picsum.photos/200/100",
   },
 ];

@@ -5,7 +5,7 @@ export function NavFooter() {
   return (
     <Button variant="secondary">
       <LogOut />
-      Logout
+      <span  className="data-[state=open]:hidden">Logout</span>
     </Button>
   );
 }
