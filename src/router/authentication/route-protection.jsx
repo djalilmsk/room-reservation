@@ -3,22 +3,21 @@ import { useUser } from "@/hooks/useUser";
 
 function RouteProtection({ permission = "logged-in::user", children }) {
   const { data, token } = useUser();
-
-  const currentState = data && token ? "logged-in" : "guest";
-  const currentRole = data.role;
-
   const { state, role } = {
     state: permission.split("::")[0],
     role: permission.split("::")[1],
   };
 
-  const isAllowed =
-    (state === "guest" && currentState === state) ||
-    (currentState === state && currentRole === role);
+  const currentState = data ? "logged-in" : "guest";
 
-  if (isAllowed) return <PageNotFound />;
+  if (state === "guest" && currentState === state) return <>{children}</>;
+  if (state === "guest" && currentState !== state) return <PageNotFound />;
 
-  return <>{children}</>;
+  const { role: currentRole } = data || { role: "none" };
+
+  if (currentState === state && currentRole === role) return <>{children}</>;
+
+  return <PageNotFound />;
 }
 
 export default RouteProtection;

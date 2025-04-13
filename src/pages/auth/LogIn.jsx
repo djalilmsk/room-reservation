@@ -5,6 +5,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CardFooter from "./CardFooter";
 import { LoginForm } from "@/components/auth/forms/login-form";
 import { formSchema } from "@/utils/forms/login-schema";
+import { useDispatch } from "react-redux";
+import { login } from "@/utils/redux/user";
+import { useNavigate } from "react-router-dom";
 
 const { buttonLabel, title, description, separator, footer } = {
   buttonLabel: "Log In",
@@ -15,6 +18,8 @@ const { buttonLabel, title, description, separator, footer } = {
 };
 
 function LogIn() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -26,6 +31,8 @@ function LogIn() {
 
   const onSubmit = (data) => {
     console.log("Form submitted successfully:", data);
+    dispatch(login({ data: data, token: "" }));
+    navigate("/");
   };
 
   const onError = (errors) => {

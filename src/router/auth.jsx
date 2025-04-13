@@ -14,7 +14,9 @@ import RouteProtection from "./authentication/route-protection";
 export const auth = {
   path: "/",
   element: (
-    <RouteProtection permission="logged-in::none" > {/* guest::none */}
+    <RouteProtection permission="guest::none">
+      {" "}
+      {/* guest::none */}
       <AuthLayout />
     </RouteProtection>
   ),

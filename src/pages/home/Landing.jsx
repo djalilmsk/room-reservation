@@ -21,7 +21,7 @@ function Landing() {
   const { data, token } = useUser();
   const isGuest = data === undefined || token === undefined ? true : false;
 
-  return <Page>{true ? <Guest /> : <UserActions />}</Page>;
+  return <Page>{isGuest ? <Guest /> : <UserActions />}</Page>;
 }
 
 export default Landing;

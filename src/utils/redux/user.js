@@ -2,6 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Default initial data if Local Storage is empty
 const initialData = {
+  data: undefined,
+  token: undefined,
+};
+
+const fakeUser = {
   data: {
     firstName: "djalil",
     lastName: "msk",
@@ -18,7 +23,6 @@ const initialData = {
 
 const getDataFromLocalStorage = () => {
   try {
-    // Replace 'yourDataKey' with the key name used in Local Storage
     return JSON.parse(localStorage.getItem("user")) || initialData;
   } catch (err) {
     console.error("Failed to parse Local Storage data:", err);
@@ -26,26 +30,26 @@ const getDataFromLocalStorage = () => {
   }
 };
 
-// Initial state for the slice
-const initialState =
-  // Replace 'data' with your desired state property name
-  getDataFromLocalStorage();
+const initialState = getDataFromLocalStorage();
 
 const user = createSlice({
-  // Replace 'yourSliceName' with a descriptive name for your slice
   name: "user",
   initialState,
   reducers: {
-    // Add your actions here
     login: (state, action) => {
-      state.user.data = action.payload.data;
-      state.user.token = action.payload.token;
-      localStorage.setItem("user", JSON.stringify(action.payload));
+      console.log("Logging in with:", action.payload);
+      state.data = fakeUser.data;
+      state.token = action.payload.token;
+      // localStorage.setItem("user", JSON.stringify(action.payload));
+      localStorage.setItem("user", JSON.stringify(fakeUser));
+    },
+    logout: (state) => {
+      state.data = undefined;
+      state.token = undefined;
+      localStorage.removeItem("user");
     },
   },
 });
 
-// Export the actions created by the slice
-export const { login } = user.actions;
-
+export const { login, logout } = user.actions;
 export default user.reducer;

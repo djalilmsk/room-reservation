@@ -52,7 +52,7 @@ function UserAvatar({ className, moreLinks = true }) {
       )}
 
       <Link to={"/dashboard/profile"}>
-        <Avatar className={className}>
+        <Avatar className={cn('flex justify-center items-center',className)}>
           <AvatarImage src={image} />
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
