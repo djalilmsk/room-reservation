@@ -2,15 +2,20 @@
 
 import * as React from "react";
 import {
+  AlignHorizontalSpaceAround,
   AudioWaveform,
+  Bell,
   BookOpen,
   Bot,
+  Calendar,
   Command,
   Frame,
   GalleryVerticalEnd,
+  History,
   Home,
   LayoutDashboard,
   LayoutGrid,
+  Loader,
   Lock,
   LogOut,
   Map,
@@ -20,6 +25,7 @@ import {
   Settings2,
   SquareTerminal,
   UserCircle2,
+  Users2,
 } from "lucide-react";
 
 import { NavMain } from "./nav-main";
@@ -36,7 +42,7 @@ import { NavFooter } from "./nav-footer";
 
 // This is sample data.
 const data = {
-  navMain: [
+  global: [
     {
       title: "Home Links",
       url: "/",
@@ -92,23 +98,71 @@ const data = {
       url: "#",
       icon: LayoutDashboard,
       isActive: false,
-      items: [],
+      items: [{}],
     },
   ],
-  // projects: [
-  //   {
-  //     name: "link",
-  //     url: "#",
-  //     icon: null,
-  //   },
-  // ],
+  roomsManagment: [
+    {
+      title: "Rooms",
+      icon: AlignHorizontalSpaceAround,
+      isActive: true,
+      items: [
+        {
+          title: "Rooms List",
+          url: "/dashboard/rooms",
+          icon: LayoutGrid,
+        },
+      ],
+    },
+  ],
+  bookingManager: [
+    {
+      title: "Bookings",
+      icon: Calendar,
+      isActive: true,
+      items: [
+        {
+          title: "Pending Bookings",
+          url: "/dashboard/booking",
+          icon: Loader,
+        },
+        {
+          title: "Notifications",
+          url: "/dashboard/booking/notifications",
+          icon: Bell,
+        },
+        {
+          title: "Booking History",
+          url: "/dashboard/booking/booking-history",
+          icon: History,
+        },
+      ],
+    },
+  ],
+  adminDashboard: [
+    {
+      title: "Settings",
+      icon: Settings,
+      isActive: true,
+      items: [
+        {
+          title: "Users",
+          url: "/dashboard/users",
+          icon: Users2,
+        },
+      ],
+    },
+  ],
 };
 
 export function AppSidebar({ ...props }) {
   return (
     <Sidebar collapsible="icon" {...props} className="">
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain label="General Settings" items={data.global} />
+        <NavMain label="Rooms Management" items={data.roomsManagment} />
+        <NavMain label="Booking Management" items={data.bookingManager} />
+        <NavMain label="Admin Dashboard" items={data.adminDashboard} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>

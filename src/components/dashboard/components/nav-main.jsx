@@ -19,10 +19,10 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, NavLink } from "react-router-dom";
 
-export function NavMain({ items }) {
+export function NavMain({ items, label }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+      <SidebarGroupLabel>{label}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
@@ -41,8 +41,8 @@ export function NavMain({ items }) {
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
+                  {item.items?.map((subItem, index) => (
+                    <SidebarMenuSubItem key={index}>
                       <SidebarMenuSubButton asChild>
                         <NavLink to={subItem.url}>
                           {subItem.icon && <subItem.icon />}

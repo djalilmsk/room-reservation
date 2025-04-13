@@ -3,10 +3,13 @@ import { Button } from "@/components/ui/button";
 import image from "@/assets/hero.png";
 import H1 from "@/components/ui/header1";
 import { useExpendAnimation } from "@/hooks/use-expand-animation";
+import { Link } from "react-router-dom";
 
 function Text() {
   const Br = () => <br className="hidden md:block" />;
-  const Primary = ({ children }) => <span className="text-primary">{children}</span>;
+  const Primary = ({ children }) => (
+    <span className="text-primary">{children}</span>
+  );
   const Description = ({ children }) => (
     <p className="text-secondary-foreground w-full text-xs lg:w-[90%] lg:text-sm xl:text-xl 2xl:w-xl">
       {children}
@@ -26,10 +29,12 @@ function Text() {
         management system. Book, manage, and optimize your spaces effortlessly.
       </Description>
 
-      <Button className="max-md:w-full">
-        <CalendarClock />
-        Start Booking Your Space for Free
-      </Button>
+      <Link className="max-md:w-full" to="/auth/signup">
+        <Button className="max-md:w-full">
+          <CalendarClock />
+          Start Booking Your Space for Free
+        </Button>
+      </Link>
     </div>
   );
 }
@@ -44,7 +49,7 @@ function Image() {
 
 function Hero() {
   return (
-    <div className="grid md:grid-cols-2 max-md:space-y-5">
+    <div className="grid max-md:space-y-5 md:grid-cols-2">
       <Text />
       <Image />
     </div>

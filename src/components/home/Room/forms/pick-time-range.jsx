@@ -12,28 +12,6 @@ import {
 } from "@/components/ui/form";
 
 function TimePicker({ control, name, time, label, setTime }) {
-  const toString = (date) => {
-    if (!date) return null;
-
-    // const hours = date.getHours().toString().padStart(2, "0");
-    // const minutes = date.getMinutes().toString().padStart(2, "0");
-
-    // return `${hours}:${minutes}`;
-
-    const setEmpty = () => {
-      setTime("");
-    };
-
-    return (
-      <div className="relative flex items-center justify-between gap-2">
-        <span>{date}</span>
-        <X
-          className="text-secondary-foreground z-20 h-4 w-4"
-          onClick={setEmpty}
-        />
-      </div>
-    );
-  };
 
   return (
     <FormField
@@ -67,7 +45,7 @@ function TimePicker({ control, name, time, label, setTime }) {
               <Input
                 type="time"
                 className={cn(
-                  "w-fit cursor-pointer border-0 px-0 ring-0 focus-visible:border-0 focus-visible:ring-0 aria-invalid:ring-0",
+                  "w-20 cursor-pointer border-0 px-0 ring-0 focus-visible:border-0 focus-visible:ring-0 aria-invalid:ring-0",
                   "[&::-webkit-calendar-picker-indicator]:h-full",
                   "[&::-webkit-calendar-picker-indicator]:w-full",
                   "[&::-webkit-calendar-picker-indicator]:opacity-0",

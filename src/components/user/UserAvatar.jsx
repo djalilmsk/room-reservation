@@ -42,10 +42,10 @@ function UserAvatar({ className, moreLinks = true }) {
     <div className="flex items-center justify-between gap-2">
       {moreLinks && (
         <>
-          <IconLabel to={"/dashboard/saved"} content="Wish list">
+          <IconLabel to={"/saved"} content="Wish list">
             <Bookmark className="p-1" />
           </IconLabel>
-          <IconLabel to={"/dashboard/notification"} content="Notification">
+          <IconLabel to={"/notifications"} content="Notification">
             <Bell className="p-1" />
           </IconLabel>
         </>

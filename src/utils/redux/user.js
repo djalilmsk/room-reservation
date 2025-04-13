@@ -6,6 +6,7 @@ const initialData = {
     firstName: "djalil",
     lastName: "msk",
     email: "djalil.msk@gmail.com",
+    role: "user",
     agreedToTerms: true,
     password: "12345678",
     confirmPassword: "12345678",

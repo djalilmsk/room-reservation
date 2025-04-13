@@ -1,7 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -12,9 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Primary } from "@/components/ui/global";
-import { formSchema } from "@/utils/forms/signup-schema";
-import { setData } from "@/utils/redux/form-cache";
+import { formSchema } from "@/utils/forms/update-profile-schema";
 import { useUser } from "@/hooks/useUser";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -100,7 +96,7 @@ function ProfileForm() {
         className="space-y-10"
       >
         <div className="space-y-5">
-          <div className="flex justify-between gap-5 md:gap-3">
+          <div className="flex justify-between items-start gap-5 md:gap-3">
             <FormField
               control={form.control}
               name="firstName"

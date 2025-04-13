@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/sheet";
 import { CustomTip } from "../ui/custom-tip";
 import NavLinks from "./nav-links";
+import { Separator } from "../ui/separator";
 
 function Trigger() {
   return (
-    <div className="hover:text-primary hover:bg-secondary rounded-md max-md:-ml-2 lg:hidden 2xl:ml-2 cursor-pointer">
+    <div className="hover:text-primary hover:bg-secondary cursor-pointer rounded-md max-md:-ml-2 lg:hidden 2xl:ml-2">
       <Menu className="size-7" />
       <span className="sr-only">Toggle Sidebar</span>
     </div>
@@ -27,8 +28,10 @@ export function MenuTrigger() {
         <Trigger />
       </SheetTrigger>
       <SheetContent side="left">
-        <SheetHeader>
+        <SheetHeader className="p-10 pb-0">
           <SheetTitle>Home Menu</SheetTitle>
+          <SheetDescription />
+          <Separator />
         </SheetHeader>
         <NavLinks
           className="flex flex-col gap-2 px-4"

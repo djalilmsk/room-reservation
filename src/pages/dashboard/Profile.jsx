@@ -31,7 +31,7 @@ function Preview({ data }) {
 
 function Profile() {
   const { data } = useUser();
-  console.log(data);
+
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-bold">Personal Information</h1>
