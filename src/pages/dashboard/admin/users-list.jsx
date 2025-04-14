@@ -43,7 +43,7 @@ const data = [
     resetCode: null,
     resetCodeExpiresAt: null,
     updated_at: new Date(),
-    role_name: "Client",
+    role: "Client",
     referral_source: "Friend",
     profession: "Software Engineer",
     passwordChangedAt: null,
@@ -60,7 +60,7 @@ const data = [
     resetCode: "ABCD1234",
     resetCodeExpiresAt: new Date(),
     updated_at: new Date(),
-    role_name: "Admin",
+    role: "Admin",
     referral_source: "Website",
     profession: "Project Manager",
     passwordChangedAt: new Date(),
@@ -77,7 +77,7 @@ const data = [
     resetCode: null,
     resetCodeExpiresAt: null,
     updated_at: new Date(),
-    role_name: "Booking Manager",
+    role: "Booking Manager",
     referral_source: "Social Media",
     profession: "Hotel Manager",
     passwordChangedAt: null,
@@ -201,7 +201,7 @@ function UsersList() {
       cell: ({ row }) => <div>{row.getValue("phoneNumber") || "N/A"}</div>,
     },
     {
-      accessorKey: "role_name",
+      accessorKey: "role",
       header: "Role",
       cell: ({ row }) => (
         <div
@@ -210,11 +210,11 @@ function UsersList() {
             {
               client: "bg-muted-foreground/40",
               admin: "bg-secondary text-primary",
-            }[row.getValue("role_name").toLowerCase()] ||
+            }[row.getValue("role").toLowerCase()] ||
               "bg-[#fbbc05]/20 text-[#fbbc05]",
           )}
         >
-          {row.getValue("role_name")}
+          {row.getValue("role")}
         </div>
       ),
     },
@@ -224,7 +224,7 @@ function UsersList() {
       cell: ({ row }) => (
         <ManagmentMenu
           userId={row.original.id}
-          currentRole={row.original.role_name}
+          currentRole={row.original.role}
           onRoleChange={handleRoleChange}
           onDelete={handleDelete}
         />

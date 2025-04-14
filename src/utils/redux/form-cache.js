@@ -2,14 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Default initial data if Local Storage is empty
 const initialData = {
-  firstName: "djalil",
-  lastName: "msk",
-  email: "djalil.msk@gmail.com",
-  agreedToTerms: true,
-  password: "12345678",
-  confirmPassword: "12345678",
-  userType: "Student",
-  referralSource: "Social Media",
+  // firstName: "djalil",
+  // lastName: "msk",
+  // email: "djalil.msk@gmail.com",
+  // agreedToTerms: true,
+  // password: "12345678",
+  // confirmPassword: "12345678",
+  // profession: "Student",
+  // referral_source: "Social Media",
 };
 
 const getDataFromLocalStorage = () => {
@@ -34,23 +34,15 @@ const formCache = createSlice({
   initialState,
   reducers: {
     // Add your actions here
-    setData: (state, action) => {
-      console.log({ ...action.payload, ...state.data });
-      const data = { ...action.payload, ...state.data };
-      state.data = data;
-      localStorage.setItem("form-cache", JSON.stringify(data));
+    setData: (store, action) => {
+      const { fieldName, newData } = action.payload;
+      store.data[fieldName] = newData;
+      localStorage.setItem("form-cache", JSON.stringify(store.data));
     },
-
     clearData: (store) => {
       store.data = initialData;
       localStorage.removeItem("form-cache");
       localStorage.setItem("form-cache", JSON.stringify(initialData));
-    },
-
-    updateField: (store, action) => {
-      const { fieldName, newData } = action.payload;
-      store.data[fieldName] = newData;
-      localStorage.setItem("form-cache", JSON.stringify(store.data));
     },
   },
 });

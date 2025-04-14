@@ -8,6 +8,10 @@ import { formSchema } from "@/utils/forms/login-schema";
 import { useDispatch } from "react-redux";
 import { login } from "@/utils/redux/user";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { customFetch } from "@/utils";
+import { useLoginMutation } from "@/hooks/mutation/useLoginMutation";
+import { Loader } from "lucide-react";
 
 const { buttonLabel, title, description, separator, footer } = {
   buttonLabel: "Log In",
@@ -17,27 +21,44 @@ const { buttonLabel, title, description, separator, footer } = {
   footer: { display: true, content: <CardFooter /> },
 };
 
+const loginSchema = formSchema.pick({
+  email: true,
+  password: true,
+});
+
 function LogIn() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "djalil.meskali@gmail.com",
       password: "djalilmsk123",
-      agreedToTerms: true,
     },
   });
 
+  const { mutate, isPending } = useLoginMutation(form);
+
   const onSubmit = (data) => {
-    console.log("Form submitted successfully:", data);
-    dispatch(login({ data: data, token: "" }));
-    navigate("/");
+    mutate(data);
   };
 
   const onError = (errors) => {
     console.error("Form errors:", errors);
   };
+
+  const SubmitButton = () => (
+    <Button disabled={isPending} className="w-full" type="submit">
+      {isPending ? (
+        <div className="flex items-center justify-center">
+          <span className="mr-2 animate-spin">
+            <Loader />
+          </span>
+          <span>Loading...</span>
+        </div>
+      ) : (
+        buttonLabel
+      )}
+    </Button>
+  );
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit, onError)}>
@@ -46,11 +67,10 @@ function LogIn() {
         description={description}
         separator={separator}
         footer={footer}
+        effect={1}
       >
         <LoginForm form={form} />
-        <Button className="w-full" type="submit">
-          {buttonLabel}
-        </Button>
+        <SubmitButton />
       </Body>
     </form>
   );

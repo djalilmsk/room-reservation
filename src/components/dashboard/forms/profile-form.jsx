@@ -30,8 +30,8 @@ const profileSchema = formSchema.pick({
   firstName: true,
   lastName: true,
   email: true,
-  userType: true,
-  referralSource: true,
+  profession: true,
+  referral_source: true,
 });
 
 function CustomSelect({ control, selfSelection, title, name = "" }) {
@@ -68,7 +68,7 @@ function CustomSelect({ control, selfSelection, title, name = "" }) {
 
 function ProfileForm() {
   const { data } = useUser();
-  const { firstName, lastName, email, userType, referralSource } = data;
+  const { firstName, lastName, email, profession, referral_source } = data;
 
   const form = useForm({
     resolver: zodResolver(profileSchema),
@@ -76,8 +76,8 @@ function ProfileForm() {
       firstName: firstName,
       lastName: lastName,
       email: email,
-      userType: userType,
-      referralSource: referralSource,
+      profession: profession,
+      referral_source: referral_source,
     },
   });
 
@@ -96,7 +96,7 @@ function ProfileForm() {
         className="space-y-10"
       >
         <div className="space-y-5">
-          <div className="flex justify-between items-start gap-5 md:gap-3">
+          <div className="flex items-start justify-between gap-5 md:gap-3">
             <FormField
               control={form.control}
               name="firstName"
@@ -155,13 +155,13 @@ function ProfileForm() {
             control={form.control}
             selfSelection={selfSelection}
             title={"How would you describe yourself?"}
-            name="userType"
+            name="profession"
           />
           <CustomSelect
             control={form.control}
             selfSelection={roomSelection}
             title={"How did you find out about ROOM?"}
-            name="referralSource"
+            name="referral_source"
           />
         </div>
         <Button className="w-full" type="submit">

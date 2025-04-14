@@ -10,23 +10,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { setData, updateField } from "@/utils/redux/form-cache";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { localFetch } from "@/utils";
 
 const imageSchema = formSchema.pick({
   image: true,
 });
-
-const localFetch = (image) => {
-  return {
-    queryKey: ["restoreImage", image],
-    queryFn: async () => {
-      if (!image) return null;
-      const response = await axios.get(image.url, { responseType: "blob" });
-      const blob = response.data;
-      const file = new File([blob], image.name, { type: blob.type });
-      return file;
-    },
-  };
-};
 
 export function ThirdContent() {
   const navigate = useNavigate();
@@ -100,8 +88,8 @@ export function ThirdContent() {
     const fileData = data.image
       ? { name: data.image.name, url: URL.createObjectURL(data.image) }
       : null;
-    dispatch(setData({ image: fileData }));
-    dispatch(updateField({ fieldName: "image", newData: fileData }));
+
+    dispatch(setData({ fieldName: "image", newData: fileData }));
     console.log("Form submitted with data:", data);
     navigate("/auth/signup/extra-data");
   };
@@ -122,7 +110,7 @@ export function ThirdContent() {
           render={({ field }) => (
             <FormItem>
               <div className="relative mx-auto flex w-full max-w-xl cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-6">
-                { field.value ? (
+                {field.value ? (
                   <div className="relative">
                     <button
                       type="button"

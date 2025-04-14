@@ -48,31 +48,9 @@ export function LoginForm({ form }) {
             </FormItem>
           )}
         />
-        <div className="max-sm:flex-col justify-between gap-3 flex">
-          <div className="items-top flex gap-3">
-            <FormField
-              control={form.control}
-              name="agreedToTerms"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Checkbox
-                      name="agreedToTerms"
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      required
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <p className="text-secondary-foreground text-sm">
-              I agree to <Primary>terms</Primary> and{" "}
-              <Primary>privacy policy</Primary>.
-            </p>
-          </div>
+        <div className="flex justify-between gap-3">
           <Link
-            className="text-secondary-foreground text-sm hover:underline -mb-4"
+            className="text-secondary-foreground -mb-4 text-sm hover:underline"
             to={`/auth/login/forget-password`}
           >
             Forget Password?

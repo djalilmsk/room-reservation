@@ -60,15 +60,15 @@ export const formSchema = z.object({
     .refine(
       (file) => {
         if (!file) return true;
-        return file.size <= 5 * 1024 * 1024;
+        return file.size <= 512 * 1024;
       },
       { message: "Image must be less than 5MB" },
     ),
-  userType: z
+  profession: z
     .string()
     .min(1, { message: "Please select how you describe yourself" }),
 
-  referralSource: z
+  referral_source: z
     .string()
     .min(1, { message: "Please select how you found out about us" }),
 });

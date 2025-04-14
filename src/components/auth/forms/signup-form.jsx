@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Primary } from "@/components/ui/global";
 import { formSchema } from "@/utils/forms/signup-schema";
 import { useDispatch, useSelector } from "react-redux";
-import { setData } from "@/utils/redux/form-cache";
+import { setData, updateField } from "@/utils/redux/form-cache";
 
 const signingSchema = formSchema.pick({
   firstName: true,
@@ -26,8 +26,13 @@ const signingSchema = formSchema.pick({
 export function FirstContent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.formCache.data);
-  const { firstName = "", lastName = "", email = "", agreedToTerms = false } = data;
+  const cacheData = useSelector((state) => state.formCache.data);
+  const {
+    firstName = "",
+    lastName = "",
+    email = "",
+    agreedToTerms = false,
+  } = cacheData || null;
 
   const form = useForm({
     resolver: zodResolver(signingSchema),
@@ -40,7 +45,10 @@ export function FirstContent() {
   });
 
   const onSubmit = (data) => {
-    dispatch(setData(data));
+    dispatch(setData({ fieldName: "firstName", newData: data.firstName }));
+    dispatch(setData({ fieldName: "lastName", newData: data.lastName }));
+    dispatch(setData({ fieldName: "email", newData: data.email }));
+    dispatch(setData({ fieldName: "agreedToTerms", newData: data.agreedToTerms}));
     console.log("Form submitted with data:", data);
     navigate("/auth/signup/password");
   };

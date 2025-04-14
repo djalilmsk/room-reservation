@@ -76,7 +76,8 @@ export function SecondContent({ label = null }) {
   }, [passwordValue]);
 
   const onSubmit = (data) => {
-    dispatch(setData(data));
+    dispatch(setData({ fieldName: "password", newData: data.password }));
+    dispatch(setData({ fieldName: "confirmPassword", newData: data.confirmPassword }));
     console.log("Form submitted with data:", data);
     navigate("/auth/signup/profile-picture");
   };

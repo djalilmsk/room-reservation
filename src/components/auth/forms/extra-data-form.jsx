@@ -14,9 +14,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { customFetch, localFetch } from "@/utils";
 import { formSchema } from "@/utils/forms/signup-schema";
-import { setData } from "@/utils/redux/form-cache";
+import { clearData, setData } from "@/utils/redux/form-cache";
+import { login } from "@/utils/redux/user";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery } from "@tanstack/react-query";
 import {
   BriefcaseBusiness,
   Building2,
@@ -24,6 +27,7 @@ import {
   GraduationCap,
   HandshakeIcon,
   Laptop,
+  Loader,
   MicVocal,
   MoreHorizontal,
   PanelsTopLeft,
@@ -37,10 +41,11 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useSignupMutation } from "@/hooks/mutation/useSignupMutation"; // Adjust the import path as needed
 
 const extraDataSchema = formSchema.pick({
-  userType: true,
-  referralSource: true,
+  profession: true,
+  referral_source: true,
 });
 
 export const selfSelection = [
@@ -66,9 +71,7 @@ export const roomSelection = [
   { label: "Other", icon: MoreHorizontal },
 ];
 
-
-
-function CustomSelect({ control, selfSelection, title, name = "" }) {
+function CustomSelect({ control, selfSelection, title, name, disabled }) {
   return (
     <FormField
       control={control}
@@ -79,7 +82,11 @@ function CustomSelect({ control, selfSelection, title, name = "" }) {
             {title}
           </FormLabel>
           <FormControl>
-            <Select onValueChange={field.onChange} value={field.value}>
+            <Select
+              onValueChange={field.onChange}
+              value={field.value}
+              disabled={disabled}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Choose an option" />
               </SelectTrigger>
@@ -87,7 +94,7 @@ function CustomSelect({ control, selfSelection, title, name = "" }) {
                 {selfSelection.map(({ label, icon }, index) => (
                   <SelectItem key={index} value={label}>
                     {React.createElement(icon, {
-                      className: "text-secondary-foreground mr-2",
+                      className: "text-secondary-foreground mr-2 inline-block",
                     })}
                     {label}
                   </SelectItem>
@@ -105,8 +112,15 @@ function CustomSelect({ control, selfSelection, title, name = "" }) {
 export function FourthContent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.formCache.data);
-  const [postData, setPostData] = useState(data);
+  const cacheData = useSelector((state) => state.formCache.data);
+  const { image } = cacheData || {};
+
+  const { data: imageFile, isLoading: imageLoading } = useQuery(
+    localFetch(image),
+  );
+
+  const { mutate, isPending } = useSignupMutation();
+  const [isFormSubmitting, setIsFormSubmitting] = React.useState(false);
 
   useEffect(() => {
     const {
@@ -116,7 +130,7 @@ export function FourthContent() {
       agreedToTerms,
       password,
       confirmPassword,
-    } = data;
+    } = cacheData;
 
     if (!(firstName && lastName && email && agreedToTerms)) {
       navigate("/auth/signup", { replace: true });
@@ -125,30 +139,51 @@ export function FourthContent() {
     if (!(password && confirmPassword)) {
       navigate("/auth/signup/password", { replace: true });
     }
-  }, [data]);
+  }, [cacheData, navigate]);
 
-  const { userType = "", referralSource = "" } = data;
+  const { profession = "", referral_source = "" } = cacheData;
 
   const form = useForm({
     resolver: zodResolver(extraDataSchema),
     defaultValues: {
-      userType: userType,
-      referralSource: referralSource,
+      profession,
+      referral_source,
     },
   });
 
-  const onSubmit = (data) => {
-    dispatch(setData(data));
-    setPostData((prv) => {
-      return { ...prv, ...data };
-    });
-    console.log("Form submitted with data:", data);
-    console.log(postData);
+  const onSubmit = async (data) => {
+    setIsFormSubmitting(true);
+    try {
+      dispatch(setData({ fieldName: "profession", newData: data.profession }));
+      dispatch(
+        setData({
+          fieldName: "referral_source",
+          newData: data.referral_source,
+        }),
+      );
+
+      const formData = new FormData();
+      formData.append("name", `${cacheData.firstName} ${cacheData.lastName}`);
+      formData.append("email", cacheData.email);
+      formData.append("password", cacheData.password);
+      if (imageFile) formData.append("image", imageFile);
+      formData.append("profession", data.profession);
+      formData.append("referral_source", data.referral_source);
+
+      await mutate(formData);
+    } catch (error) {
+      console.error("Form submission error:", error);
+    } finally {
+      setIsFormSubmitting(false);
+    }
   };
 
   const onError = (errors) => {
     console.error("Form errors:", errors);
+    setIsFormSubmitting(false);
   };
+
+  const isLoading = isFormSubmitting || isPending;
 
   return (
     <Form {...form}>
@@ -159,21 +194,28 @@ export function FourthContent() {
         <CustomSelect
           control={form.control}
           selfSelection={selfSelection}
-          title={"How would you describe yourself?"}
-          name="userType"
+          title="How would you describe yourself?"
+          name="profession"
+          disabled={isLoading}
         />
         <CustomSelect
           control={form.control}
           selfSelection={roomSelection}
-          title={"How did you find out about ROOM?"}
-          name="referralSource"
+          title="How did you find out about ROOM?"
+          name="referral_source"
+          disabled={isLoading}
         />
-        <Button
-          className="mt-4 w-full"
-          type="submit"
-          disabled={form.formState.isSubmitting}
-        >
-          {form.formState.isSubmitting ? "Processing..." : "Create Account"}
+        <Button className="mt-4 w-full" type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              <span className="mr-2 animate-spin">
+                <Loader />
+              </span>
+              <span>Loading...</span>
+            </div>
+          ) : (
+            "Create Account"
+          )}
         </Button>
       </form>
     </Form>

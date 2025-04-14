@@ -35,8 +35,10 @@ function IconLabel({ className, to, children, content }) {
 
 function UserAvatar({ className, moreLinks = true }) {
   const { data } = useUser();
-  const { image, firstName, lastName } = data;
-  const initials = `${firstName[0]}${lastName[0]}`.toUpperCase();
+  console.log(data)
+  const { image, name } = data;
+  const fallback =
+    `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`.toUpperCase();
 
   return (
     <div className="flex items-center justify-between gap-2">
@@ -52,9 +54,9 @@ function UserAvatar({ className, moreLinks = true }) {
       )}
 
       <Link to={"/dashboard/profile"}>
-        <Avatar className={cn('flex justify-center items-center',className)}>
+        <Avatar className={cn("flex items-center justify-center", className)}>
           <AvatarImage src={image} />
-          <AvatarFallback>{initials}</AvatarFallback>
+          <AvatarFallback>{fallback}</AvatarFallback>
         </Avatar>
       </Link>
     </div>

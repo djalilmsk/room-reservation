@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 // Default initial data if Local Storage is empty
 const initialData = {
   data: undefined,
-  token: undefined,
 };
 
 const fakeUser = {
@@ -15,8 +14,8 @@ const fakeUser = {
     agreedToTerms: true,
     password: "12345678",
     confirmPassword: "12345678",
-    userType: "Student",
-    referralSource: "Social Media",
+    profession: "Student",
+    referral_source: "Social Media",
   },
   token: "",
 };
@@ -38,14 +37,12 @@ const user = createSlice({
   reducers: {
     login: (state, action) => {
       console.log("Logging in with:", action.payload);
-      state.data = fakeUser.data;
-      state.token = action.payload.token;
-      // localStorage.setItem("user", JSON.stringify(action.payload));
-      localStorage.setItem("user", JSON.stringify(fakeUser));
+      state.data = action.payload.data;
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      // localStorage.setItem("user", JSON.stringify(fakeUser));
     },
     logout: (state) => {
       state.data = undefined;
-      state.token = undefined;
       localStorage.removeItem("user");
     },
   },

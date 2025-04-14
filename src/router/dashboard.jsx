@@ -42,7 +42,7 @@ export const dashboard = {
       path: "/dashboard/rooms",
       element: (
         <RouteProtection
-          permission={"logged-in::user" /* admin + room manager */}
+          permission={"logged-in::client" /* admin + room manager */}
         >
           <RoomsManagement />
         </RouteProtection>
@@ -75,7 +75,7 @@ export const dashboard = {
       path: "/dashboard/booking",
       element: (
         <RouteProtection
-          permission={"logged-in::user" /* admin + booking manager */}
+          permission={"logged-in::client" /* admin + booking manager */}
         >
           <BookingManagement />
         </RouteProtection>
@@ -117,7 +117,7 @@ export const dashboard = {
     {
       path: "/dashboard/",
       element: (
-        <RouteProtection permission={"logged-in::user" /* admin */}>
+        <RouteProtection permission={"logged-in::client" /* admin */}>
           <AdminDashboard />
         </RouteProtection>
       ),

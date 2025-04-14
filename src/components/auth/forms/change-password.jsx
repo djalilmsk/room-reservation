@@ -31,8 +31,8 @@ export function ChangePassword({ label = null }) {
   const form = useForm({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
-      password: "djalilmsk",
-      confirmPassword: "djalilmsk",
+      password: "djalilmsk123",
+      confirmPassword: "djalilmsk123",
     },
   });
 

@@ -48,11 +48,11 @@ export const formSchema = z.object({
       },
       { message: "Image must be less than 5MB" },
     ),
-  userType: z
+  profession: z
     .string()
     .min(1, { message: "Please select how you describe yourself" }),
 
-  referralSource: z
+  referral_source: z
     .string()
     .min(1, { message: "Please select how you found out about us" }),
 
