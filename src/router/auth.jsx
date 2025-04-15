@@ -15,8 +15,6 @@ export const auth = {
   path: "/",
   element: (
     <RouteProtection permission="guest::none">
-      {" "}
-      {/* guest::none */}
       <AuthLayout />
     </RouteProtection>
   ),

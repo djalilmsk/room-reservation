@@ -12,6 +12,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "lucide-react";
+import { useForgetPassword } from "@/pages/auth/ForgetPassword";
 
 const emailSchema = formSchema.pick({
   email: true,
@@ -26,12 +28,26 @@ export function EmailForm({ label = null }) {
     },
   });
 
-  const isSubmitting = form.formState.isSubmitting;
-  const buttonLabel = { true: "Processing...", false: "Next" }[isSubmitting];
+  const { mutate, isPending, setEmail } = useForgetPassword();
+
+  const buttonLabel = {
+    true: (
+      <div className="flex gap-2">
+        <Loader className="animate-spin" /> <span>Loading...</span>
+      </div>
+    ),
+    false: "Next",
+  }[isPending];
 
   const onSubmit = (data) => {
     console.log("Form submitted with data:", data);
-    navigate("/auth/login/forget-password/OTP-confirmation");
+    setEmail(data);
+
+    mutate(data, {
+      onSuccess: () => {
+        navigate("/auth/login/forget-password/OTP-confirmation");
+      },
+    });
   };
 
   const onError = (errors) => {
@@ -62,7 +78,7 @@ export function EmailForm({ label = null }) {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit" disabled={isSubmitting}>
+        <Button className="w-full" type="submit" disabled={isPending}>
           {buttonLabel}
         </Button>
       </form>

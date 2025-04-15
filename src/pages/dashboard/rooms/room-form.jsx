@@ -21,14 +21,110 @@ import { Textarea } from "@/components/ui/textarea";
 import { roomSchema } from "@/utils/forms/room-schema";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { Save, X } from "lucide-react";
+import { ImageUp, Save, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import { buttonLabel } from "@/components/ui/button-label";
 
-function RoomForm({ onSubmit: externalOnSubmit, defaultValues }) {
+const FileUpload = ({ field, form }) => {
+  const [files, setFiles] = useState([]);
+  const [filesURL, setFilesURL] = useState([]);
+
+  const handleFileChange = (event) => {
+    const selectedFiles = Array.from(event.target.files);
+    const maxSize = 1024 * 1024; // 1MB
+    const validTypes = ["image/png", "image/jpeg", "image/jpg"];
+
+    const validFiles = selectedFiles.filter((file) => {
+      const isValidType = validTypes.includes(file.type);
+      const isValidSize = file.size <= maxSize;
+
+      if (!isValidType) {
+        form.setError("image", {
+          type: "manual",
+          message: "Only .png and .jpg images are accepted.",
+        });
+      } else if (!isValidSize) {
+        form.setError("image", {
+          type: "manual",
+          message: "Image must be less than 1MB.",
+        });
+      }
+
+      return isValidType && isValidSize;
+    });
+
+    if (validFiles.length === 0) return;
+
+    const uniqueFiles = [
+      ...new Map(
+        [...validFiles, ...files].map((file) => [
+          `${file.name}_${file.size}`,
+          file,
+        ]),
+      ).values(),
+    ];
+
+    setFiles(uniqueFiles);
+    setFilesURL(uniqueFiles.map((file) => URL.createObjectURL(file)));
+    form.setValue("image", uniqueFiles, { shouldValidate: true });
+    form.clearErrors("image");
+  };
+
+  useEffect(() => {
+    return () => {
+      filesURL.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [filesURL]);
+
+  return (
+    <div className="flex space-x-6">
+      <div className="flex-1">
+        <div className="relative flex aspect-square h-30 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 hover:border-gray-400">
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleFileChange}
+            className="absolute h-full w-full cursor-pointer opacity-0"
+          />
+          <ImageUp className="text-secondary-foreground size-8" />
+        </div>
+      </div>
+
+      <div
+        className={cn(
+          "flex w-full space-x-2 overflow-x-scroll",
+          filesURL.length > 0 ? "justify-start" : "justify-center",
+        )}
+      >
+        {filesURL.length > 0 ? (
+          filesURL.map((image, index) => (
+            <img
+              src={image}
+              key={index}
+              alt={`image ${index}`}
+              className="aspect-square h-30 rounded-lg object-cover"
+            />
+          ))
+        ) : (
+          <p className="text-secondary-foreground self-center text-sm">
+            No images selected
+          </p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+function RoomForm({ onSubmit: externalOnSubmit, isLoading, defaultValues }) {
   const navigate = useNavigate();
 
   const form = useForm({
     resolver: zodResolver(roomSchema),
     defaultValues: defaultValues || {
+      image: [],
       name: "",
       capacity: 0,
       amenities: "",
@@ -56,6 +152,20 @@ function RoomForm({ onSubmit: externalOnSubmit, defaultValues }) {
         onSubmit={form.handleSubmit(onSubmit, onError)}
         className="space-y-6"
       >
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Room Images</FormLabel>
+              <FormControl>
+                <FileUpload form={form} field={field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="name"
@@ -98,7 +208,7 @@ function RoomForm({ onSubmit: externalOnSubmit, defaultValues }) {
             <FormItem>
               <FormLabel>Amenities</FormLabel>
               <FormControl>
-                <Input placeholder="Enter amenities " type="text" {...field} />
+                <Input placeholder="Enter amenities" type="text" {...field} />
               </FormControl>
               <FormDescription>
                 Enter amenities separated by commas (e.g., WiFi, TV, AC)
@@ -164,7 +274,7 @@ function RoomForm({ onSubmit: externalOnSubmit, defaultValues }) {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="Available">Available</SelectItem>
-                  <SelectItem value="Booked">Booked</SelectItem>
+                  {/* <SelectItem value="Booked">Booked</SelectItem> */}
                   <SelectItem value="Maintenance">Maintenance</SelectItem>
                 </SelectContent>
               </Select>
@@ -174,16 +284,22 @@ function RoomForm({ onSubmit: externalOnSubmit, defaultValues }) {
         />
 
         <div className="flex gap-3">
-          <Button type="submit" className="w-40">
-            <Save className="h-4 w-4" />
-            Submit
+          <Button type="submit" className="w-40" disabled={isLoading}>
+            {buttonLabel(
+              isLoading,
+              <>
+                <Save className="mr-2 h-4 w-4" />
+                Submit
+              </>,
+            )}
           </Button>
           <Button
             type="button"
             variant="secondary"
             onClick={() => navigate(-1)}
+            disabled={isLoading}
           >
-            <X className="h-4 w-4" />
+            <X className="mr-2 h-4 w-4" />
             Cancel
           </Button>
         </div>

@@ -7,7 +7,7 @@ import ProfileForm from "@/components/dashboard/forms/profile-form";
 
 function Preview({ data }) {
   return (
-    <div className="relative flex items-center justify-between overflow-hidden rounded-xl p-4 @container">
+    <div className="@container relative flex items-center justify-between overflow-hidden rounded-xl p-4">
       <div className="flex items-center gap-3">
         <div className="bg-secondary absolute top-0 left-0 h-full w-full opacity-70" />
         <UserAvatar className="size-12" moreLinks={false} />
@@ -23,7 +23,8 @@ function Preview({ data }) {
       </div>
       <Button>
         {" "}
-        <Pen className="size-4" /> <span className="@max-xs:hidden">Edit Image</span>
+        <Pen className="size-4" />{" "}
+        <span className="@max-xs:hidden">Edit Image</span>
       </Button>
     </div>
   );

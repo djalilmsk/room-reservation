@@ -5,6 +5,8 @@ import { Separator } from "@/components/ui/separator";
 import { formatPrice } from "@/utils/format/formatPrice";
 import { formatStatus } from "@/utils/format/formatStatus";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { customFetch } from "@/utils";
 
 const rooms = [
   {
@@ -67,7 +69,23 @@ const rooms = [
 function SingleRoom() {
   const { id } = useParams();
 
-  const room = rooms.find((room) => room.id === parseInt(id));
+  const {
+    data: room,
+    isLoading,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: ["room", id],
+    queryFn: async () => {
+      const response = await customFetch.get(`/rooms/${id}`);
+      return response.data.room;
+    },
+  });
+
+  if (isError) console.log(error);
+  if (isLoading) return "loading";
+
+  // const room = rooms.find((room) => room.id === parseInt(id));
 
   if (!room) {
     return <div>Room not found!</div>;
@@ -81,7 +99,7 @@ function SingleRoom() {
     pricing,
     status,
     amenities,
-    image,
+    images,
   } = room;
 
   const amenitiesArray = amenities.split(",").map((item) => item.trim());
@@ -106,7 +124,7 @@ function SingleRoom() {
       </div>
       <div className="flex gap-5 max-lg:flex-col">
         <img
-          src={image}
+          src={images[0].image}
           alt={`${name} - ${description}`}
           className="h-60 rounded-lg object-cover lg:w-1/2"
         />

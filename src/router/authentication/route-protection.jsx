@@ -15,7 +15,8 @@ function RouteProtection({ permission = "logged-in::client", children }) {
 
   const { role_name: currentRole } = data || { role_name: "none" };
 
-  if (currentState === state && currentRole.toLowerCase() === role)
+  if (currentRole === "Admin") return <>{children}</>;
+  if (currentState === state && currentRole?.toLowerCase() === role)
     return <>{children}</>;
 
   return <PageNotFound />;

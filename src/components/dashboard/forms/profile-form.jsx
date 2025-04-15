@@ -25,6 +25,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import React from "react";
+import { useProfileMutation } from "@/hooks/mutation/useProfileMutation";
+import { buttonLabel } from "@/components/ui/button-label";
+import { useDispatch } from "react-redux";
+import { login } from "@/utils/redux/user";
 
 const profileSchema = formSchema.pick({
   firstName: true,
@@ -68,7 +72,9 @@ function CustomSelect({ control, selfSelection, title, name = "" }) {
 
 function ProfileForm() {
   const { data } = useUser();
-  const { firstName, lastName, email, profession, referral_source } = data;
+  const dispatch = useDispatch();
+  const { firstName, lastName, email, profession, referral_source, id } = data;
+  const { mutate, isPending } = useProfileMutation(id);
 
   const form = useForm({
     resolver: zodResolver(profileSchema),
@@ -83,6 +89,38 @@ function ProfileForm() {
 
   const onSubmit = (data) => {
     console.log("Form submitted with data:", data);
+
+    const formData = new FormData();
+    let hasChanges = false;
+
+    if (data.firstName !== firstName || data.lastName !== lastName) {
+      formData.append("name", `${data.firstName} ${data.lastName}`);
+      hasChanges = true;
+    }
+
+    if (data.email !== email) {
+      formData.append("email", data.email);
+      hasChanges = true;
+    }
+
+    if (data.profession !== profession) {
+      formData.append("profession", data.profession);
+      hasChanges = true;
+    }
+
+    if (data.referral_source !== referral_source) {
+      formData.append("referral_source", data.referral_source);
+      hasChanges = true;
+    }
+
+    if (hasChanges)
+      mutate(formData, {
+        onSuccess: (data) => {
+          console.log("Mutation success with data:", data);
+          // navigate("/");
+          dispatch(login({ data: data.data.updatedUser }));
+        },
+      });
   };
 
   const onError = (errors) => {
@@ -164,8 +202,8 @@ function ProfileForm() {
             name="referral_source"
           />
         </div>
-        <Button className="w-full" type="submit">
-          Submit Changes
+        <Button className="w-full" disabled={isPending} type="submit">
+          {buttonLabel(isPending, "Submit Changes")}
         </Button>
       </form>
     </Form>

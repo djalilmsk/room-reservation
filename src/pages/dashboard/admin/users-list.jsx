@@ -92,52 +92,50 @@ export function DataTable({ columns, data }) {
   });
 
   return (
-    <div className="overflow-hidden rounded-lg">
-      <Table>
-        <TableHeader className="overflow-hidden rounded-lg">
-          {table.getHeaderGroups().map((headerGroup) => (
+    <Table>
+      <TableHeader className="overflow-hidden rounded-lg">
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow
+            className="bg-secondary hover:bg-secondary border-0"
+            key={headerGroup.id}
+          >
+            {headerGroup.headers.map((header) => (
+              <TableHead className="px-4 py-4" key={header.id}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+              </TableHead>
+            ))}
+          </TableRow>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows?.length ? (
+          table.getRowModel().rows.map((row) => (
             <TableRow
-              className="bg-secondary hover:bg-secondary border-0"
-              key={headerGroup.id}
+              key={row.id}
+              data-state={row.getIsSelected() && "selected"}
+              className="hover:bg-background"
             >
-              {headerGroup.headers.map((header) => (
-                <TableHead className="px-4 py-4" key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                </TableHead>
+              {row.getVisibleCells().map((cell) => (
+                <TableCell className="px-4 py-3 font-light" key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
               ))}
             </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                className="hover:bg-background"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell className="px-4 py-3 font-light" key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              No results.
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 }
 
@@ -241,7 +239,7 @@ function UsersList() {
   };
 
   return (
-    <div className="container mx-auto space-y-8 py-10">
+    <div className="@container mx-auto space-y-8 overflow-scroll py-10">
       <h1 className="text-2xl font-bold">Users List</h1>
       <DataTable columns={columns} data={data} />
     </div>

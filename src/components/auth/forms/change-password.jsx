@@ -13,6 +13,12 @@ import { formSchema } from "@/utils/forms/forget-password-schema";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { customFetch } from "@/utils";
+import { useForgetPassword } from "@/pages/auth/ForgetPassword";
+import { buttonLabel } from "@/components/ui/button-label";
+import { useDispatch } from "react-redux";
+import { login } from "@/utils/redux/user";
 
 const passwordSchema = formSchema
   .pick({
@@ -25,8 +31,26 @@ const passwordSchema = formSchema
   });
 
 export function ChangePassword({ label = null }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [passwordStrength, setPasswordStrength] = useState("weak");
+
+  const { email } = useForgetPassword();
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data) => {
+      console.log(data);
+      const response = await customFetch.post("/auth/reset-password", data);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      navigate("/");
+      dispatch(login({ data: data.user }));
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const form = useForm({
     resolver: zodResolver(passwordSchema),
@@ -36,13 +60,15 @@ export function ChangePassword({ label = null }) {
     },
   });
 
-  const isSubmitting = form.formState.isSubmitting;
-  const buttonLabel = { true: "Processing...", false: "Change Password" }[
-    isSubmitting
-  ];
-
   const onSubmit = (data) => {
     console.log("Form submitted with data:", data);
+
+    const postData = {
+      newPassword: data.password,
+      ...email,
+    };
+
+    mutate(postData);
   };
 
   const onError = (errors) => {
@@ -144,8 +170,8 @@ export function ChangePassword({ label = null }) {
             ></span>
           </div>
         </div>
-        <Button className="w-full" type="submit" disabled={isSubmitting}>
-          {buttonLabel}
+        <Button className="w-full" type="submit" disabled={isPending}>
+          {buttonLabel(isPending, "Change Password")}
         </Button>
       </form>
     </Form>

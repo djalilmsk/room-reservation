@@ -1,50 +1,11 @@
 import { Button } from "@/components/ui/button";
 import Body from "./Body";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import CardFooter from "./CardFooter";
-import { useEffect, useState } from "react";
-import { formSchema } from "@/utils/forms/forget-password-schema";
+import { createContext, useContext, useEffect, useState } from "react";
 import { ProgressState } from "@/components/ui/progress-state";
-import { EmailForm } from "@/components/auth/forms/email-form";
-import { OTPForm } from "@/components/auth/forms/OTP-form";
-import { ChangePassword } from "@/components/auth/forms/change-password";
 import { Outlet, useLocation } from "react-router-dom";
-
-const cardFooter = [
-  {
-    separator: true,
-    footer: { display: true, content: <CardFooter /> },
-  },
-  {
-    separator: false,
-    footer: {
-      display: true,
-      content: (
-        <CardFooter>
-          Didn't receive the code?{" "}
-          <Button variant="link" type="button" className={"h-0 px-0"}>
-            Resend
-          </Button>
-          .
-        </CardFooter>
-      ),
-    },
-  },
-  {
-    separator: false,
-    footer: {
-      display: true,
-      content: (
-        <CardFooter>
-          <Button variant="link" type="button" className={"h-0"}>
-            Skip & Login
-          </Button>
-        </CardFooter>
-      ),
-    },
-  },
-];
+import { useMutation } from "@tanstack/react-query";
+import { customFetch } from "@/utils";
 
 const steps = [
   "/auth/login/forget-password",
@@ -52,9 +13,25 @@ const steps = [
   "/auth/login/forget-password/change-password",
 ];
 
+const ForgetPasswordContext = createContext();
+
 function ForgetPassword() {
   const [contentCounter, setContentCounter] = useState(0);
   const location = useLocation();
+
+  const [email, setEmail] = useState("");
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data) => {
+      const response = await customFetch.post("/auth/forgot-password", data);
+      return response.data;
+    },
+    onError: (err) => console.error(err),
+  });
+
+  const handleResent = () => {
+    mutate(email);
+  };
 
   useEffect(() => {
     const currentStepIndex = steps.indexOf(location.pathname);
@@ -69,22 +46,68 @@ function ForgetPassword() {
     description: "Enter your email, and we’ll help you reset your password.",
   };
 
+  const cardFooter = [
+    {
+      separator: true,
+      footer: { display: true, content: <CardFooter /> },
+    },
+    {
+      separator: false,
+      footer: {
+        display: true,
+        content: (
+          <CardFooter>
+            Didn't receive the code?{" "}
+            <Button
+              variant="link"
+              type="button"
+              onClick={handleResent}
+              className={"h-0 px-0"}
+            >
+              Resend
+            </Button>
+            .
+          </CardFooter>
+        ),
+      },
+    },
+    {
+      separator: false,
+      footer: {
+        display: true,
+        // content: (
+        //   <CardFooter>
+        //     <Button variant="link" type="button" className={"h-0"}>
+        //       Skip & Login
+        //     </Button>
+        //   </CardFooter>
+        // ),
+      },
+    },
+  ];
+
   const { separator, footer } = cardFooter[contentCounter];
 
   return (
-    <Body
-      title={title}
-      description={description}
-      separator={separator}
-      footer={footer}
-      effect={contentCounter}
-      beforeContent={
-        <ProgressState max={steps.length} value={contentCounter} />
-      }
+    <ForgetPasswordContext.Provider
+      value={{ email, setEmail, mutate, isPending }}
     >
-      <Outlet />
-    </Body>
+      <Body
+        title={title}
+        description={description}
+        separator={separator}
+        footer={footer}
+        effect={contentCounter}
+        beforeContent={
+          <ProgressState max={steps.length} value={contentCounter} />
+        }
+      >
+        <Outlet />
+      </Body>
+    </ForgetPasswordContext.Provider>
   );
 }
 
 export default ForgetPassword;
+
+export const useForgetPassword = () => useContext(ForgetPasswordContext);

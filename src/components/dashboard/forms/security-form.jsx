@@ -14,33 +14,69 @@ import { Separator } from "@/components/ui/separator";
 import React from "react";
 import { z } from "zod";
 import { XCircle } from "lucide-react";
+import { useProfileMutation } from "@/hooks/mutation/useProfileMutation";
+import { useUser } from "@/hooks/useUser";
+import { useNavigate } from "react-router-dom";
+import { buttonLabel } from "@/components/ui/button-label";
+import { useMutation } from "@tanstack/react-query";
+import { customFetch } from "@/utils";
+import { useDispatch } from "react-redux";
+import { logout } from "@/utils/redux/user";
 
 // Assuming this is how your formSchema looks - adjust if different
 const securitySchema = z
   .object({
-    password: z.string().min(1, "Current password is required"),
+    currentPassword: z.string().min(1, "Current password is required"),
     newPassword: z
       .string()
       .min(8, "New password must be at least 8 characters"),
-    confirmPassword: z.string().min(1, "Confirm password is required"),
+    confirmNewPassword: z.string().min(1, "Confirm password is required"),
   })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    path: ["confirmPassword"],
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    path: ["confirmNewPassword"],
     message: "Passwords do not match",
   });
 
 export function SecurityForm() {
+  const { data } = useUser();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(securitySchema),
     defaultValues: {
-      password: "",
+      currentPassword: "",
       newPassword: "",
-      confirmPassword: "",
+      confirmNewPassword: "",
+    },
+  });
+
+  const url = `${data.id}/password`;
+  const { mutate, isPending: isUpdating } = useProfileMutation(url);
+
+  const { mutate: deleteUser, isPending: isDeleting } = useMutation({
+    mutationFn: async () => {
+      const response = await customFetch.delete("/user/me");
+      console.log(response.data);
+      return response.data;
+    },
+    onSuccess: () => {
+      navigate("/", { replace: true });
+      dispatch(logout());
+    },
+    onError: (err) => {
+      console.error(err);
     },
   });
 
   const onSubmit = (data) => {
     console.log("Form submitted with data:", data);
+
+    mutate(data, {
+      onSuccess: (data) => {
+        console.log("Password updated successfully: ", data);
+        form.reset();
+      },
+    });
   };
 
   const onError = (errors) => {
@@ -49,7 +85,10 @@ export function SecurityForm() {
 
   const handleDelete = () => {
     console.log("Delete button clicked");
+    deleteUser();
   };
+
+  const isLoading = isUpdating || isDeleting;
 
   return (
     <Form {...form}>
@@ -62,7 +101,7 @@ export function SecurityForm() {
           <div>
             <FormField
               control={form.control}
-              name="password"
+              name="currentPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium">
@@ -108,7 +147,7 @@ export function SecurityForm() {
 
             <FormField
               control={form.control}
-              name="confirmPassword"
+              name="confirmNewPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium">
@@ -130,21 +169,18 @@ export function SecurityForm() {
           </div>
         </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          // disabled={!form.formState.isValid}
-        >
-          Update Password
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {buttonLabel(isLoading, "Update Password")}
         </Button>
 
         <Separator />
       </form>
       <div className="w-full text-center">
         <Button
-          className="text-destructive hover:text-destructive"
+          className="text-destructive hover:text-destructive hover:bg-destructive/20"
           variant="ghost"
           onClick={handleDelete}
+          disabled={isLoading}
         >
           <XCircle className="h-4 w-4" />
           Delete Account

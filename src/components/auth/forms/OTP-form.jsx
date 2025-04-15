@@ -17,13 +17,18 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useForgetPassword } from "@/pages/auth/ForgetPassword";
+import { useMutation } from "@tanstack/react-query";
+import { customFetch } from "@/utils";
+import { Loader } from "lucide-react";
 
 const otpSchema = formSchema.pick({
   OTP: true,
 });
 
 export function OTPForm() {
-  const navigate = useNavigate()
+  const { isPending: isResending, email } = useForgetPassword();
+  const navigate = useNavigate();
   const form = useForm({
     resolver: zodResolver(otpSchema),
     defaultValues: {
@@ -31,12 +36,36 @@ export function OTPForm() {
     },
   });
 
-  const isSubmitting = form.formState.isSubmitting;
-  const buttonLabel = { true: "Processing...", false: "Next" }[isSubmitting];
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (data) => {
+      const res = await customFetch.post("/auth/verify-reset-code", data);
+      return res.data;
+    },
+    onSuccess: () => {
+      navigate("/auth/login/forget-password/change-password");
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+
+  const isSubmitting = isResending || isPending;
+  const buttonLabel = {
+    true: (
+      <div className="flex gap-2">
+        <Loader className="animate-spin" /> <span>Loading...</span>
+      </div>
+    ),
+    false: "Next",
+  }[isSubmitting];
 
   const onSubmit = (data) => {
     console.log("Form submitted with data:", data);
-    navigate("/auth/login/forget-password/change-password");
+    const postData = {
+      ...email,
+      code: data.OTP,
+    };
+    mutate(postData);
   };
 
   const onError = (errors) => {
