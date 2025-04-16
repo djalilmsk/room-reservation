@@ -1,23 +1,14 @@
 import PageNotFound from "@/error/page-not-found";
 import { useUser } from "@/hooks/useUser";
 
-function RouteProtection({ permission = "logged-in::client", children }) {
+function RouteProtection({ permission = "admin", children }) {
   const { data } = useUser();
-  const { state, role } = {
-    state: permission.split("::")[0],
-    role: permission.split("::")[1],
-  };
 
-  const currentState = data ? "logged-in" : "guest";
+  const role = data?.role_name?.toLowerCase() || "guest";
+  const requiredPermission = permission.toLowerCase();
 
-  if (state === "guest" && currentState === state) return <>{children}</>;
-  if (state === "guest" && currentState !== state) return <PageNotFound />;
-
-  const { role_name: currentRole } = data || { role_name: "none" };
-
-  if (currentRole === "Admin") return <>{children}</>;
-  if (currentState === state && currentRole?.toLowerCase() === role)
-    return <>{children}</>;
+  if (role === requiredPermission) return <>{children}</>;
+  if (role === "admin" && requiredPermission !== "guest") return <>{children}</>;
 
   return <PageNotFound />;
 }

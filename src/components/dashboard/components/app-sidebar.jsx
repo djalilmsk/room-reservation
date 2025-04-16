@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { NavFooter } from "./nav-footer";
+import RoleBaseAccess from "./role-base-access";
 
 // This is sample data.
 const data = {
@@ -153,9 +154,18 @@ export function AppSidebar({ ...props }) {
       <SidebarContent>
         {/* <SheetOverlay /> */}
         <NavMain label="General Settings" items={data.global} />
-        <NavMain label="Rooms Management" items={data.roomsManagment} />
-        <NavMain label="Booking Management" items={data.bookingManager} />
-        <NavMain label="Admin Dashboard" items={data.adminDashboard} />
+
+        <RoleBaseAccess permission="rooms manager">
+          <NavMain label="Rooms Management" items={data.roomsManagment} />
+        </RoleBaseAccess>
+
+        <RoleBaseAccess permission="booking manager">
+          <NavMain label="Booking Management" items={data.bookingManager} />
+        </RoleBaseAccess>
+
+        <RoleBaseAccess>
+          <NavMain label="Admin Dashboard" items={data.adminDashboard} />
+        </RoleBaseAccess>
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>

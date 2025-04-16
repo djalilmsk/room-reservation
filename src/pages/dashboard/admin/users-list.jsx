@@ -93,7 +93,7 @@ export function DataTable({ columns, data }) {
 
   return (
     <Table>
-      <TableHeader className="overflow-hidden rounded-lg">
+      <TableHeader>
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow
             className="bg-secondary hover:bg-secondary border-0"

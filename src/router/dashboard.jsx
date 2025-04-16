@@ -17,7 +17,7 @@ import EditBooking from "@/pages/dashboard/booking/edit-booking";
 export const dashboard = {
   path: "/dashboard",
   element: (
-    <RouteProtection>
+    <RouteProtection permission="client">
       <DashboardLayout />
     </RouteProtection>
   ),
@@ -41,9 +41,7 @@ export const dashboard = {
     {
       path: "/dashboard/rooms",
       element: (
-        <RouteProtection
-          permission={"logged-in::client" /* admin + room manager */}
-        >
+        <RouteProtection permission={"room manager" /* admin + room manager */}>
           <RoomsManagement />
         </RouteProtection>
       ),
@@ -75,7 +73,7 @@ export const dashboard = {
       path: "/dashboard/booking",
       element: (
         <RouteProtection
-          permission={"logged-in::client" /* admin + booking manager */}
+          permission={"booking manager" /* admin + booking manager */}
         >
           <BookingManagement />
         </RouteProtection>
@@ -117,7 +115,7 @@ export const dashboard = {
     {
       path: "/dashboard/",
       element: (
-        <RouteProtection permission={"logged-in::client" /* admin */}>
+        <RouteProtection /* admin */>
           <AdminDashboard />
         </RouteProtection>
       ),

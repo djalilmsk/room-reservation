@@ -15,7 +15,7 @@ function RoomCard({ data }) {
     pricing,
     status,
     amenities,
-    image,
+    images,
   } = data;
 
   const amenitiesArray = amenities.split(",").map((item) => item.trim());
@@ -30,7 +30,7 @@ function RoomCard({ data }) {
     <div className="hover:bg-primary/10 dark:bg-card dark:hover:bg-primary/10 relative flex flex-col overflow-hidden rounded-xl border-1 transition-all duration-200 hover:shadow-sm dark:border-0">
       <Separator className="absolute top-49" />
       <img
-        src={image}
+        src={images[0].image}
         alt={`${name} - ${description}`}
         className="h-40 object-cover"
       />

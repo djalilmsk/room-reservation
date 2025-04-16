@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { SidebarMenuButton } from "@/components/ui/sidebar";
 import { logout } from "@/utils/redux/user";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
@@ -11,13 +12,16 @@ export function NavFooter() {
   const handleLogout = () => {
     console.log("logout");
     navigate("/");
-    dispatch(logout());
+    setTimeout(() => dispatch(logout()), 1);
   };
 
   return (
-    <Button onClick={handleLogout} variant="secondary">
+    <SidebarMenuButton
+      onClick={handleLogout}
+      className="text-primary/70 px-3 bg-secondary/20 flex w-full cursor-pointer overflow-hidden rounded-md transition-all duration-300"
+    >
       <LogOut />
-      <span className="data-[state=open]:hidden">Logout</span>
-    </Button>
+      <span className="truncate">Logout</span>
+    </SidebarMenuButton>
   );
 }

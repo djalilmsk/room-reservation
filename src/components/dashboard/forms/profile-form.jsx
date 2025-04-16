@@ -118,7 +118,7 @@ function ProfileForm() {
         onSuccess: (data) => {
           console.log("Mutation success with data:", data);
           // navigate("/");
-          dispatch(login({ data: data.data.updatedUser }));
+          dispatch(login({ data: data.data.dataValues }));
         },
       });
   };

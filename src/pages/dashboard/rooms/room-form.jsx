@@ -23,17 +23,20 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { ImageUp, Save, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { buttonLabel } from "@/components/ui/button-label";
 
-const FileUpload = ({ field, form }) => {
+const FileUpload = ({ form }) => {
   const [files, setFiles] = useState([]);
   const [filesURL, setFilesURL] = useState([]);
 
+  useEffect(() => {
+    form.setValue("images", []);
+  }, []);
+
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
-    const maxSize = 1024 * 1024; // 1MB
+    const maxSize = 1024 * 1024;
     const validTypes = ["image/png", "image/jpeg", "image/jpg"];
 
     const validFiles = selectedFiles.filter((file) => {
@@ -68,8 +71,8 @@ const FileUpload = ({ field, form }) => {
 
     setFiles(uniqueFiles);
     setFilesURL(uniqueFiles.map((file) => URL.createObjectURL(file)));
-    form.setValue("image", uniqueFiles, { shouldValidate: true });
-    form.clearErrors("image");
+    form.setValue("images", uniqueFiles, { shouldValidate: true });
+    form.clearErrors("images");
   };
 
   useEffect(() => {
@@ -81,7 +84,13 @@ const FileUpload = ({ field, form }) => {
   return (
     <div className="flex space-x-6">
       <div className="flex-1">
-        <div className="relative flex aspect-square h-30 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 hover:border-gray-400">
+        <div
+          className={cn(
+            "border-muted-foreground hover:border-accent-foreground relative flex aspect-square h-30 items-center justify-center rounded-lg border-2 border-dashed",
+            form.formState.errors.image &&
+              "border-destructive/20 dark:border-destructive/40",
+          )}
+        >
           <input
             type="file"
             multiple
@@ -124,9 +133,10 @@ function RoomForm({ onSubmit: externalOnSubmit, isLoading, defaultValues }) {
   const form = useForm({
     resolver: zodResolver(roomSchema),
     defaultValues: defaultValues || {
-      image: [],
+      images: [],
       name: "",
       capacity: 0,
+      pricing: 0,
       amenities: "",
       type: "",
       note: "",
@@ -154,12 +164,12 @@ function RoomForm({ onSubmit: externalOnSubmit, isLoading, defaultValues }) {
       >
         <FormField
           control={form.control}
-          name="image"
-          render={({ field }) => (
+          name="images"
+          render={() => (
             <FormItem>
               <FormLabel>Room Images</FormLabel>
               <FormControl>
-                <FileUpload form={form} field={field} />
+                <FileUpload form={form} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -190,6 +200,27 @@ function RoomForm({ onSubmit: externalOnSubmit, isLoading, defaultValues }) {
                 <Input
                   type="number"
                   placeholder="Enter capacity"
+                  {...field}
+                  onChange={(e) =>
+                    field.onChange(parseInt(e.target.value) || 0)
+                  }
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="pricing"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Pricing*</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter the price per hour"
+                  type="number"
                   {...field}
                   onChange={(e) =>
                     field.onChange(parseInt(e.target.value) || 0)

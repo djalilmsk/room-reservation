@@ -13,23 +13,13 @@ function CreateRoom() {
       return response.data;
     },
     onSuccess: (data) => {
-      console.log("New room created:", data);
-
-      // Option 1: Invalidate to trigger refetch
       queryClient.invalidateQueries({
-        queryKey: ["/rooms"],
-        refetchActive: true, // Refetch even if no observers
-        refetchInactive: true, // Refetch even if component unmounted
+        queryKey: ["rooms"],
+        refetchActive: true,
+        refetchInactive: true,
       });
 
-      // Option 2: Optimistic update (if you have access to the new room data)
-      // queryClient.setQueryData(['/rooms'], (oldRooms) => {
-      //   return [...oldRooms, data];
-      // });
-
-      console.log(queryClient.getQueryData(["/rooms"]));
-
-      navigate(`/dashboard/rooms/${data.finalRoom.id}`); // Assuming data contains id
+      navigate(`/dashboard/rooms/${data.finalRoom.id}`);
     },
     onError: (err) => {
       console.error("Error creating room:", err.response?.data || err.message);
@@ -41,14 +31,15 @@ function CreateRoom() {
 
     formData.append("name", data.name);
     formData.append("capacity", data.capacity);
+    formData.append("pricing", data.pricing);
     formData.append("amenities", data.amenities);
     formData.append("type", data.type);
     formData.append("note", data.note);
     formData.append("description", data.description);
     formData.append("status", data.status);
 
-    if (data.image && data.image.length > 0) {
-      data.image.forEach((file) => {
+    if (data.images && data.images.length > 0) {
+      data.images.forEach((file) => {
         formData.append("images", file);
       });
     }
