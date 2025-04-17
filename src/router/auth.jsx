@@ -10,6 +10,7 @@ import { EmailForm } from "../components/auth/forms/email-form";
 import { OTPForm } from "../components/auth/forms/OTP-form";
 import { ChangePassword } from "../components/auth/forms/change-password";
 import RouteProtection from "./authentication/route-protection";
+import ContinueWithGoogle from "@/pages/auth/ContinueWithGoogle";
 
 export const auth = {
   path: "/",
@@ -73,6 +74,11 @@ export const auth = {
           // errorElement: <ErrorElement />,
         },
       ],
+    },
+    {
+      path: "/auth/login/continue-with-google",
+      element: <ContinueWithGoogle />,
+      // errorElement: <ErrorElement />,
     },
   ],
 };
