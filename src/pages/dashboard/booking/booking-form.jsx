@@ -21,17 +21,31 @@ import {
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { bookingSchema } from "@/utils/forms/booking-schema";
-import { Save, X } from "lucide-react";
+import { CalendarIcon, Save, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import { CalendarField } from "@/components/home/Room/forms/pick-date";
+import { PickTimeRange } from "@/components/home/Room/forms/pick-time-range";
+
+function timeToMinutes(timeStr) {
+  const [hours, minutes] = timeStr.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+const schema = bookingSchema.refine(
+  (data) => timeToMinutes(data.start_time) < timeToMinutes(data.end_time),
+  {
+    path: ["start_time"],
+    message: "Start date must be before end date",
+  },
+);
 
 function BookingForm({ onSubmit: externalOnSubmit, defaultValues }) {
   const form = useForm({
-    resolver: zodResolver(bookingSchema),
+    resolver: zodResolver(schema),
     defaultValues: defaultValues || {
-      user_id: 0,
-      room_id: 0,
-      start_time: new Date(),
-      end_time: new Date(),
+      date: null,
+      start_time: "",
+      end_time: "",
       status: "Pending",
     },
   });
@@ -53,56 +67,33 @@ function BookingForm({ onSubmit: externalOnSubmit, defaultValues }) {
         onSubmit={form.handleSubmit(onSubmit, onError)}
         className="space-y-6"
       >
-        <FormField
-          control={form.control}
-          name="user_id"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>User ID*</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  placeholder="Enter User ID"
-                  {...field}
-                  onChange={(e) =>
-                    field.onChange(parseInt(e.target.value) || 0)
-                  }
-                  value={field.value || 0} // Ensure value is controlled
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+        <CalendarField
+          name="date"
+          label="Booking Date*"
+          form={form}
+          disabled={(date) => {
+            const now = new Date();
+            const max = new Date();
+            max.setMonth(max.getMonth() + 3);
+            return date <= now || date >= max;
+          }}
         />
 
-        <FormField
-          control={form.control}
-          name="room_id"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Room ID*</FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  placeholder="Enter Room ID"
-                  {...field}
-                  onChange={(e) =>
-                    field.onChange(parseInt(e.target.value) || 0)
-                  }
-                  value={field.value || 0} // Ensure value is controlled
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+        <div className="space-y-2">
+          <PickTimeRange form={form} />
+          {form.formState.errors.start_time && (
+            <FormMessage>
+              {form.formState.errors.start_time.message}
+            </FormMessage>
           )}
-        />
+        </div>
 
         <FormField
           control={form.control}
           name="status"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Status</FormLabel>
+              <div className="text-base font-semibold cursor-default">Status</div>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}

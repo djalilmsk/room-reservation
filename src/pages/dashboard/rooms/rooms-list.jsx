@@ -28,7 +28,7 @@ function RoomsList() {
         </Link>
       </div>
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-        {rooms.length ? (
+        {rooms?.length ? (
           rooms.map((room, index) => (
             <Link key={index} to={`/dashboard/rooms/${room.id}`}>
               <RoomCard data={room} />

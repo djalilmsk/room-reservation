@@ -13,6 +13,7 @@ import AdminDashboard from "@/pages/dashboard/AdminDashboard";
 import UsersList from "@/pages/dashboard/admin/users-list";
 import BookingList from "@/pages/dashboard/booking/booing-list";
 import EditBooking from "@/pages/dashboard/booking/edit-booking";
+import SingleBooking from "@/pages/dashboard/booking/single-booking";
 
 export const dashboard = {
   path: "/dashboard",
@@ -70,7 +71,7 @@ export const dashboard = {
       ],
     },
     {
-      path: "/dashboard/booking",
+      path: "/dashboard/bookings",
       element: (
         <RouteProtection
           permission={"booking manager" /* admin + booking manager */}
@@ -86,22 +87,22 @@ export const dashboard = {
           // errorElement: <ErrorElement />,
         },
         {
-          path: "/dashboard/booking/:id",
-          element: <>not implemented</>, // TODO: implement booking details page
+          path: "/dashboard/bookings/:id",
+          element: <SingleBooking />, // TODO: implement booking details page
           // errorElement: <ErrorElement />,
         },
         {
-          path: "/dashboard/booking/edit-booking/:id",
+          path: "/dashboard/bookings/edit-booking/:id",
           element: <EditBooking />,
           // errorElement: <ErrorElement />,
         },
         {
-          path: "/dashboard/booking/notifications",
+          path: "/dashboard/bookings/notifications",
           element: <>not implemented</>, // TODO: implement booking notifications page
           // errorElement: <ErrorElement />,
         },
         {
-          path: "/dashboard/booking/booking-history",
+          path: "/dashboard/bookings/booking-history",
           element: <>not implemented</>, // TODO: implement booking history page
           // errorElement: <ErrorElement />,
         },

@@ -27,7 +27,7 @@ function RoomCard({ data }) {
   );
 
   return (
-    <div className="hover:bg-primary/10 dark:bg-card dark:hover:bg-primary/10 relative flex flex-col overflow-hidden rounded-xl border-1 transition-all duration-200 hover:shadow-sm dark:border-0">
+    <div className="hover:bg-primary/10 dark:bg-card dark:hover:bg-primary/10 relative flex flex-col overflow-hidden rounded-xl shadow-sm transition-all duration-200 hover:shadow-sm">
       <Separator className="absolute top-49" />
       <img
         src={images[0].image}
@@ -36,7 +36,7 @@ function RoomCard({ data }) {
       />
       <div className="px-6 pb-4">
         <div className="flex gap-4 py-2">
-          <AmenityLabel amenity={capacity} label={"People"} />
+          {/* <AmenityLabel amenity={capacity} label={"People"} /> */}
           {amenitiesArray.map((amenity, index) => (
             <AmenityLabel amenity={amenity} key={index} />
           ))}

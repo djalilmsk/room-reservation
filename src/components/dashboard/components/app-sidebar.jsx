@@ -116,17 +116,17 @@ const data = {
       items: [
         {
           title: "Pending Bookings",
-          url: "/dashboard/booking",
+          url: "/dashboard/bookings",
           icon: Loader,
         },
         {
           title: "Notifications",
-          url: "/dashboard/booking/notifications",
+          url: "/dashboard/bookings/notifications",
           icon: Bell,
         },
         {
           title: "Booking History",
-          url: "/dashboard/booking/booking-history",
+          url: "/dashboard/bookings/booking-history",
           icon: History,
         },
       ],

@@ -19,7 +19,7 @@ function Guest() {
 
 function Landing() {
   const { data, token } = useUser();
-  const isGuest = data === undefined || token === undefined ? true : false;
+  const isGuest = data === undefined ? true : false;
 
   return <Page>{isGuest ? <Guest /> : <UserActions />}</Page>;
 }
