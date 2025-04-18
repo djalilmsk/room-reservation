@@ -45,8 +45,8 @@ export function FirstContent() {
   });
 
   const onSubmit = (data) => {
-    dispatch(setData({ fieldName: "firstName", newData: data.firstName }));
-    dispatch(setData({ fieldName: "lastName", newData: data.lastName }));
+    dispatch(setData({ fieldName: "firstName", newData: data.firstName.replace(/ /g, "_") }));
+    dispatch(setData({ fieldName: "lastName", newData: data.lastName.replace(/ /g, "_") }));
     dispatch(setData({ fieldName: "email", newData: data.email }));
     dispatch(setData({ fieldName: "agreedToTerms", newData: data.agreedToTerms}));
     console.log("Form submitted with data:", data);

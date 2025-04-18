@@ -94,7 +94,10 @@ function ProfileForm() {
     let hasChanges = false;
 
     if (data.firstName !== firstName || data.lastName !== lastName) {
-      formData.append("name", `${data.firstName} ${data.lastName}`);
+      formData.append(
+        "name",
+        `${data.firstName.replace(/ /g, "_")} ${data.lastName.replace(/ /g, "_")}`,
+      );
       hasChanges = true;
     }
 

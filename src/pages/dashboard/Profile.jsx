@@ -12,7 +12,7 @@ function Preview({ data }) {
         <div className="bg-secondary absolute top-0 left-0 h-full w-full opacity-70" />
         <UserAvatar className="size-12" moreLinks={false} />
         <div className="z-1">
-          <span className="text-md flex gap-2 font-bold">
+          <span className="text-md flex @max-sm:w-35 gap-2 truncate font-bold">
             <h4>{data.firstName}</h4>
             <h4>{data.lastName}</h4>
           </span>
