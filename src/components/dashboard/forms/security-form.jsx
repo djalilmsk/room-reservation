@@ -22,6 +22,8 @@ import { useMutation } from "@tanstack/react-query";
 import { customFetch } from "@/utils";
 import { useDispatch } from "react-redux";
 import { logout } from "@/utils/redux/user";
+import toast from "react-hot-toast";
+import { defaults } from "@/utils/format/toast-styles";
 
 // Assuming this is how your formSchema looks - adjust if different
 const securitySchema = z
@@ -62,9 +64,15 @@ export function SecurityForm() {
     onSuccess: () => {
       navigate("/", { replace: true });
       dispatch(logout());
+      toast.success("Account deleted successfully!", {
+        style: defaults,
+      });
     },
     onError: (err) => {
       console.error(err);
+      toast.error("Error deleting account", {
+        style: defaults,
+      });
     },
   });
 
@@ -75,6 +83,15 @@ export function SecurityForm() {
       onSuccess: (data) => {
         console.log("Password updated successfully: ", data);
         form.reset();
+        toast.success("Password updated successfully!", {
+          style: defaults,
+        });
+      },
+      onError: (error) => {
+        console.error("Error updating password:", error);
+        toast.error("Error updating password!", {
+          style: defaults,
+        });
       },
     });
   };

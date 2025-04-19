@@ -26,6 +26,8 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import { BookingForm } from "@/components/home/Room/forms/booking-form";
 import { useUser } from "@/hooks/useUser";
 import { Pin } from "lucide-react";
+import { defaults } from "@/utils/format/toast-styles";
+import toast from "react-hot-toast";
 
 function timeToMinutes(timeStr) {
   const [hours, minutes] = timeStr.split(":").map(Number);
@@ -83,7 +85,17 @@ function SingleRoom() {
       console.log(data);
       queryClient.invalidateQueries(["bookings"]);
 
+      toast.success("Room booked successfully!", {
+        style: defaults,
+      });
+
       navigate(`/rooms`, { replace: true });
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to book room.", {
+        style: defaults,
+      });
     },
   });
 

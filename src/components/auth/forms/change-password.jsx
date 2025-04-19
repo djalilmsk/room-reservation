@@ -19,6 +19,7 @@ import { useForgetPassword } from "@/pages/auth/ForgetPassword";
 import { buttonLabel } from "@/components/ui/button-label";
 import { useDispatch } from "react-redux";
 import { login } from "@/utils/redux/user";
+import toast from "react-hot-toast";
 
 const passwordSchema = formSchema
   .pick({
@@ -46,9 +47,15 @@ export function ChangePassword({ label = null }) {
       console.log(data);
       navigate("/");
       dispatch(login({ data: data.user }));
+      toast.success("Password changed successfully!", {
+        style: defaults,
+      });
     },
     onError: (err) => {
       console.log(err);
+      toast.error("An error occurred. Please try again.", {
+        style: defaults,
+      });
     },
   });
 

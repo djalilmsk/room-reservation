@@ -2,6 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import RoomForm from "./room-form";
 import { customFetch } from "@/utils";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { defaults } from "@/utils/format/toast-styles";
 
 function CreateRoom() {
   const queryClient = useQueryClient();
@@ -19,10 +21,17 @@ function CreateRoom() {
         refetchInactive: true,
       });
 
+      toast.success("Room created successfully!", {
+        style: defaults,
+      });
+
       navigate(`/dashboard/rooms/${data.finalRoom.id}`);
     },
     onError: (err) => {
       console.error("Error creating room:", err.response?.data || err.message);
+      toast.error("Failed to create room.", {
+        style: defaults,
+      });
     },
   });
 

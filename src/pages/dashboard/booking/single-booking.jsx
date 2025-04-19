@@ -8,6 +8,8 @@ import { Separator } from "@/components/ui/separator";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { buttonLabel } from "@/components/ui/button-label";
+import { defaults } from "@/utils/format/toast-styles";
+import toast from "react-hot-toast";
 
 function SingleBooking() {
   const queryClient = useQueryClient();
@@ -32,8 +34,19 @@ function SingleBooking() {
         refetchActive: true,
         refetchInactive: true,
       });
+      queryClient.removeQueries(["booking", id]);
+
+      toast.success("Booking deleted successfully!", {
+        style: defaults,
+      });
 
       navigate("/dashboard/bookings");
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to delete booking.", {
+        style: defaults,
+      });
     },
   });
 

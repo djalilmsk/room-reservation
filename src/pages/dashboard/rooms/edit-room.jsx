@@ -2,6 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import RoomForm from "./room-form";
 import { customFetch } from "@/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { defaults } from "@/utils/format/toast-styles";
 
 function EditRoom() {
   const queryClient = useQueryClient();
@@ -29,12 +31,19 @@ function EditRoom() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["rooms"] });
-      queryClient.invalidateQueries({ queryKey: ["rooms", id] });
+      queryClient.setQueryData(["room", id], data.room);
+
+      toast.success("Room updated successfully!", {
+        style: defaults,
+      });
 
       navigate(`/dashboard/rooms/${id}`);
     },
     onError: (err) => {
       console.error("Error creating room:", err.response?.data || err.message);
+      toast.error("Failed to update room.", {
+        style: defaults,
+      });
     },
   });
 

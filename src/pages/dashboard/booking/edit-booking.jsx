@@ -3,6 +3,8 @@ import BookingForm from "./booking-form";
 import { replace, useNavigate, useParams } from "react-router-dom";
 import { customFetch } from "@/utils";
 import { date } from "zod";
+import toast from "react-hot-toast";
+import { defaults } from "@/utils/format/toast-styles";
 
 function EditBooking() {
   const queryClient = useQueryClient();
@@ -25,8 +27,17 @@ function EditBooking() {
     onSuccess: (data) => {
       queryClient.invalidateQueries(["booking"]);
       queryClient.setQueryData(["booking", id], data);
+      toast.success("Booking updated successfully!", {
+        style: defaults,
+      });
 
       navigate(`/dashboard/bookings/${id}`, { replace: true });
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to update booking.", {
+        style: defaults,
+      });
     },
   });
 

@@ -9,6 +9,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { customFetch } from "@/utils";
 import { buttonLabel } from "@/components/ui/button-label";
 import RoomDetails from "@/components/home/Room/RoomDetails";
+import { defaults } from "@/utils/format/toast-styles";
+import toast from "react-hot-toast";
 
 function SingleRoom() {
   const queryClient = useQueryClient();
@@ -39,8 +41,19 @@ function SingleRoom() {
         refetchActive: true,
         refetchInactive: true,
       });
+      queryClient.removeQueries(["room", id]);
+
+      toast.success("Room deleted successfully!", {
+        style: defaults,
+      });
 
       navigate("/dashboard/rooms");
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to delete room.", {
+        style: defaults,
+      });
     },
   });
 
@@ -59,7 +72,7 @@ function SingleRoom() {
     <div className="space-y-5">
       <RoomDetails {...room}>
         <div className="flex w-full justify-end">
-          <div className="max-lg:space-y-3 space-x-3 max-lg:w-full">
+          <div className="space-x-3 max-lg:w-full max-lg:space-y-3">
             <Button
               className="max-lg:w-full"
               onClick={() => navigate(`/dashboard/rooms/edit-room/${id}`)}

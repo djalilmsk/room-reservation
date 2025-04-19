@@ -29,6 +29,9 @@ import { useProfileMutation } from "@/hooks/mutation/useProfileMutation";
 import { buttonLabel } from "@/components/ui/button-label";
 import { useDispatch } from "react-redux";
 import { login } from "@/utils/redux/user";
+import toast from "react-hot-toast";
+import { cn } from "@/lib/utils";
+import { defaults } from "@/utils/format/toast-styles";
 
 const profileSchema = formSchema.pick({
   firstName: true,
@@ -122,6 +125,16 @@ function ProfileForm() {
           console.log("Mutation success with data:", data);
           // navigate("/");
           dispatch(login({ data: data.data.dataValues }));
+          toast.success("Profile updated successfully!", {
+            style: defaults,
+          });
+        },
+        // add on error
+        onError: (error) => {
+          console.error("Mutation error:", error);
+          toast.error("Error updating profile!", {
+            style: defaults,
+          });
         },
       });
   };
