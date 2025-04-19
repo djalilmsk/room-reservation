@@ -45,15 +45,16 @@ export function CalendarField({
         <FormItem>
           <FormLabel className="text-sm">{label}</FormLabel>
           <Popover>
-            <Button
-              type="button"
-              variant="outline"
-              className={cn(
-                "w-full overflow-hidden px-0",
-                form.formState.errors[name] && "dark:border-destructive border-destructive",
-              )}
-            >
-              <PopoverTrigger asChild>
+            <PopoverTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                className={cn(
+                  "w-full overflow-hidden px-0",
+                  form.formState.errors[name] &&
+                    "dark:border-destructive border-destructive",
+                )}
+              >
                 <div
                   className={cn(
                     "bg-background relative flex h-11 w-full min-w-50 items-center px-3 text-left hover:bg-transparent",
@@ -69,8 +70,8 @@ export function CalendarField({
                     className="absolute right-10 h-full"
                   />
                 </div>
-              </PopoverTrigger>
-            </Button>
+              </Button>
+            </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
               <Calendar
                 mode={mode}
