@@ -11,12 +11,14 @@ import {
 import { Ellipsis } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { customFetch } from "@/utils";
 import { DataTable } from "@/components/ui/data-table";
+import toast from "react-hot-toast";
+import { defaults } from "@/utils/format/toast-styles";
 
-const ManagmentMenu = ({ userId, currentRole, onRoleChange, onDelete }) => {
-  const [position, setPosition] = useState(currentRole?.toLowerCase());
+const ManagmentMenu = ({ userId, currentRole, onRoleChange, onDelete, isPending }) => {
+  const [position, setPosition] = useState(currentRole?.toLowerCase() || "client");
 
   const handleRoleChangeLocal = (newRole) => {
     setPosition(newRole);
@@ -25,14 +27,13 @@ const ManagmentMenu = ({ userId, currentRole, onRoleChange, onDelete }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <div
+      <DropdownMenuTrigger asChild>
+        <button
           className="hover:bg-secondary hover:text-primary dark:hover:bg-secondary/50 flex h-8 cursor-pointer items-center justify-center rounded-lg px-2"
-          variant="ghost"
-          size="icon"
+          disabled={isPending}
         >
           <Ellipsis className="h-5 w-5" />
-        </div>
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>Manage User</DropdownMenuLabel>
@@ -63,11 +64,9 @@ const ManagmentMenu = ({ userId, currentRole, onRoleChange, onDelete }) => {
 };
 
 function UsersList() {
-  const {
-    data: users,
-    isLoading,
-    isError,
-  } = useQuery({
+  const queryClient = useQueryClient();
+
+  const { data: users, isLoading, isError, error } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await customFetch.get("/user");
@@ -75,16 +74,78 @@ function UsersList() {
     },
   });
 
+  const { mutate: updateRole, isPending: isRoleUpdating } = useMutation({
+    mutationFn: async ({ userId, data }) => {
+      const res = await customFetch.patch(`/user/${userId}`, data);
+      return res.data;
+    },
+    onMutate: async ({ userId, data }) => {
+      await queryClient.cancelQueries({ queryKey: ["users"] });
+      const previousUsers = queryClient.getQueryData(["users"]);
+
+      queryClient.setQueryData(["users"], (old) =>
+        old.map((user) =>
+          user.id === userId ? { ...user, role_name: data.role } : user
+        )
+      );
+
+      return { previousUsers };
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User role updated successfully!", {
+        style: defaults,
+      });
+      console.log(data)
+    },
+    onError: (error, variables, context) => {
+      // Rollback to previous state on error
+      queryClient.setQueryData(["users"], context.previousUsers);
+      console.error("Error updating user role:", error);
+      toast.error("Failed to update user role!", {
+        style: defaults,
+      });
+    },
+  });
+
+  const { mutate: deleteUser, isPending: isDeleting } = useMutation({
+    mutationFn: async (userId) => {
+      const res = await customFetch.delete(`/user/${userId}`);
+      return res.data;
+    },
+    onMutate: async (userId) => {
+      await queryClient.cancelQueries({ queryKey: ["users"] });
+      const previousUsers = queryClient.getQueryData(["users"]);
+      queryClient.setQueryData(["users"], (old) =>
+        old.filter((user) => user.id !== userId)
+      );
+      return { previousUsers };
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success("User deleted successfully!", {
+        style: defaults,
+      });
+    },
+    onError: (error, userId, context) => {
+      queryClient.setQueryData(["users"], context.previousUsers);
+      console.error("Error deleting user:", error);
+      toast.error("Failed to delete user!", {
+        style: defaults,
+      });
+    },
+  });
+
   const columns = [
     {
       accessorKey: "name",
       header: "Name",
-      cell: ({ row }) => <div>{row.getValue("name")}</div>,
+      cell: ({ row }) => <div>{row.getValue("name") || "N/A"}</div>,
     },
     {
       accessorKey: "email",
       header: "Email",
-      cell: ({ row }) => <div>{row.getValue("email")}</div>,
+      cell: ({ row }) => <div>{row.getValue("email") || "N/A"}</div>,
     },
     {
       accessorKey: "profession",
@@ -95,15 +156,18 @@ function UsersList() {
       accessorKey: "role_name",
       header: "Role",
       cell: ({ row }) => {
-        const role = row.getValue("role_name")?.toLowerCase();
+        const role = row.getValue("role_name")?.toLowerCase() || "client";
+        const roleStyles = {
+          client: "bg-muted-foreground/40 text-accent-foreground",
+          admin: "bg-secondary text-primary",
+          "room manager": "bg-blue-500/20 text-blue-500",
+          "booking manager": "bg-green-500/20 text-green-500",
+        };
         return (
           <div
             className={cn(
               "w-fit rounded-md px-4 py-1 text-center",
-              {
-                client: "bg-muted-foreground/40",
-                admin: "bg-secondary text-primary",
-              }[role] || "bg-[#fbbc05]/20 text-[#fbbc05]",
+              roleStyles[role] || "bg-gray-200 text-gray-600"
             )}
           >
             {role}
@@ -120,23 +184,32 @@ function UsersList() {
           currentRole={row.original.role_name}
           onRoleChange={handleRoleChange}
           onDelete={handleDelete}
+          isPending={isRoleUpdating || isDeleting}
         />
       ),
     },
   ];
 
   const handleRoleChange = (userId, newRole) => {
-    console.log(`Role changed for user ${userId} to ${newRole}`);
+    updateRole({ userId, data: { role: newRole } });
   };
 
   const handleDelete = (userId) => {
-    console.log(`Delete user with ID: ${userId}`);
+    deleteUser(userId);
   };
+
+  if (isLoading) {
+    return <div>Loading users...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading users: {error.message}</div>;
+  }
 
   return (
     <div className="@container mx-auto space-y-8">
       <h1 className="text-2xl font-bold">Users List</h1>
-      <DataTable columns={columns} data={users} />
+      <DataTable columns={columns} data={users || []} />
     </div>
   );
 }

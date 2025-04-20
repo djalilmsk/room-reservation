@@ -41,7 +41,7 @@ function SingleRoom() {
         refetchActive: true,
         refetchInactive: true,
       });
-      queryClient.removeQueries(["room", id]);
+      // queryClient.removeQueries(["room", id]);
 
       toast.success("Room deleted successfully!", {
         style: defaults,

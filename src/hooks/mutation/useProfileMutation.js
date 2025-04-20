@@ -15,6 +15,10 @@ export function useProfileMutation(path) {
       console.log(response.data);
       return response.data;
     },
+    onSuccess: (data) => {
+      console.log(data);
+      dispatch(login({ data: data.data.dataValues }));
+    },
     onError: (error) => {
       console.error("Signup error:", error);
     },

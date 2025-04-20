@@ -88,7 +88,7 @@ export const dashboard = {
         },
         {
           path: "/dashboard/bookings/:id",
-          element: <SingleBooking />, // TODO: implement booking details page
+          element: <SingleBooking />,
           // errorElement: <ErrorElement />,
         },
         {

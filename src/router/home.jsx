@@ -3,6 +3,7 @@ import HomeLayout from "../pages/HomeLayout";
 import Landing from "../pages/home/Landing";
 import Rooms from "../pages/home/Rooms";
 import SingleRoom from "@/pages/home/SingleRoom";
+import About from "@/pages/home/About";
 
 export const home = {
   path: "/",
@@ -22,6 +23,11 @@ export const home = {
     {
       path: "/rooms/:id",
       element: <SingleRoom />,
+      // errorElement: <ErrorElement />,
+    },
+    {
+      path: "/about",
+      element: <About />,
       // errorElement: <ErrorElement />,
     },
     {

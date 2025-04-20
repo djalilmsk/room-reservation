@@ -18,7 +18,9 @@ function RoomsList() {
 
   return (
     <div className="space-y-5">
-      <div className="grid md:grid-cols-2 gap-3 lg:grid-cols-3">
+      <div
+        className={rooms?.length && "grid gap-3 md:grid-cols-2 lg:grid-cols-3"}
+      >
         {rooms?.length ? (
           rooms.map((room, index) => (
             <Link key={index} to={`/rooms/${room.id}`}>
@@ -26,7 +28,7 @@ function RoomsList() {
             </Link>
           ))
         ) : (
-          <div className="text-secondary-foreground col-span-2 flex items-center justify-center p-15">
+          <div className="text-secondary-foreground col-span-2 flex w-full items-center justify-center p-15">
             no rooms
           </div>
         )}
