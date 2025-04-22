@@ -30,10 +30,8 @@ export const formSchema = z.object({
     }),
 
   image: z
-    .instanceof(File, {
-      message: "",
-    })
-    .optional()
+    .any()
+    .nullable()
     .refine(
       (file) => {
         if (file === null) return true;
@@ -44,10 +42,11 @@ export const formSchema = z.object({
     .refine(
       (file) => {
         if (!file) return true;
-        return file.size <= 5 * 1024 * 1024;
+        return file.size <= 1024 * 1024;
       },
-      { message: "Image must be less than 5MB" },
+      { message: "Image must be less than 1MB" },
     ),
+
   profession: z
     .string()
     .min(1, { message: "Please select how you describe yourself" }),

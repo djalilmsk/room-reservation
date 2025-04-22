@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { setData, updateField } from "@/utils/redux/form-cache";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { localFetch } from "@/utils";
 
@@ -16,61 +15,34 @@ const imageSchema = formSchema.pick({
   image: true,
 });
 
-export function ThirdContent() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const cacheData = useSelector((state) => state.formCache.data);
-
-  useEffect(() => {
-    const {
-      firstName,
-      lastName,
-      email,
-      agreedToTerms,
-      password,
-      confirmPassword,
-    } = cacheData;
-
-    if (!(firstName && lastName && email && agreedToTerms)) {
-      navigate("/auth/signup", { replace: true });
-    }
-
-    if (!(password && confirmPassword)) {
-      navigate("/auth/signup/password", { replace: true });
-    }
-  }, [cacheData]);
-
-  const { image = null } = cacheData;
-
-  const { isLoading, isError, data } = useQuery(localFetch(image));
-
-  useEffect(() => {
-    if (data) {
-      setFile(URL.createObjectURL(data));
-    }
-  }, [data]);
-
-  const form = useForm({
-    resolver: zodResolver(imageSchema),
-    defaultValues: {
-      image: data || null,
-    },
-  });
-
+export function ImageForm({ form, onSubmit, onError, isLoading, children }) {
   const fileInputRef = useRef(null);
   const [file, setFile] = useState(null);
+
+  // Sync file preview with form's image value
+  useEffect(() => {
+    const image = form.getValues("image");
+    if (image instanceof File) {
+      setFile(URL.createObjectURL(image));
+    } else {
+      setFile(null);
+    }
+  }, [form]);
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
 
     if (selectedFile) {
-      const imageUrl = URL.createObjectURL(selectedFile);
-      setFile(imageUrl);
-      form.setValue("image", selectedFile, { shouldValidate: true });
+      if (
+        ["image/png", "image/jpeg", "image/jpg"].includes(selectedFile.type)
+      ) {
+        const imageUrl = URL.createObjectURL(selectedFile);
+        setFile(imageUrl);
+        form.setValue("image", selectedFile, { shouldValidate: true });
+      } else {
+        handleFileDelete(event);
+      }
     }
-
-    if (!["image/png", "image/jpeg", "image/jpg"].includes(selectedFile.type))
-      handleFileDelete(event);
   };
 
   const handleFileDelete = (event) => {
@@ -78,24 +50,9 @@ export function ThirdContent() {
     event.stopPropagation();
     setFile(null);
     form.setValue("image", null, { shouldValidate: true });
-    dispatch(updateField({ fieldName: "image", newData: null }));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-  };
-
-  const onSubmit = (data) => {
-    const fileData = data.image
-      ? { name: data.image.name, url: URL.createObjectURL(data.image) }
-      : null;
-
-    dispatch(setData({ fieldName: "image", newData: fileData }));
-    console.log("Form submitted with data:", data);
-    navigate("/auth/signup/extra-data");
-  };
-
-  const onError = (errors) => {
-    if (errors.image.message === "") navigate("/auth/signup/extra-data");
   };
 
   return (
@@ -110,7 +67,7 @@ export function ThirdContent() {
           render={({ field }) => (
             <FormItem>
               <div className="relative mx-auto flex w-full max-w-xl cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-6">
-                {field.value ? (
+                {file ? (
                   <div className="relative">
                     <button
                       type="button"
@@ -147,10 +104,78 @@ export function ThirdContent() {
             </FormItem>
           )}
         />
-        <Button className="w-full" type="submit">
-          Next
-        </Button>
+        {children}
       </form>
     </Form>
+  );
+}
+
+export function ThirdContent() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const cacheData = useSelector((state) => state.formCache.data);
+
+  useEffect(() => {
+    const {
+      firstName,
+      lastName,
+      email,
+      agreedToTerms,
+      password,
+      confirmPassword,
+    } = cacheData;
+
+    if (!(firstName && lastName && email && agreedToTerms)) {
+      navigate("/auth/signup", { replace: true });
+    }
+
+    if (!(password && confirmPassword)) {
+      navigate("/auth/signup/password", { replace: true });
+    }
+  }, [cacheData]);
+
+  const { image = null } = cacheData;
+
+  const { isLoading, isError, data } = useQuery(localFetch(image));
+
+  const form = useForm({
+    resolver: zodResolver(imageSchema),
+    defaultValues: {
+      image: data || null,
+    },
+  });
+
+  // Update form with fetched data
+  useEffect(() => {
+    if (data instanceof File) {
+      form.setValue("image", data, { shouldValidate: true });
+    }
+  }, [data, form]);
+
+  const onSubmit = (data) => {
+    const fileData = data.image
+      ? { name: data.image.name, url: URL.createObjectURL(data.image) }
+      : null;
+
+    dispatch(setData({ fieldName: "image", newData: fileData }));
+    console.log("Form submitted with data:", data);
+    navigate("/auth/signup/extra-data");
+  };
+
+  const onError = (errors) => {
+    if (errors.image?.message === "") navigate("/auth/signup/extra-data");
+  };
+
+  return (
+    <ImageForm
+      form={form}
+      onSubmit={onSubmit}
+      onError={onError}
+      isLoading={isLoading}
+    >
+      <Button className="w-full" type="submit">
+        Next
+      </Button>
+    </ImageForm>
   );
 }

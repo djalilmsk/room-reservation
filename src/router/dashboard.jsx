@@ -83,7 +83,7 @@ export const dashboard = {
       children: [
         {
           index: true,
-          element: <BookingList />,
+          element: <BookingList title="Pending Booking" />,
           // errorElement: <ErrorElement />,
         },
         {
@@ -103,7 +103,7 @@ export const dashboard = {
         },
         {
           path: "/dashboard/bookings/booking-history",
-          element: <>not implemented</>, // TODO: implement booking history page
+          element: <BookingList status="history" title="Booking History" />,
           // errorElement: <ErrorElement />,
         },
         // {

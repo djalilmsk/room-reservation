@@ -25,21 +25,34 @@ import { CalendarIcon, Save, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { CalendarField } from "@/components/home/Room/forms/pick-date";
 import { PickTimeRange } from "@/components/home/Room/forms/pick-time-range";
+import { buttonLabel } from "@/components/ui/button-label";
 
 function timeToMinutes(timeStr) {
   const [hours, minutes] = timeStr.split(":").map(Number);
   return hours * 60 + minutes;
 }
 
-const schema = bookingSchema.refine(
-  (data) => timeToMinutes(data.start_time) < timeToMinutes(data.end_time),
-  {
-    path: ["start_time"],
-    message: "Start date must be before end date",
-  },
-);
+const schema = bookingSchema
+  .refine(
+    (data) => timeToMinutes(data.start_time) < timeToMinutes(data.end_time),
+    {
+      path: ["start_time"],
+      message: "Start date must be before end date",
+    },
+  )
+  .refine(
+    (data) => {
+      const startTime = timeToMinutes(data.start_time);
+      const endTime = timeToMinutes(data.end_time);
+      return endTime - startTime >= 60;
+    },
+    {
+      path: ["start_time"],
+      message: "Booking time must be at least 1 hour",
+    },
+  );
 
-function BookingForm({ onSubmit: externalOnSubmit, defaultValues }) {
+function BookingForm({ onSubmit: externalOnSubmit, defaultValues, isLoading }) {
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: defaultValues || {
@@ -93,7 +106,9 @@ function BookingForm({ onSubmit: externalOnSubmit, defaultValues }) {
           name="status"
           render={({ field }) => (
             <FormItem>
-              <div className="text-base font-semibold cursor-default">Status</div>
+              <div className="cursor-default text-base font-semibold">
+                Status
+              </div>
               <Select
                 onValueChange={field.onChange}
                 defaultValue={field.value}
@@ -115,13 +130,18 @@ function BookingForm({ onSubmit: externalOnSubmit, defaultValues }) {
           )}
         />
 
-        <div className="space-x-3">
-          <Button type="submit" className="w-40">
-            <Save className="h-4 w-4" />
-            Submit
+        <div className="flex items-start gap-3">
+          <Button type="submit" className="w-40" disabled={isLoading}>
+            {buttonLabel(
+              isLoading,
+              <>
+                <Save className="h-4 w-4" />
+                Submit
+              </>,
+            )}
           </Button>
           <Link to={-1}>
-            <Button type="submit" variant="secondary">
+            <Button type="submit" variant="secondary" disabled={isLoading}>
               <X className="h-4 w-4" />
               cancel
             </Button>

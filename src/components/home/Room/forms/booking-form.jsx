@@ -8,7 +8,11 @@ import { Pin } from "lucide-react";
 import { buttonLabel } from "@/components/ui/button-label";
 import { isPending } from "@reduxjs/toolkit";
 
-export function BookingForm({ onSubmit: externalSubmit, form = null, isPending }) {
+export function BookingForm({
+  onSubmit: externalSubmit,
+  form = null,
+  isPending,
+}) {
   const onSubmit = (data) => {
     if (externalSubmit) {
       externalSubmit(data);
@@ -39,13 +43,17 @@ export function BookingForm({ onSubmit: externalSubmit, form = null, isPending }
           )}
         </div>
         <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <DialogClose
-            onClick={() => form?.reset()}
-            className="bg-background hover:bg-accent dark:bg-input/30 dark:border-input dark:hover:bg-input/50 hover:text-popover-foreground cursor-pointer rounded-lg border px-3 transition-all duration-300"
-          >
-            Cancel
+          <DialogClose onClick={() => form?.reset()} className="max-sm:w-full">
+            <Button
+              variant="outline"
+              type="button"
+              disabled={isPending}
+              className="w-full"
+            >
+              Cancel
+            </Button>
           </DialogClose>
-          <Button type="submit">
+          <Button type="submit" disabled={isPending}>
             {buttonLabel(
               isPending,
               <>

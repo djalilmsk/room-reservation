@@ -47,6 +47,17 @@ const schema = bookingSchema
       path: ["start_time"],
       message: "Start date must be before end date",
     },
+  )
+  .refine(
+    (data) => {
+      const startTime = timeToMinutes(data.start_time);
+      const endTime = timeToMinutes(data.end_time);
+      return endTime - startTime >= 60;
+    },
+    {
+      path: ["start_time"],
+      message: "Booking time must be at least 1 hour",
+    },
   );
 
 function SingleRoom() {
@@ -141,9 +152,9 @@ function SingleRoom() {
         <RoomDetails {...room}>
           <div className="flex w-full justify-end">
             <Dialog className="shadow-none" modal={false}>
-              <ActionProtection
+              <ActionProtection className="w-30 max-md:w-full"
                 guest={
-                  <Button>
+                  <Button className="w-30 max-md:w-full">
                     <Pin className="h-4 w-4" /> Book Now
                   </Button>
                 }

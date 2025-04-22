@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import BookingForm from "./booking-form";
 import { replace, useNavigate, useParams } from "react-router-dom";
-import { customFetch } from "@/utils";
+import { customFetch, socket } from "@/utils";
 import { date } from "zod";
 import toast from "react-hot-toast";
 import { defaults } from "@/utils/format/toast-styles";
@@ -86,7 +86,11 @@ function EditBooking() {
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-bold">Update Booking</h1>
-      <BookingForm onSubmit={onSubmit} defaultValues={defaultValues} />
+      <BookingForm
+        onSubmit={onSubmit}
+        isLoading={isPending}
+        defaultValues={defaultValues}
+      />
     </div>
   );
 }

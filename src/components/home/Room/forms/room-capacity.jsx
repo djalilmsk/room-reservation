@@ -21,8 +21,8 @@ export function RoomCapacity({ control, name }) {
         <FormItem>
           <FormLabel className="text-sm">Room Capacity</FormLabel>
           <FormControl className="relative">
-            <div className="text-secondary-foreground flex h-11 items-center gap-3 rounded-lg border-1 px-3">
-              <div className="text-secondary-foreground flex h-11 items-center pr-4">
+            <div className="text-secondary-foreground flex  h-11 items-center justify-between gap-3 rounded-lg border-1 px-3">
+              <div className="text-secondary-foreground w-9/10 flex h-11 items-center justify-between pr-4">
                 <Minus
                   className="h-4 w-4 cursor-pointer"
                   onClick={() => {
@@ -50,8 +50,8 @@ export function RoomCapacity({ control, name }) {
                   }}
                 />
               </div>
-              <Separator className="absolute right-11" orientation="vertical" />
-              <UsersIcon className="h-5 w-5" />
+              <Separator className="absolute right-10" orientation="vertical" />
+              <UsersIcon className="h-4 w-4" />
 
               <input type="hidden" {...field} value={counter} />
             </div>

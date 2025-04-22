@@ -9,6 +9,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useEffect } from "react";
+import { socket } from "@/utils";
 
 function IconLabel({ className, to, children, content }) {
   return (
@@ -35,7 +37,7 @@ function IconLabel({ className, to, children, content }) {
 
 function UserAvatar({ className, moreLinks = true }) {
   const { data } = useUser();
-  console.log(data)
+  console.log(data);
   const { image, name } = data;
   const fallback =
     `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`.toUpperCase();

@@ -1,12 +1,15 @@
 import Filters from "@/components/home/Room/Filters";
 import RoomsList from "@/components/home/Room/RoomsList";
 import { Page } from "@/components/ui/page";
+import { Section } from "@/components/ui/section";
 
 function Rooms() {
   return (
     <Page>
-      {/* <Filters /> */}
-      <RoomsList />
+      <Section>
+        <Filters />
+        <RoomsList />
+      </Section>
     </Page>
   );
 }

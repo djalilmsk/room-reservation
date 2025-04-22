@@ -9,13 +9,10 @@ function HomeLayout() {
   return (
     <LayoutContainer>
       <Header />
-      <Outlet />
-
-      <HomeFooter />
-      {/* <Main>
+      <div className="min-h-screen">
         <Outlet />
-        </Main>
-        <Footer /> */}
+      </div>
+      <HomeFooter />
     </LayoutContainer>
   );
 }

@@ -106,26 +106,26 @@ function General() {
 
   useEffect(() => {
     if (debouncedValue !== emailNotification && id) {
+      // crete form data var
+      const formData = new FormData();
+      formData.append("emailNotification", debouncedValue ? true : false);
       setIsUpdating(true);
-      mutate(
-        { emailNotification: debouncedValue },
-        {
-          onSuccess: (data) => {
-            dispatch(login({ data: data.data.dataValues }));
-            toast.success("Email notification updated!", {
-              style: defaults,
-            });
-          },
-          onError: (err) => {
-            console.error("Error updating email notification:", err);
-            form.setValue("emailNotification", emailNotification); // Revert to server value
-            toast.error("Error updating email notification!", {
-              style: defaults,
-            });
-          },
-          onSettled: () => setIsUpdating(false),
+      mutate(formData, {
+        onSuccess: (data) => {
+          dispatch(login({ data: data.data.dataValues }));
+          toast.success("Email notification updated!", {
+            style: defaults,
+          });
         },
-      );
+        onError: (err) => {
+          console.error("Error updating email notification:", err);
+          form.setValue("emailNotification", emailNotification); // Revert to server value
+          toast.error("Error updating email notification!", {
+            style: defaults,
+          });
+        },
+        onSettled: () => setIsUpdating(false),
+      });
     }
   }, [debouncedValue, emailNotification, id, mutate, dispatch, form]);
 

@@ -1,10 +1,17 @@
 import axios from "axios";
+import { io } from "socket.io-client";
 
 const url = "http://localhost:3000/api/v1/";
 
 export const customFetch = axios.create({
   baseURL: url,
   withCredentials: true,
+});
+
+export const socket = io.connect("http://localhost:3000", {
+  autoConnect: true,
+  withCredentials: true,
+  transports: ["websocket"],
 });
 
 export const localFetch = (image) => {

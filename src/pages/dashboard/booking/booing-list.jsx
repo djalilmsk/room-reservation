@@ -3,11 +3,11 @@ import { cn } from "@/lib/utils";
 import { customFetch } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 
-function BooingList() {
+function BooingList({ status = "pending", title = "Booking Management" }) {
   const { data = [], isLoading } = useQuery({
-    queryKey: ["bookings"],
+    queryKey: ["bookings", status],
     queryFn: async () => {
-      const response = await customFetch.get("/bookings");
+      const response = await customFetch.get(`/bookings?status=${status}`);
       return response.data.bookings;
     },
   });
@@ -88,7 +88,7 @@ function BooingList() {
 
   return (
     <div className="@container space-y-8">
-      <h1 className="text-2xl font-bold">Booking Management</h1>
+      <h1 className="text-2xl font-bold">{title}</h1>
       <DataTable columns={columns} data={bookings} to="/dashboard/bookings" />
     </div>
   );
