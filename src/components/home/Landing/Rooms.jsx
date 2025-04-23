@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Section, SectionTitle } from "@/components/ui/section";
 
 import { useExpendAnimation } from "@/hooks/use-expand-animation";
-
+import { Copyright } from "../Footer";
 
 const rooms = [
   { image: "https://picsum.photos/200/600" },

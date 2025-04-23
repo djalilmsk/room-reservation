@@ -3,6 +3,15 @@ import logo from "@/assets/Logo.svg";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
+export const Copyright = () => (
+  <div className="relative mt-10 flex w-full justify-center py-4 md:mt-16">
+    <div className="bg-border absolute top-0 left-1/2 grid h-[1px] w-dvw -translate-x-1/2" />
+    <p className="text-secondary-foreground text-sm">
+      Copyright &copy; 2025 • ROOM.
+    </p>
+  </div>
+);
+
 function HomeFooter() {
   return (
     <footer className="relative">
@@ -86,12 +95,7 @@ function HomeFooter() {
           </div>
         </div>
       </div>
-      <div className="relative mt-10 flex w-full justify-center py-4 md:mt-16">
-        <div className="bg-border absolute top-0 left-1/2 grid h-[1px] w-dvw -translate-x-1/2" />
-        <p className="text-secondary-foreground text-sm">
-          Copyright &copy; 2025 • ROOM.
-        </p>
-      </div>
+      <Copyright />
     </footer>
   );
 }

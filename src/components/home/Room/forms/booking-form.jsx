@@ -43,12 +43,12 @@ export function BookingForm({
           )}
         </div>
         <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <DialogClose onClick={() => form?.reset()} className="max-sm:w-full">
+          <DialogClose asChild onClick={() => form?.reset()} className="max-sm:w-full">
             <Button
               variant="outline"
               type="button"
               disabled={isPending}
-              className="w-full"
+              className="max-sm:w-full"
             >
               Cancel
             </Button>

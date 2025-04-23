@@ -1,5 +1,6 @@
 import Hero from "@/components/home/about/Hero";
 import MissionVision from "@/components/home/about/MissionVision";
+import HomeFooter from "@/components/home/Footer";
 import { Page } from "@/components/ui/page";
 
 function About() {
@@ -7,6 +8,7 @@ function About() {
     <Page>
       <Hero />
       <MissionVision />
+      <HomeFooter />
     </Page>
   );
 }

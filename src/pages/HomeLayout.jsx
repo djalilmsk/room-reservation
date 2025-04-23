@@ -12,7 +12,6 @@ function HomeLayout() {
       <div className="min-h-screen">
         <Outlet />
       </div>
-      <HomeFooter />
     </LayoutContainer>
   );
 }

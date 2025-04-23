@@ -4,6 +4,7 @@ import { Section } from "@/components/ui/section";
 import { CalendarCheck, DoorOpen, FileQuestion, Home } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Copyright } from "../Footer";
 
 const actions = [
   {
@@ -57,30 +58,33 @@ function UserActions() {
   console.log(date);
 
   return (
-    <Section className="flex gap-5 max-[800px]:flex-col">
-      <div className="flex w-fit flex-col gap-2 rounded-lg">
-        <h2 className="text-lg font-bold">Calendar</h2>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="bg-secondary/40 rounded-xl p-5"
-          disabled={(date) => {
-            const now = new Date();
-            const max = new Date();
-            max.setMonth(max.getMonth() + 3);
-            return date <= now || date >= max;
-          }}
-        />
-      </div>
-      <div className="space-y-2 w-full">
-        <h2 className="text-lg font-bold">Quick Actions</h2>
-        <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-          {actions.map((action, index) => (
-            <ActionCard key={index} action={action} />
-          ))}
+    <Section>
+      <div className="flex min-h-screen gap-5 max-[800px]:flex-col">
+        <div className="flex w-fit flex-col gap-2 rounded-lg">
+          <h2 className="text-lg font-bold">Calendar</h2>
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            className="bg-secondary/40 rounded-xl p-5"
+            disabled={(date) => {
+              const now = new Date();
+              const max = new Date();
+              max.setMonth(max.getMonth() + 3);
+              return date <= now || date >= max;
+            }}
+          />
+        </div>
+        <div className="w-full space-y-2">
+          <h2 className="text-lg font-bold">Quick Actions</h2>
+          <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+            {actions.map((action, index) => (
+              <ActionCard key={index} action={action} />
+            ))}
+          </div>
         </div>
       </div>
+      <Copyright />
     </Section>
   );
 }

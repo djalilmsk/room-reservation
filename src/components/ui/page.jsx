@@ -13,7 +13,7 @@ export const Page = forwardRef(({ children, className, ...props }, ref) => {
     >
       <div></div>
       {children}
-      <div></div>
+      {/* <div></div> */}
     </div>
   );
 });

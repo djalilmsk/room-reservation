@@ -29,6 +29,7 @@ import { Pin } from "lucide-react";
 import { defaults } from "@/utils/format/toast-styles";
 import toast from "react-hot-toast";
 import ActionProtection from "@/router/authentication/action-protection";
+import HomeFooter from "@/components/home/Footer";
 
 function timeToMinutes(timeStr) {
   const [hours, minutes] = timeStr.split(":").map(Number);
@@ -148,11 +149,12 @@ function SingleRoom() {
 
   return (
     <Page className="sm:space-y-18 sm:pt-10 lg:space-y-24">
-      <Section>
+      <Section className='min-h-screen'>
         <RoomDetails {...room}>
           <div className="flex w-full justify-end">
             <Dialog className="shadow-none" modal={false}>
-              <ActionProtection className="w-30 max-md:w-full"
+              <ActionProtection
+                className="w-30 max-md:w-full"
                 guest={
                   <Button className="w-30 max-md:w-full">
                     <Pin className="h-4 w-4" /> Book Now
@@ -182,6 +184,8 @@ function SingleRoom() {
           </div>
         </RoomDetails>
       </Section>
+
+      <HomeFooter />
     </Page>
   );
 }

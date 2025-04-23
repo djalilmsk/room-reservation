@@ -4,6 +4,8 @@ import Landing from "../pages/home/Landing";
 import Rooms from "../pages/home/Rooms";
 import SingleRoom from "@/pages/home/SingleRoom";
 import About from "@/pages/home/About";
+import RouteProtection from "./authentication/route-protection";
+import SingleNotification from "@/pages/home/SingleNotification";
 
 export const home = {
   path: "/",
@@ -32,7 +34,20 @@ export const home = {
     },
     {
       path: "/notifications",
-      element: <Notification />,
+      element: (
+        <RouteProtection permission="client">
+          <Notification />
+        </RouteProtection>
+      ),
+      // errorElement: <ErrorElement />,
+    },
+    {
+      path: "/notifications/:id",
+      element: (
+        <RouteProtection permission="client">
+          <SingleNotification />
+        </RouteProtection>
+      ),
       // errorElement: <ErrorElement />,
     },
   ],

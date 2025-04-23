@@ -1,3 +1,4 @@
+import HomeFooter from "@/components/home/Footer";
 import Features from "@/components/home/Landing/Features";
 import Hero from "@/components/home/Landing/Hero";
 import Reviews from "@/components/home/Landing/Reviews";
@@ -13,6 +14,7 @@ function Guest() {
       <Features />
       <Rooms />
       <Reviews />
+      <HomeFooter />
     </>
   );
 }

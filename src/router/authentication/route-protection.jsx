@@ -8,6 +8,7 @@ function RouteProtection({ permission = "admin", children }) {
   const requiredPermission = permission.toLowerCase();
 
   if (role === requiredPermission) return <>{children}</>;
+  if (requiredPermission === "client" && role !== "guest") return <>{children}</>;
   if (role === "admin" && requiredPermission !== "guest") return <>{children}</>;
 
   return <PageNotFound />;
