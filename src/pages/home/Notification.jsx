@@ -18,7 +18,7 @@ const NotificationItem = ({ notification }) => {
     booking: { icon: Pin },
   }[notification?.type?.toLowerCase()] || { icon: MessageCircle };
 
-  const isRead = notification?.status === "Sent" ? true : false;
+  const isRead = notification?.status === "Read" ? true : false;
 
   return (
     <div className="hover:bg-muted-foreground/20 flex flex-col gap-1 border-b py-4 transition-all duration-300">
@@ -83,7 +83,7 @@ function Notification() {
   const { mutate } = useMutation({
     mutationFn: async (notificationId) => {
       const res = await customFetch.patch(`/notifications/${notificationId}`, {
-        status: "Sent",
+        status: "Read",
       });
       return res.data.notification;
     },
@@ -93,7 +93,7 @@ function Notification() {
       queryClient.setQueryData(["notifications"], (old) => {
         return old.map((notification) => {
           if (notification.notification_id === data.notification_id) {
-            return { ...notification, status: "Sent" };
+            return { ...notification, status: "Read" };
           }
           return notification;
         });

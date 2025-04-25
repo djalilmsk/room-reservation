@@ -33,7 +33,6 @@ function App() {
 
   socket.on("notification", (notification) => {
     console.log("📨 Notification received:", notification);
-    alert("🔔 " + notification.message);
   });
 
   return <RouterProvider router={router} />;
