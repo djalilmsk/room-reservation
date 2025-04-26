@@ -24,7 +24,7 @@ function Trigger() {
 export function MenuTrigger() {
   return (
     <Sheet>
-      <SheetTrigger className="flex items-center">
+      <SheetTrigger className="flex items-center lg:hidden"> 
         <Trigger />
       </SheetTrigger>
       <SheetContent side="left">

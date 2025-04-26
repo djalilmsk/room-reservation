@@ -21,72 +21,45 @@ import {
 } from "@/components/ui/drawer";
 
 function timeToMinutes(timeStr) {
-  if (!timeStr || typeof timeStr !== "string") return 0;
-  const [hours, minutes] = timeStr.split(":").map(Number);
-  return isNaN(hours) || isNaN(minutes) ? 0 : hours * 60 + minutes;
+  if (!timeStr) return 0;
+  const [hours = 0, minutes = 0] = timeStr.split(":").map(Number);
+  return hours * 60 + minutes;
 }
 
 const schema = filtersSchema
   .refine(
-    (data) => {
-      if (data.start_time && !data.end_time) return false;
-      if (!data.start_time && data.end_time) return false;
-      return true;
-    },
+    ({ start_time, end_time }) =>
+      !((start_time && !end_time) || (!start_time && end_time)),
     {
       path: ["start_time"],
       message: "Please select both start and end time",
     },
   )
   .refine(
-    (data) => {
-      if (data.start_time && data.end_time) {
-        return timeToMinutes(data.start_time) < timeToMinutes(data.end_time);
-      }
-      return true; // Skip validation if either time is empty
-    },
+    ({ start_time, end_time }) =>
+      !start_time ||
+      !end_time ||
+      timeToMinutes(start_time) < timeToMinutes(end_time),
     {
       path: ["start_time"],
       message: "Start time must be before end time",
     },
   );
 
-function FiltersForm({
-  form,
-  onSubmit: externalSubmit,
-  onError: externalError,
-  className,
-}) {
-  const onSubmit = (data) => {
-    if (externalSubmit) {
-      externalSubmit(data);
-    }
-  };
-
-  const onError = (err) => {
-    if (externalError) {
-      externalError(err);
-    }
-  };
-
+function FiltersForm({ form, className, onSubmit }) {
   return (
     <form
-      onSubmit={form?.handleSubmit(onSubmit, onError)}
+      onSubmit={form.handleSubmit(onSubmit)}
       className={cn("flex w-full items-end gap-4 max-xl:flex-wrap", className)}
     >
       <div className="w-full">
         <FormField
-          control={form?.control}
-          name={"search"}
+          control={form.control}
+          name="search"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm">Name Search</FormLabel>
-              <Input
-                type="text"
-                placeholder="Search by name"
-                className="w-full"
-                {...field}
-              />
+              <Input type="text" placeholder="Search by name" {...field} />
             </FormItem>
           )}
         />
@@ -104,9 +77,10 @@ function FiltersForm({
         <RoomCapacity form={form} name="roomCapacity" />
       </div>
 
-      <div className="max-xl:w-full max-xl:mt-4">
-        <Button type="submit" className="w-full">
-          <Search className="h-4 w-4" /> Apply Filters
+      <div className="max-xl:mt-4 max-xl:w-full">
+        <Button data-drawer-focus type="submit" className="w-full">
+          <Search className="h-4 w-4" />
+          Apply Filters
         </Button>
       </div>
     </form>
@@ -125,43 +99,34 @@ function Filters() {
     },
   });
 
-  const onSubmit = (data) => {
+  const handleSubmit = (data) => {
     console.log(data);
-    // Handle form submission (e.g., API call or state update)
-  };
-
-  const onError = (err) => {
-    // Handle form errors (e.g., display toast notification)
+    const drawerCloseButton = document.getElementById("drawer-close-button");
+    drawerCloseButton?.click();
   };
 
   return (
     <div className="space-y-6">
       <Form {...form}>
         <Drawer>
-          <DrawerTrigger className="w-full mb-2 xl:hidden">
-            <Button className="w-full " type="button" variant="secondary">
+          <DrawerTrigger asChild className="mb-2 w-full xl:hidden">
+            <Button type="button" variant="secondary" className="w-full">
               <Filter className="h-4 w-4" />
               Filters
             </Button>
           </DrawerTrigger>
+
           <DrawerContent className="flex items-center justify-center pb-10">
             <div className="max-w-[400px] px-4">
               <DrawerHeader>
                 <DrawerTitle />
                 <DrawerDescription />
               </DrawerHeader>
-              <FiltersForm
-                form={form}
-                onSubmit={(data) => {
-                  onSubmit(data);
-                  // Optionally close the drawer after submission
-                  document.getElementById("drawer-close-button")?.click();
-                }}
-                onError={onError}
-              />
 
-              <DrawerClose className="mt-3 w-full" id="drawer-close-button">
-                <Button variant="outline" className="w-full">
+              <FiltersForm form={form} onSubmit={handleSubmit} />
+
+              <DrawerClose asChild id="drawer-close-button">
+                <Button variant="outline" className="mt-3 w-full">
                   Cancel
                 </Button>
               </DrawerClose>
@@ -169,10 +134,10 @@ function Filters() {
           </DrawerContent>
         </Drawer>
 
+        {/* Desktop Form */}
         <FiltersForm
           form={form}
-          onSubmit={onSubmit}
-          onError={onError}
+          onSubmit={handleSubmit}
           className="max-xl:hidden"
         />
       </Form>

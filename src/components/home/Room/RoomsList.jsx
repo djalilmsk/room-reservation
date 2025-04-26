@@ -5,12 +5,13 @@ import { Plus } from "lucide-react";
 import { Button } from "react-day-picker";
 import { Link } from "react-router-dom";
 
-function RoomsList() {
+function RoomsList({ status = "" }) {
   const { data: rooms, isLoading } = useQuery({
-    queryKey: ["rooms"],
+    queryKey: [`rooms ${status}`],
     queryFn: async () => {
-      const response = await customFetch.get("/rooms");
-      return response.data.rooms;
+      const response = await customFetch.get(`/rooms/${status}`);
+      console.log(response);
+      return response.data.data;
     },
   });
 

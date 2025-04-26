@@ -6,10 +6,13 @@ import { dashboard } from "./router/dashboard";
 import { useEffect } from "react";
 import { socket } from "./utils";
 import { useUser } from "./hooks/useUser";
+import { useQueryClient } from "@tanstack/react-query";
 
 const router = createBrowserRouter([home, auth, dashboard]);
 
 function App() {
+  const queryClient = useQueryClient();
+
   const { data } = useUser();
 
   useEffect(() => {
@@ -31,9 +34,20 @@ function App() {
     };
   }, [data?.id]);
 
-  socket.on("notification", (notification) => {
-    console.log("📨 Notification received:", notification);
-  });
+  useEffect(() => {
+    const handleNotification = (notification) => {
+      queryClient.setQueryData(["notifications"], (old) => {
+        return [notification, ...(old || [])];
+      });
+      console.log(notification);
+    };
+
+    socket.on("notification", handleNotification);
+
+    return () => {
+      socket.off("notification", handleNotification);
+    };
+  }, [queryClient]);
 
   return <RouterProvider router={router} />;
 }

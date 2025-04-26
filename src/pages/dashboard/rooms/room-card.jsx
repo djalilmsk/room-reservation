@@ -1,4 +1,5 @@
 import { Separator } from "@/components/ui/separator";
+import { useUser } from "@/hooks/useUser";
 import { cn } from "@/lib/utils";
 import { formatPrice } from "@/utils/format/formatPrice";
 import { formatStatus } from "@/utils/format/formatStatus";
@@ -6,6 +7,12 @@ import { Star } from "lucide-react";
 
 function RoomCard({ data }) {
   if (!data) return;
+
+  const { role_name } = useUser()?.data || { role_name: "guest" };
+
+  const showStatus =
+    role_name?.toLowerCase() === "admin" ||
+    role_name?.toLowerCase() === "room manager";
 
   const {
     name,
@@ -53,7 +60,7 @@ function RoomCard({ data }) {
         </div>
         <div className="flex items-end justify-between">
           {formatPrice(pricing)}
-          {formatStatus(status)}
+          {showStatus && formatStatus(status)}
         </div>
       </div>
     </div>

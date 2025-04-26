@@ -23,7 +23,16 @@ function Landing() {
   const { data, token } = useUser();
   const isGuest = data === undefined ? true : false;
 
-  return <Page>{isGuest ? <Guest /> : <UserActions />}</Page>;
+  return (
+    <Page
+      className={
+        isGuest ||
+        "space-y-12 max-sm:pt-12 sm:space-y-24"
+      }
+    >
+      {isGuest ? <Guest /> : <UserActions />}
+    </Page>
+  );
 }
 
 export default Landing;

@@ -3,7 +3,7 @@ import { Section, SectionTitle } from "@/components/ui/section";
 import { Separator } from "@/components/ui/separator";
 import { useUser } from "@/hooks/useUser";
 import { cn } from "@/lib/utils";
-import { customFetch } from "@/utils";
+import { customFetch, socket } from "@/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check, MessageCircle, Pin } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -72,6 +72,7 @@ const NotificationItem = ({ notification }) => {
 
 function Notification() {
   const queryClient = useQueryClient();
+
   const { data } = useQuery({
     queryKey: ["notifications"],
     queryFn: async () => {
@@ -108,7 +109,7 @@ function Notification() {
   };
 
   return (
-    <Page className="space-y-6 max-sm:pt-18 sm:space-y-22 md:pt-10 xl:space-y-32">
+    <Page className="space-y-6 max-sm:pt-18 sm:space-y-26 md:pt-0 xl:space-y-32">
       <Section>
         {data?.length !== 0 ? (
           data?.map((notification) => (
@@ -117,7 +118,7 @@ function Notification() {
                 handleReadNotification(notification.notification_id)
               }
               key={notification.notification_id}
-              to={`/notifications/${notification.notification_id}`}
+              to={`/notifications/${notification.bookingId}`}
             >
               <NotificationItem notification={notification} />
             </Link>

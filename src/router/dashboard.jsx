@@ -103,7 +103,7 @@ export const dashboard = {
         },
         {
           path: "/dashboard/bookings/booking-history",
-          element: <BookingList status="history" title="Booking History" />,
+          element: <BookingList status="other" title="Booking History" />,
           // errorElement: <ErrorElement />,
         },
         // {

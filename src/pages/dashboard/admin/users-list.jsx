@@ -17,8 +17,16 @@ import { DataTable } from "@/components/ui/data-table";
 import toast from "react-hot-toast";
 import { defaults } from "@/utils/format/toast-styles";
 
-const ManagmentMenu = ({ userId, currentRole, onRoleChange, onDelete, isPending }) => {
-  const [position, setPosition] = useState(currentRole?.toLowerCase() || "client");
+const ManagmentMenu = ({
+  userId,
+  currentRole,
+  onRoleChange,
+  onDelete,
+  isPending,
+}) => {
+  const [position, setPosition] = useState(
+    currentRole?.toLowerCase() || "client",
+  );
 
   const handleRoleChangeLocal = (newRole) => {
     setPosition(newRole);
@@ -66,7 +74,12 @@ const ManagmentMenu = ({ userId, currentRole, onRoleChange, onDelete, isPending 
 function UsersList() {
   const queryClient = useQueryClient();
 
-  const { data: users, isLoading, isError, error } = useQuery({
+  const {
+    data: users,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const res = await customFetch.get("/user");
@@ -76,7 +89,7 @@ function UsersList() {
 
   const { mutate: updateRole, isPending: isRoleUpdating } = useMutation({
     mutationFn: async ({ userId, data }) => {
-      const res = await customFetch.patch(`/user/${userId}`, data);
+      const res = await customFetch.patch(`/user/${userId}/role`, data);
       return res.data;
     },
     onMutate: async ({ userId, data }) => {
@@ -85,8 +98,8 @@ function UsersList() {
 
       queryClient.setQueryData(["users"], (old) =>
         old.map((user) =>
-          user.id === userId ? { ...user, role_name: data.role } : user
-        )
+          user.id === userId ? { ...user, role_name: data.role } : user,
+        ),
       );
 
       return { previousUsers };
@@ -96,7 +109,7 @@ function UsersList() {
       toast.success("User role updated successfully!", {
         style: defaults,
       });
-      console.log(data)
+      console.log(data);
     },
     onError: (error, variables, context) => {
       // Rollback to previous state on error
@@ -117,11 +130,11 @@ function UsersList() {
       await queryClient.cancelQueries({ queryKey: ["users"] });
       const previousUsers = queryClient.getQueryData(["users"]);
       queryClient.setQueryData(["users"], (old) =>
-        old.filter((user) => user.id !== userId)
+        old.filter((user) => user.id !== userId),
       );
       return { previousUsers };
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       toast.success("User deleted successfully!", {
         style: defaults,
@@ -158,16 +171,16 @@ function UsersList() {
       cell: ({ row }) => {
         const role = row.getValue("role_name")?.toLowerCase() || "client";
         const roleStyles = {
-          client: "bg-muted-foreground/40 text-accent-foreground",
+          client: "bg-muted-foreground/40 text-mutate-foreground",
           admin: "bg-secondary text-primary",
-          "room manager": "bg-blue-500/20 text-blue-500",
-          "booking manager": "bg-green-500/20 text-green-500",
+          "room manager": "bg-[#fbbc05]/20 text-[#fbbc05]",
+          "booking manager": "bg-[#fbbc05]/20 text-[#fbbc05]",
         };
         return (
           <div
             className={cn(
               "w-fit rounded-md px-4 py-1 text-center",
-              roleStyles[role] || "bg-gray-200 text-gray-600"
+              roleStyles[role] || "bg-gray-200 text-gray-600",
             )}
           >
             {role}

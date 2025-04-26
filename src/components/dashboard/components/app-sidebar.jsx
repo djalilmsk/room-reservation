@@ -155,7 +155,7 @@ export function AppSidebar({ ...props }) {
         {/* <SheetOverlay /> */}
         <NavMain label="General Settings" items={data.global} />
 
-        <RoleBaseAccess permission="rooms manager">
+        <RoleBaseAccess permission="room manager">
           <NavMain label="Rooms Management" items={data.roomsManagment} />
         </RoleBaseAccess>
 

@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { customFetch } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 
-function BooingList({ status = "pending", title = "Booking Management" }) {
+function BooingList({ status = "Pending", title = "Booking Management" }) {
   const { data = [], isLoading } = useQuery({
     queryKey: ["bookings", status],
     queryFn: async () => {
@@ -16,6 +16,8 @@ function BooingList({ status = "pending", title = "Booking Management" }) {
 
   const bookings = data.map((item) => ({
     ...item,
+    room_name: item.room.name,
+    user_email: item.user.email,
     date: new Date(item.start_time).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -35,17 +37,17 @@ function BooingList({ status = "pending", title = "Booking Management" }) {
 
   const columns = [
     {
-      accessorKey: "user_id",
+      accessorKey: "user_email",
       header: "User",
       cell: ({ row }) => (
-        <div className="w-24 truncate">{row.getValue("user_id")}</div>
+        <div className="max-w-40 truncate">{row.getValue("user_email")}</div>
       ),
     },
     {
-      accessorKey: "room_id",
+      accessorKey: "room_name",
       header: "Room",
       cell: ({ row }) => (
-        <div className="w-fit px-3 text-center">{row.getValue("room_id")}</div>
+        <div className="w-fit">{row.getValue("room_name")}</div>
       ),
     },
     {

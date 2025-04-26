@@ -1,15 +1,16 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Section } from "@/components/ui/section";
 import { CalendarCheck, DoorOpen, FileQuestion, Home } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Copyright } from "../Footer";
+import { cn } from "@/lib/utils";
 
 const actions = [
   {
     title: "Book a Room",
-    description: "Schedule a Meeting Space for Your Team",
+    description: "Schedule a Meeting Space for you",
     button: "Book Now",
     to: "/rooms",
     icon: Home,
@@ -21,20 +22,6 @@ const actions = [
     to: "/current-bookings",
     icon: CalendarCheck,
   },
-  {
-    title: "Available Now",
-    description: "Find all rooms available right now",
-    button: "Check Available",
-    to: "/rooms?available=true",
-    icon: DoorOpen,
-  },
-  {
-    title: "Something",
-    description: "Do something with this action",
-    button: "Do something",
-    to: "/?do=something",
-    icon: FileQuestion,
-  },
 ];
 
 function ActionCard({ action }) {
@@ -43,8 +30,12 @@ function ActionCard({ action }) {
   return (
     <div className="bg-secondary/40 flex h-full w-full flex-col justify-between gap-3 rounded-xl p-5">
       <action.icon className="text-primary h-8 w-8" />
-      <h1 className="text-lg font-bold">{title}</h1>
-      <p className="text-secondary-foreground text-sm">{description}</p>
+      <div>
+        <h1 className="text-lg font-bold max-sm:text-base">{title}</h1>
+        <p className="text-secondary-foreground text-sm max-sm:text-xs">
+          {description}
+        </p>
+      </div>
       <Link to={to}>
         <Button size="sm">{button}</Button>
       </Link>
@@ -58,15 +49,23 @@ function UserActions() {
   console.log(date);
 
   return (
-    <Section>
-      <div className="flex min-h-screen gap-5 max-[800px]:flex-col">
-        <div className="flex w-fit flex-col gap-2 rounded-lg">
+    <Section className="@container flex min-h-screen flex-col justify-between">
+      <div className="flex gap-5 max-[800px]:flex-col-reverse">
+        <div className="flex w-full flex-col gap-2 rounded-lg sm:w-fit">
           <h2 className="text-lg font-bold">Calendar</h2>
           <Calendar
             mode="single"
             selected={date}
             onSelect={setDate}
-            className="bg-secondary/40 rounded-xl p-5"
+            className={"bg-secondary/40 rounded-xl p-5 max-sm:w-full"}
+            classNames={{
+              head_row: "flex w-full justify-between",
+              row: "flex w-full mt-2 justify-between",
+              day: cn(
+                buttonVariants({ variant: "ghost" }),
+                "size-8 p-0 font-normal aria-selected:opacity-100",
+              ),
+            }}
             disabled={(date) => {
               const now = new Date();
               const max = new Date();
@@ -75,9 +74,10 @@ function UserActions() {
             }}
           />
         </div>
+
         <div className="w-full space-y-2">
           <h2 className="text-lg font-bold">Quick Actions</h2>
-          <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3">
             {actions.map((action, index) => (
               <ActionCard key={index} action={action} />
             ))}

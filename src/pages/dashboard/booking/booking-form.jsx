@@ -50,6 +50,17 @@ const schema = bookingSchema
       path: ["start_time"],
       message: "Booking time must be at least 1 hour",
     },
+  )
+  .refine(
+    (data) => {
+      const startTime = timeToMinutes(data.start_time);
+      const endTime = timeToMinutes(data.end_time);
+      return endTime - startTime >= 240;
+    },
+    {
+      path: ["start_time"],
+      message: "Booking time must be less than 4 hour",
+    },
   );
 
 function BookingForm({ onSubmit: externalOnSubmit, defaultValues, isLoading }) {
