@@ -76,7 +76,15 @@ export function CalendarField({
               <Calendar
                 mode={mode}
                 selected={date}
-                onSelect={handleChange}
+                onSelect={(selectedDate) => {
+                  if (selectedDate?.getTime() === date?.getTime()) {
+                    setDate(null);
+                    form.setValue(name, null);
+                  } else {
+                    setDate(selectedDate);
+                    form.setValue(name, selectedDate);
+                  }
+                }}
                 disabled={disabled}
                 initialFocus
               />

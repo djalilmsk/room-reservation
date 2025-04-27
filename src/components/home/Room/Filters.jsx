@@ -19,6 +19,9 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { useMutation } from "@tanstack/react-query";
+import { customFetch } from "@/utils";
+import { replace, useNavigate } from "react-router-dom";
 
 function timeToMinutes(timeStr) {
   if (!timeStr) return 0;
@@ -66,7 +69,17 @@ function FiltersForm({ form, className, onSubmit }) {
       </div>
 
       <div className="w-full">
-        <CalendarField form={form} label="Booking Date" name="date" />
+        <CalendarField
+          form={form}
+          label="Booking Date"
+          name="date"
+          disabled={(date) => {
+            const now = new Date();
+            const max = new Date();
+            max.setMonth(max.getMonth() + 3);
+            return date <= now || date >= max;
+          }}
+        />
       </div>
 
       <div className="w-full">
@@ -88,21 +101,61 @@ function FiltersForm({ form, className, onSubmit }) {
 }
 
 function Filters() {
+  const navigate = useNavigate();
+
+  const params = new URLSearchParams(window.location.search);
+
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      search: "",
-      date: null,
-      start_time: "",
-      end_time: "",
-      roomCapacity: 0,
+      search: params.get("search") || "",
+      date: params.get("date") ? new Date(params.get("date")) : null,
+      start_time: params.get("start_time")
+        ? new Date(params.get("start_time")).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "",
+      end_time: params.get("end_time")
+        ? new Date(params.get("end_time")).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "",
+      roomCapacity: parseInt(params.get("capacity"), 10) || 0,
     },
   });
 
+  const toDateTime = (timeStr, date) => {
+    if (!timeStr && !date) return;
+    const dateTime = new Date(date || new Date());
+    const [hours, minutes] = timeStr.split(":").map(Number);
+    dateTime.setHours(hours + 1, minutes, 0, 0);
+    return dateTime.toISOString();
+  };
+
   const handleSubmit = (data) => {
-    console.log(data);
-    const drawerCloseButton = document.getElementById("drawer-close-button");
-    drawerCloseButton?.click();
+    const [timeStart, timeEnd] =
+      data.date !== null && data.start_time === ""
+        ? ["07:00", "18:00"]
+        : [data.start_time, data.end_time];
+    const { search, roomCapacity, start_time, end_time } = {
+      start_time: toDateTime(timeStart, data.date),
+      end_time: toDateTime(timeEnd, data.date),
+      roomCapacity: data.roomCapacity,
+      search: data.search,
+    };
+
+    const queryParams = new URLSearchParams();
+
+    if (search) queryParams.append("search", search);
+    if (roomCapacity) queryParams.append("capacity", roomCapacity);
+    if (start_time) queryParams.append("start_time", start_time);
+    if (end_time) queryParams.append("end_time", end_time);
+
+    navigate(`?${queryParams.toString()}`, { replace: true });
+
+    document.getElementById("drawer-close-button")?.click();
   };
 
   return (

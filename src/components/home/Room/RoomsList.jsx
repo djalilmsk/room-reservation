@@ -3,13 +3,30 @@ import { customFetch } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { Button } from "react-day-picker";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 function RoomsList({ status = "" }) {
+  const queryParams = new URLSearchParams();
+  const [searchParams] = useSearchParams();
+
+  const startTime = searchParams.get("start_time");
+  const endTime = searchParams.get("end_time");
+  const search = searchParams.get("search");
+  const capacity = searchParams.get("capacity");
+
+  if (search) queryParams.append("search", search);
+  if (capacity) queryParams.append("capacity", capacity);
+  if (startTime) queryParams.append("start_time", startTime);
+  if (endTime) queryParams.append("end_time", endTime);
+
+  console.log(`/rooms/${status}${queryParams.toString()}`);
+
   const { data: rooms, isLoading } = useQuery({
-    queryKey: [`rooms ${status}`],
+    queryKey: [`rooms ${status}`, queryParams.toString()],
     queryFn: async () => {
-      const response = await customFetch.get(`/rooms/${status}`);
+      const response = await customFetch.get(
+        `/rooms/${status}?${queryParams.toString()}`,
+      );
       console.log(response);
       return response.data.data;
     },
