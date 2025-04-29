@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { customFetch } from "@/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Edit, XCircle } from "lucide-react";
+import { CheckCircle, Edit, XCircle } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import RoomCard from "../rooms/room-card";
 import { Separator } from "@/components/ui/separator";
@@ -157,6 +157,32 @@ function SingleBooking() {
     mutate();
   };
 
+  const { mutate: update, isPending: isUpdating } = useMutation({
+    mutationFn: async (booking) => {
+      const response = await customFetch.patch(`/bookings/${id}`, booking);
+      return response.data.updatedBooking;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["booking"]);
+      queryClient.setQueryData(["booking", id], data);
+      toast.success("Booking updated successfully!", {
+        style: defaults,
+      });
+
+      navigate(`/dashboard/bookings/${id}`, { replace: true });
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to update booking.", {
+        style: defaults,
+      });
+    },
+  });
+
+  const handleUpdate = (data) => {
+    update(data);
+  };
+
   return (
     <div className="@container space-y-8">
       <div className="flex items-center justify-between">
@@ -178,19 +204,55 @@ function SingleBooking() {
         roomLink={`/dashboard/rooms/${room_id}`}
         {...bookingDetail}
       />
-      <div className="w-full text-center">
+      <div
+        className={cn(
+          "flex w-full items-center justify-between",
+          status === "Pending" || "justify-center",
+        )}
+      >
         <Button
           variant="destructive_secondary"
           className="hover:bg-destructive/20 bg-transparent"
           onClick={handleDelete}
+          disabled={isUpdating || isPending}
         >
           {buttonLabel(
             isPending,
             <>
-              <XCircle /> Delete Booking
+              <XCircle className="size-4" /> Delete Booking
             </>,
           )}
         </Button>
+        {status === "Pending" && (
+          <div className="space-x-1">
+            <Button
+              variant="destructive_secondary"
+              className="hover:bg-destructive/20 bg-transparent"
+              onClick={() => handleUpdate({ status: "Canceled" })}
+              disabled={isUpdating || isPending}
+            >
+              {buttonLabel(
+                isUpdating,
+                <>
+                  <XCircle className="size-4" /> Cancel Booking
+                </>,
+              )}
+            </Button>
+            <Button
+              variant="secondary"
+              className="hover:bg-primary/20 bg-transparent"
+              onClick={() => handleUpdate({ status: "Confirmed" })}
+              disabled={isUpdating}
+            >
+              {buttonLabel(
+                isUpdating || isPending,
+                <>
+                  <CheckCircle className="size-4" /> Accept Booking
+                </>,
+              )}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

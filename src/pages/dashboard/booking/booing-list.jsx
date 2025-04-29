@@ -3,11 +3,18 @@ import { cn } from "@/lib/utils";
 import { customFetch } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
 
-function BooingList({ status = "Pending", title = "Booking Management" }) {
+function BooingList({
+  status = "Pending",
+  url = "",
+  title = "Booking Management",
+  to = "/dashboard/bookings",
+}) {
   const { data = [], isLoading } = useQuery({
-    queryKey: ["bookings", status],
+    queryKey: ["bookings", status, url],
     queryFn: async () => {
-      const response = await customFetch.get(`/bookings?status=${status}`);
+      const response = await customFetch.get(
+        `/bookings${url}?status=${status}`,
+      );
       return response.data.bookings;
     },
   });
@@ -16,8 +23,8 @@ function BooingList({ status = "Pending", title = "Booking Management" }) {
 
   const bookings = data.map((item) => ({
     ...item,
-    room_name: item.room.name,
-    user_email: item.user.email,
+    room_name: item?.room?.name || item?.room_id,
+    user_email: item?.user?.email || null,
     date: new Date(item.start_time).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -35,8 +42,10 @@ function BooingList({ status = "Pending", title = "Booking Management" }) {
     }),
   }));
 
+  const hasUserEmail = bookings.some((item) => item.user_email);
+
   const columns = [
-    {
+    hasUserEmail && {
       accessorKey: "user_email",
       header: "User",
       cell: ({ row }) => (
@@ -86,12 +95,12 @@ function BooingList({ status = "Pending", title = "Booking Management" }) {
         );
       },
     },
-  ];
+  ].filter(Boolean); // Remove falsy (e.g. `false`) values if user_email is not present
 
   return (
     <div className="@container space-y-8">
       <h1 className="text-2xl font-bold">{title}</h1>
-      <DataTable columns={columns} data={bookings} to="/dashboard/bookings" />
+      <DataTable columns={columns} data={bookings} to={to} />
     </div>
   );
 }
