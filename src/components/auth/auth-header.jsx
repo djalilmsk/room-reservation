@@ -5,7 +5,6 @@ import { Link, useLocation } from "react-router-dom";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
-import NavLinks from "../navigation/nav-links";
 
 gsap.registerPlugin(useGSAP);
 

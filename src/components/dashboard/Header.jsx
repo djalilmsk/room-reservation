@@ -1,14 +1,10 @@
 import Logo from "@/assets/Logo.svg";
-import NavLinks from "../navigation/nav-links";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
-import { useSelector } from "react-redux";
-import { useUser } from "@/hooks/useUser";
 import UserAvatar from "../user/UserAvatar";
 import { SidebarTrigger } from "../ui/sidebar";
 import { Separator } from "../ui/separator";
