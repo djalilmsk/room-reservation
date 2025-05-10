@@ -6,13 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
 import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
-
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 // Generate 30-minute time slots for a specific date
 const generateTimeSlots = (date) => {
@@ -36,11 +30,10 @@ const generateTimeSlots = (date) => {
 };
 
 function RoomBookings() {
-  const btn = useRef(null);
-  const section = useRef(null);
   const { id } = useParams();
   const [page, setPage] = useState(1);
   const [showAll, setShowAll] = useState(false);
+  const [parent] = useAutoAnimate(/* optional config */);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["room-bookings", id, page],
@@ -72,17 +65,18 @@ function RoomBookings() {
 
   return (
     <Section
-      ref={section}
       className={cn("relative mt-10", !showAll && "h-140 overflow-hidden")}
     >
       <h1 className="py-5 text-2xl font-semibold">Current Room Bookings</h1>
       <div
         className={
           !showAll &&
-          "[mask-image:linear-gradient(to_bottom,black,transparent_40%)]"
+          "[mask-image:linear-gradient(to_bottom,black,transparent_95%)]"
         }
+        ref={parent}
       >
         {data.map((day, dayIndex) => {
+          if (!showAll && dayIndex >= 3) return <></>;
           const bookingDate = day.date
             ? new Date(day.booking.start_time)
             : new Date(
@@ -93,8 +87,11 @@ function RoomBookings() {
           const slots = generateTimeSlots(bookingDate);
 
           return (
-            <div key={dayIndex} className="mb-4 flex flex-wrap gap-2">
-              <h3 className="w-full text-lg font-semibold">
+            <div
+              key={dayIndex}
+              className="mb-4 flex flex-wrap gap-2 max-sm:grid max-sm:grid-cols-4"
+            >
+              <h3 className="w-full text-lg font-semibold max-sm:col-span-4">
                 {bookingDate.toDateString()}
               </h3>
               {slots.map((slot, i) => {
@@ -112,7 +109,7 @@ function RoomBookings() {
                   <div
                     key={`${dayIndex}-${i}`}
                     className={cn(
-                      "flex h-12 w-20 items-center justify-center rounded text-sm",
+                      "flex h-12 w-20 items-center justify-center rounded text-sm max-sm:w-full",
                       isInBookingRange
                         ? "bg-primary/40"
                         : "bg-muted-foreground/40",
@@ -131,7 +128,9 @@ function RoomBookings() {
         })}
       </div>
 
-      <div className="mt-4 flex justify-between">
+      <div
+        className={cn("mt-4 flex justify-between", !showAll ? "hidden" : "")}
+      >
         <Button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
@@ -148,7 +147,6 @@ function RoomBookings() {
           </Button>{" "}
           -
           <Button
-            ref={btn}
             onClick={() => {
               setShowAll((prv) => !prv);
               setPage(1);
@@ -174,7 +172,7 @@ function RoomBookings() {
           showAll ? "hidden" : "sticky bottom-0",
         )}
       >
-        <Button ref={btn} onClick={() => setShowAll((prv) => !prv)} size="sm">
+        <Button onClick={() => setShowAll((prv) => !prv)} size="sm">
           Show More
         </Button>
       </div>
