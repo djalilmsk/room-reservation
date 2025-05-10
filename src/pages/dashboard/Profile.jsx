@@ -55,8 +55,7 @@ function Preview({ data }) {
           style: defaults,
         });
       },
-      onError: (error) => {
-        console.error("Error updating profile image:", error);
+      onError: () => {
         toast.error("Failed to update profile image", {
           style: defaults,
         });
@@ -64,8 +63,7 @@ function Preview({ data }) {
     });
   };
 
-  const onError = (error) => {
-    console.error("Error updating profile image:", error);
+  const onError = () => {
     toast.error("Failed to update profile image", {
       style: defaults,
     });

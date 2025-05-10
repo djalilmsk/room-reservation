@@ -99,8 +99,6 @@ function Notification() {
           return notification;
         });
       });
-
-      console.log(data);
     },
   });
 

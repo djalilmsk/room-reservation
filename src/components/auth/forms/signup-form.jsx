@@ -45,17 +45,26 @@ export function FirstContent() {
   });
 
   const onSubmit = (data) => {
-    dispatch(setData({ fieldName: "firstName", newData: data.firstName.replace(/ /g, "_") }));
-    dispatch(setData({ fieldName: "lastName", newData: data.lastName.replace(/ /g, "_") }));
+    dispatch(
+      setData({
+        fieldName: "firstName",
+        newData: data.firstName.replace(/ /g, "_"),
+      }),
+    );
+    dispatch(
+      setData({
+        fieldName: "lastName",
+        newData: data.lastName.replace(/ /g, "_"),
+      }),
+    );
     dispatch(setData({ fieldName: "email", newData: data.email }));
-    dispatch(setData({ fieldName: "agreedToTerms", newData: data.agreedToTerms}));
-    console.log("Form submitted with data:", data);
+    dispatch(
+      setData({ fieldName: "agreedToTerms", newData: data.agreedToTerms }),
+    );
     navigate("/auth/signup/password");
   };
 
-  const onError = (errors) => {
-    console.error("Form errors:", errors);
-  };
+  const onError = () => {};
 
   return (
     <Form {...form}>

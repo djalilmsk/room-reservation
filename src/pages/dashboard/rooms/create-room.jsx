@@ -27,8 +27,7 @@ function CreateRoom() {
 
       navigate(`/dashboard/rooms/${data.finalRoom.id}`);
     },
-    onError: (err) => {
-      console.error("Error creating room:", err.response?.data || err.message);
+    onError: () => {
       toast.error("Failed to create room.", {
         style: defaults,
       });

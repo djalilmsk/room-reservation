@@ -5,33 +5,24 @@ import { formatPrice } from "@/utils/format/formatPrice";
 import { formatStatus } from "@/utils/format/formatStatus";
 import { Star } from "lucide-react";
 
-function RoomCard({ data }) {
-  if (!data) return;
+const AmenityLabel = ({ amenity, label }) => (
+  <div className="text-secondary-foreground text-sm">
+    {amenity} {label}
+  </div>
+);
 
+function RoomCard({ data }) {
   const { role_name } = useUser()?.data || { role_name: "guest" };
+  if (!data) return <></>;
 
   const showStatus =
     role_name?.toLowerCase() === "admin" ||
     role_name?.toLowerCase() === "room manager";
 
-  const {
-    name,
-    description,
-    capacity,
-    rating,
-    pricing,
-    status,
-    amenities,
-    images,
-  } = data;
+  const { name, description, rating, pricing, status, amenities, images } =
+    data;
 
   const amenitiesArray = amenities.split(",").map((item) => item.trim());
-
-  const AmenityLabel = ({ amenity, label }) => (
-    <div className="text-secondary-foreground text-sm">
-      {amenity} {label}
-    </div>
-  );
 
   return (
     <div className="hover:bg-primary/10 dark:bg-card dark:hover:bg-primary/10 relative flex flex-col overflow-hidden rounded-xl shadow-sm transition-all duration-200 hover:shadow-sm">
@@ -60,7 +51,7 @@ function RoomCard({ data }) {
         </div>
         <div className="flex items-end justify-between">
           {formatPrice(pricing)}
-          {showStatus && formatStatus(status)}
+          {/* {showStatus && formatStatus(status)} */}
         </div>
       </div>
     </div>

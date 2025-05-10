@@ -107,7 +107,6 @@ function SingleRoom() {
       return response.data;
     },
     onSuccess: (data) => {
-      console.log(data);
       queryClient.invalidateQueries(["bookings"]);
 
       toast.success("Room booked successfully!", {
@@ -116,8 +115,7 @@ function SingleRoom() {
 
       navigate(`/rooms`, { replace: true });
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       toast.error("Failed to book room.", {
         style: defaults,
       });
@@ -125,7 +123,6 @@ function SingleRoom() {
   });
 
   if (isError) {
-    console.error(error);
     return <div>Error loading room details.</div>;
   }
 
@@ -145,8 +142,6 @@ function SingleRoom() {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
-
     const postDate = {
       user_id: user.id,
       room_id: id,
@@ -154,7 +149,6 @@ function SingleRoom() {
       end_time: mergeTimeWithDate(data.date, data.end_time),
     };
 
-    console.log(postDate);
     mutate(postDate);
     form.reset();
   };
@@ -190,7 +184,7 @@ function SingleRoom() {
                   onSubmit={onSubmit}
                   form={form}
                   isPending={isPending}
-                />
+                ></BookingForm>
               </DialogContent>
             </Dialog>
           </div>

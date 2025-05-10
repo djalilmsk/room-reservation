@@ -19,15 +19,12 @@ function RoomsList({ status = "" }) {
   if (startTime) queryParams.append("start_time", startTime);
   if (endTime) queryParams.append("end_time", endTime);
 
-  console.log(`/rooms/${status}${queryParams.toString()}`);
-
   const { data: rooms, isLoading } = useQuery({
     queryKey: [`rooms ${status}`, queryParams.toString()],
     queryFn: async () => {
       const response = await customFetch.get(
         `/rooms/${status}?${queryParams.toString()}`,
       );
-      console.log(response);
       return response.data.data;
     },
   });

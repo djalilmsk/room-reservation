@@ -49,15 +49,13 @@ function SingleRoom() {
 
       navigate("/dashboard/rooms");
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       toast.error("Failed to delete room.", {
         style: defaults,
       });
     },
   });
 
-  if (isError) console.log(error);
   if (isLoading) return "loading";
 
   if (!room) {

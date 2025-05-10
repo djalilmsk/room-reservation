@@ -37,7 +37,6 @@ function IconLabel({ className, to, children, content }) {
 
 function UserAvatar({ className, moreLinks = true }) {
   const { data } = useUser();
-  console.log(data);
   const { image, name } = data;
   const fallback =
     `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`.toUpperCase();

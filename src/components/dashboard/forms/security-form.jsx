@@ -58,7 +58,6 @@ export function SecurityForm() {
   const { mutate: deleteUser, isPending: isDeleting } = useMutation({
     mutationFn: async () => {
       const response = await customFetch.delete("/user/me");
-      console.log(response.data);
       return response.data;
     },
     onSuccess: () => {
@@ -69,7 +68,6 @@ export function SecurityForm() {
       });
     },
     onError: (err) => {
-      console.error(err);
       toast.error("Error deleting account", {
         style: defaults,
       });
@@ -77,18 +75,14 @@ export function SecurityForm() {
   });
 
   const onSubmit = (data) => {
-    console.log("Form submitted with data:", data);
-
     mutate(data, {
       onSuccess: (data) => {
-        console.log("Password updated successfully: ", data);
         form.reset();
         toast.success("Password updated successfully!", {
           style: defaults,
         });
       },
       onError: (error) => {
-        console.error("Error updating password:", error);
         toast.error("Error updating password!", {
           style: defaults,
         });
@@ -96,12 +90,9 @@ export function SecurityForm() {
     });
   };
 
-  const onError = (errors) => {
-    console.error("Form errors:", errors);
-  };
+  const onError = () => {};
 
   const handleDelete = () => {
-    console.log("Delete button clicked");
     deleteUser();
   };
 

@@ -65,8 +65,8 @@ function RoomBookings() {
 
   return (
     <Section
-      className={cn("relative mt-10", !showAll && "h-140 overflow-hidden")}
-    >
+      className={cn("relative mt-10", !showAll ? "h-140 overflow-hidden" : "")}
+>
       <h1 className="py-5 text-2xl font-semibold">Current Room Bookings</h1>
       <div
         className={
@@ -99,7 +99,6 @@ function RoomBookings() {
                   const bookingStart = new Date(booking.start_time);
                   const bookingEnd = new Date(booking.end_time);
 
-                  console.log(booking, slot);
                   return (
                     slot.slotEnd > bookingStart && slot.slotStart < bookingEnd
                   );

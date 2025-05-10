@@ -78,12 +78,9 @@ function BookingForm({ onSubmit: externalOnSubmit, defaultValues, isLoading }) {
     if (externalOnSubmit) {
       externalOnSubmit(data);
     }
-    console.log("Form submitted with data:", data);
   };
 
-  const onError = (errors) => {
-    console.error("Validation errors:", errors);
-  };
+  const onError = () => {};
 
   return (
     <Form {...form}>

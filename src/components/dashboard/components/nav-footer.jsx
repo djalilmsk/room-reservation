@@ -10,7 +10,6 @@ export function NavFooter() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("logout");
     navigate("/");
     setTimeout(() => dispatch(logout()), 1);
   };

@@ -33,8 +33,7 @@ function EditBooking() {
 
       navigate(`/dashboard/bookings/${id}`, { replace: true });
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       toast.error("Failed to update booking.", {
         style: defaults,
       });
@@ -71,9 +70,6 @@ function EditBooking() {
   };
 
   const onSubmit = (data) => {
-    console.log(mergeTimeWithDate(data.date, data.start_time));
-    console.log(mergeTimeWithDate(data.date, data.end_time));
-
     const postDate = {
       start_time: mergeTimeWithDate(data.date, data.start_time),
       end_time: mergeTimeWithDate(data.date, data.end_time),

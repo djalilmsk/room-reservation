@@ -6,6 +6,8 @@ import { ProgressState } from "@/components/ui/progress-state";
 import { Outlet, useLocation } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { customFetch } from "@/utils";
+import { defaults } from "@/utils/format/toast-styles";
+import toast from "react-hot-toast";
 
 const steps = [
   "/auth/login/forget-password",
@@ -26,7 +28,11 @@ function ForgetPassword() {
       const response = await customFetch.post("/auth/forgot-password", data);
       return response.data;
     },
-    onError: (err) => console.error(err),
+    onError: () => {
+      toast.error("Some thing wrong happened", {
+        styles: defaults,
+      });
+    },
   });
 
   const handleResent = () => {

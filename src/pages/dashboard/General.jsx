@@ -117,8 +117,7 @@ function General() {
             style: defaults,
           });
         },
-        onError: (err) => {
-          console.error("Error updating email notification:", err);
+        onError: () => {
           form.setValue("emailNotification", emailNotification); // Revert to server value
           toast.error("Error updating email notification!", {
             style: defaults,
