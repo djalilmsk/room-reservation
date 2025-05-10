@@ -77,14 +77,13 @@ export function SecondContent({ label = null }) {
 
   const onSubmit = (data) => {
     dispatch(setData({ fieldName: "password", newData: data.password }));
-    dispatch(setData({ fieldName: "confirmPassword", newData: data.confirmPassword }));
-    console.log("Form submitted with data:", data);
+    dispatch(
+      setData({ fieldName: "confirmPassword", newData: data.confirmPassword }),
+    );
     navigate("/auth/signup/profile-picture");
   };
 
-  const onError = (errors) => {
-    console.error("Form errors:", errors);
-  };
+  const onError = () => {};
 
   return (
     <Form {...form}>

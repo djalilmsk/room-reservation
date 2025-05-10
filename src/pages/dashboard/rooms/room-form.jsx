@@ -149,12 +149,9 @@ function RoomForm({ onSubmit: externalOnSubmit, isLoading, defaultValues }) {
     if (externalOnSubmit) {
       externalOnSubmit(data);
     }
-    console.log(data);
   };
 
-  const onError = (errors) => {
-    console.error(errors);
-  };
+  const onError = () => {};
 
   return (
     <Form {...form}>

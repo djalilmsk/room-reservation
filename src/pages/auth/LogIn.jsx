@@ -41,9 +41,7 @@ function LogIn() {
     mutate(data);
   };
 
-  const onError = (errors) => {
-    console.error("Form errors:", errors);
-  };
+  const onError = () => {};
 
   const SubmitButton = () => (
     <Button disabled={isPending} className="w-full" type="submit">

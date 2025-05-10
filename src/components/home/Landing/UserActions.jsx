@@ -46,8 +46,6 @@ function ActionCard({ action }) {
 function UserActions() {
   const [date, setDate] = useState(new Date());
 
-  console.log(date);
-
   return (
     <Section className="@container flex min-h-screen flex-col justify-between">
       <div className="flex gap-5 max-[800px]:flex-col-reverse">

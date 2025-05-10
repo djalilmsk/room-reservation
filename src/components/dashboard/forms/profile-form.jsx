@@ -91,8 +91,6 @@ function ProfileForm() {
   });
 
   const onSubmit = (data) => {
-    console.log("Form submitted with data:", data);
-
     const formData = new FormData();
     let hasChanges = false;
 
@@ -122,16 +120,12 @@ function ProfileForm() {
     if (hasChanges)
       mutate(formData, {
         onSuccess: (data) => {
-          console.log("Mutation success with data:", data);
-          // navigate("/");
           dispatch(login({ data: data.data.dataValues }));
           toast.success("Profile updated successfully!", {
             style: defaults,
           });
         },
-        // add on error
-        onError: (error) => {
-          console.error("Mutation error:", error);
+        onError: () => {
           toast.error("Error updating profile!", {
             style: defaults,
           });
@@ -139,9 +133,7 @@ function ProfileForm() {
       });
   };
 
-  const onError = (errors) => {
-    console.error("Form errors:", errors);
-  };
+  const onError = () => {};
 
   return (
     <Form {...form}>

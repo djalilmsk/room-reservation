@@ -39,12 +39,10 @@ export function ChangePassword({ label = null }) {
   const { email } = useForgetPassword();
   const { mutate, isPending } = useMutation({
     mutationFn: async (data) => {
-      console.log(data);
       const response = await customFetch.post("/auth/reset-password", data);
       return response.data;
     },
     onSuccess: (data) => {
-      console.log(data);
       navigate("/");
       dispatch(login({ data: data.user }));
       toast.success("Password changed successfully!", {
@@ -52,7 +50,6 @@ export function ChangePassword({ label = null }) {
       });
     },
     onError: (err) => {
-      console.log(err);
       toast.error("An error occurred. Please try again.", {
         style: defaults,
       });
@@ -68,8 +65,6 @@ export function ChangePassword({ label = null }) {
   });
 
   const onSubmit = (data) => {
-    console.log("Form submitted with data:", data);
-
     const postData = {
       newPassword: data.password,
       ...email,
@@ -78,9 +73,7 @@ export function ChangePassword({ label = null }) {
     mutate(postData);
   };
 
-  const onError = (errors) => {
-    console.error("Form errors:", errors);
-  };
+  const onError = () => {};
 
   const handleChange = (value) => {
     let strength;

@@ -19,7 +19,6 @@ function App() {
     if (!data?.id) return;
 
     const handleConnect = () => {
-      console.log("✅ Connected to backend as", socket.id);
       socket.emit("register", { user_id: data.id });
     };
 
@@ -39,7 +38,6 @@ function App() {
       queryClient.setQueryData(["notifications"], (old) => {
         return [notification, ...(old || [])];
       });
-      console.log(notification);
     };
 
     socket.on("notification", handleNotification);

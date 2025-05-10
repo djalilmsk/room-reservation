@@ -109,12 +109,9 @@ function UsersList() {
       toast.success("User role updated successfully!", {
         style: defaults,
       });
-      console.log(data);
     },
-    onError: (error, variables, context) => {
-      // Rollback to previous state on error
+    onError: (context) => {
       queryClient.setQueryData(["users"], context.previousUsers);
-      console.error("Error updating user role:", error);
       toast.error("Failed to update user role!", {
         style: defaults,
       });
@@ -140,9 +137,8 @@ function UsersList() {
         style: defaults,
       });
     },
-    onError: (error, userId, context) => {
+    onError: (context) => {
       queryClient.setQueryData(["users"], context.previousUsers);
-      console.error("Error deleting user:", error);
       toast.error("Failed to delete user!", {
         style: defaults,
       });

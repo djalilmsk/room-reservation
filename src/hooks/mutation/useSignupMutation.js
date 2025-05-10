@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { clearData } from "@/utils/redux/form-cache";
 import { useNavigate } from "react-router-dom";
 import { login } from "@/utils/redux/user";
+import toast from "react-hot-toast";
+import { defaults } from "@/utils/format/toast-styles";
 
 export function useSignupMutation() {
   const dispatch = useDispatch();
@@ -11,18 +13,18 @@ export function useSignupMutation() {
 
   const mutation = useMutation({
     mutationFn: async (formData) => {
-      console.log("Mutation triggered with data:", formData);
       const response = await customFetch.post("/auth/signup", formData);
       return response.data;
     },
     onSuccess: (data) => {
-      console.log("Mutation success with data:", data);
       navigate("/");
       dispatch(clearData());
       dispatch(login(data));
     },
     onError: (error) => {
-      console.error("Signup error:", error);
+      toast.error("Some thing wrong happened", {
+        styles: defaults,
+      });
     },
   });
 

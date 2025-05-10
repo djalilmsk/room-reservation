@@ -21,6 +21,7 @@ import { useForgetPassword } from "@/pages/auth/ForgetPassword";
 import { useMutation } from "@tanstack/react-query";
 import { customFetch } from "@/utils";
 import { Loader } from "lucide-react";
+import toast from "react-hot-toast";
 
 const otpSchema = formSchema.pick({
   OTP: true,
@@ -44,8 +45,8 @@ export function OTPForm() {
     onSuccess: () => {
       navigate("/auth/login/forget-password/change-password");
     },
-    onError: (err) => {
-      console.log(err);
+    onError: () => {
+      form.setError("OTP", { type: "manual", message: "Check your code" });
     },
   });
 
@@ -60,7 +61,6 @@ export function OTPForm() {
   }[isSubmitting];
 
   const onSubmit = (data) => {
-    console.log("Form submitted with data:", data);
     const postData = {
       ...email,
       code: data.OTP,
@@ -68,9 +68,7 @@ export function OTPForm() {
     mutate(postData);
   };
 
-  const onError = (errors) => {
-    console.error("Form errors:", errors);
-  };
+  const onError = () => {};
 
   return (
     <Form {...form}>

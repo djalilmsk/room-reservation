@@ -43,7 +43,7 @@ export function BookingDetails({
         <h2 className="text-xl font-bold">Booking Details</h2>
         <div className="flex h-[80%] flex-col justify-between gap-4">
           {bookingDetails.map(({ label, value }, idx) => (
-            <React.Fragment key={label}>
+            <div key={label}>
               <div className="flex items-center justify-between">
                 <p className="flex-shrink-0 capitalize">{label}</p>
                 <p
@@ -64,7 +64,7 @@ export function BookingDetails({
                 </p>
               </div>
               {idx !== bookingDetails.length - 1 && <Separator />}
-            </React.Fragment>
+            </div>
           ))}
         </div>
       </div>
@@ -145,8 +145,7 @@ function SingleBooking() {
 
       navigate("/dashboard/bookings");
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       toast.error("Failed to delete booking.", {
         style: defaults,
       });
@@ -171,8 +170,7 @@ function SingleBooking() {
 
       navigate(`/dashboard/bookings/${id}`, { replace: true });
     },
-    onError: (error) => {
-      console.error(error);
+    onError: () => {
       toast.error("Failed to update booking.", {
         style: defaults,
       });

@@ -158,7 +158,6 @@ export function ThirdContent() {
       : null;
 
     dispatch(setData({ fieldName: "image", newData: fileData }));
-    console.log("Form submitted with data:", data);
     navigate("/auth/signup/extra-data");
   };
 

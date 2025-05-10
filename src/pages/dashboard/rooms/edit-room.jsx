@@ -9,7 +9,6 @@ function EditRoom() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log(id);
 
   const {
     data: room,
@@ -39,8 +38,7 @@ function EditRoom() {
 
       navigate(`/dashboard/rooms/${id}`);
     },
-    onError: (err) => {
-      console.error("Error creating room:", err.response?.data || err.message);
+    onError: () => {
       toast.error("Failed to update room.", {
         style: defaults,
       });

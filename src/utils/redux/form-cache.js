@@ -1,23 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // Default initial data if Local Storage is empty
-const initialData = {
-  // firstName: "djalil",
-  // lastName: "msk",
-  // email: "djalil.msk@gmail.com",
-  // agreedToTerms: true,
-  // password: "12345678",
-  // confirmPassword: "12345678",
-  // profession: "Student",
-  // referral_source: "Social Media",
-};
+const initialData = {};
 
 const getDataFromLocalStorage = () => {
   try {
     // Replace 'yourDataKey' with the key name used in Local Storage
     return JSON.parse(localStorage.getItem("form-cache")) || initialData;
   } catch (err) {
-    console.error("Failed to parse Local Storage data:", err);
     return initialData;
   }
 };

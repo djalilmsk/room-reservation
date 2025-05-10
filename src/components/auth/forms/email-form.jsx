@@ -40,7 +40,6 @@ export function EmailForm({ label = null }) {
   }[isPending];
 
   const onSubmit = (data) => {
-    console.log("Form submitted with data:", data);
     setEmail(data);
 
     mutate(data, {
@@ -50,8 +49,7 @@ export function EmailForm({ label = null }) {
     });
   };
 
-  const onError = (errors) => {
-    console.error("Form errors:", errors);
+  const onError = () => {
   };
 
   return (

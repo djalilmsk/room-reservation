@@ -120,7 +120,6 @@ export function FourthContent() {
   );
 
   const { mutate, isPending } = useSignupMutation();
-  const [isFormSubmitting, setIsFormSubmitting] = React.useState(false);
 
   useEffect(() => {
     const {
@@ -152,8 +151,6 @@ export function FourthContent() {
   });
 
   const onSubmit = async (data) => {
-    setIsFormSubmitting(true);
-    try {
       dispatch(setData({ fieldName: "profession", newData: data.profession }));
       dispatch(
         setData({
@@ -170,20 +167,13 @@ export function FourthContent() {
       formData.append("profession", data.profession);
       formData.append("referral_source", data.referral_source);
 
-      await mutate(formData);
-    } catch (error) {
-      console.error("Form submission error:", error);
-    } finally {
-      setIsFormSubmitting(false);
-    }
+      mutate(formData);
   };
 
-  const onError = (errors) => {
-    console.error("Form errors:", errors);
-    setIsFormSubmitting(false);
+  const onError = () => {
   };
 
-  const isLoading = isFormSubmitting || isPending;
+  const isLoading = isPending;
 
   return (
     <Form {...form}>

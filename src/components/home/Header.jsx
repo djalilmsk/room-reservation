@@ -20,7 +20,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 function AuthLinks() {
   const isMobile = useIsMobile();
-  console.log(isMobile)
 
   return (
     <div className="space-x-3">
@@ -45,8 +44,6 @@ function AuthLinks() {
 function Header() {
   const { data } = useUser();
   const navbar = useRef(null);
-
-  console.log(data);
 
   useGSAP(() => {
     const tl = gsap.timeline({
