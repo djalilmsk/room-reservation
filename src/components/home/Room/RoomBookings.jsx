@@ -66,17 +66,18 @@ function RoomBookings() {
   return (
     <Section
       className={cn("relative mt-10", !showAll ? "h-140 overflow-hidden" : "")}
->
+    >
       <h1 className="py-5 text-2xl font-semibold">Current Room Bookings</h1>
       <div
         className={
-          !showAll &&
-          "[mask-image:linear-gradient(to_bottom,black,transparent_95%)]"
+          !showAll
+            ? "[mask-image:linear-gradient(to_bottom,black,transparent_95%)]"
+            : ""
         }
         ref={parent}
       >
         {data.map((day, dayIndex) => {
-          if (!showAll && dayIndex >= 3) return <></>;
+          if (!showAll && dayIndex >= 3) return;
           const bookingDate = day.date
             ? new Date(day.booking.start_time)
             : new Date(
