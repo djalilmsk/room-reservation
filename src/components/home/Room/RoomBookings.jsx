@@ -3,8 +3,8 @@ import { Section, SectionTitle } from "@/components/ui/section";
 import { cn } from "@/lib/utils";
 import { customFetch } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeftSquare, ArrowRightSquare } from "lucide-react";
-import { useRef, useState } from "react";
+import { StepBack, StepForward } from "lucide-react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 
@@ -101,7 +101,7 @@ function RoomBookings() {
                   const bookingEnd = new Date(booking.end_time);
 
                   return (
-                    slot.slotEnd > bookingStart && slot.slotStart < bookingEnd
+                    slot.slotEnd > bookingStart && slot.slotStart <= bookingEnd
                   );
                 });
 
@@ -135,7 +135,7 @@ function RoomBookings() {
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
         >
-          <ArrowLeftSquare /> Prev.
+          <StepBack className="size-4" /> Prev.
         </Button>
         <div className="flex items-center">
           <Button
@@ -162,7 +162,7 @@ function RoomBookings() {
           disabled={!data || data.length === 0}
         >
           Next
-          <ArrowRightSquare />
+          <StepForward className="size-4" />
         </Button>
       </div>
 

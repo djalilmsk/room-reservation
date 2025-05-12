@@ -11,6 +11,7 @@ import { buttonLabel } from "@/components/ui/button-label";
 import RoomDetails from "@/components/home/Room/RoomDetails";
 import { defaults } from "@/utils/format/toast-styles";
 import toast from "react-hot-toast";
+import RoomBookings from "@/components/home/Room/RoomBookings";
 
 function SingleRoom() {
   const queryClient = useQueryClient();
@@ -97,6 +98,7 @@ function SingleRoom() {
           </div>
         </div>
       </RoomDetails>
+      <RoomBookings />
     </div>
   );
 }
