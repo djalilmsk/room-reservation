@@ -7,6 +7,7 @@ import { StepBack, StepForward } from "lucide-react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import RoomBookingLoader from "./RoomBookingLoader";
 
 // Generate 30-minute time slots for a specific date
 const generateTimeSlots = (date) => {
@@ -48,17 +49,16 @@ function RoomBookings() {
   });
 
   if (isLoading) {
-    return (
-      <Section>
-        <div>Loading bookings...</div>
-      </Section>
-    );
+    return <RoomBookingLoader showAll={showAll} />;
   }
 
   if (!data || data.length === 0) {
     return (
       <Section>
-        <div>No bookings available.</div>
+        <h1 className="py-5 text-2xl font-semibold">Current Room Bookings</h1>
+        <div className="text-secondary-foreground w-full text-center">
+          No data available.
+        </div>
       </Section>
     );
   }
@@ -76,7 +76,7 @@ function RoomBookings() {
         }
         ref={parent}
       >
-        {data.map((day, dayIndex) => {
+        {data?.map((day, dayIndex) => {
           if (!showAll && dayIndex >= 3) return;
           const bookingDate = day.date
             ? new Date(day.booking.start_time)
