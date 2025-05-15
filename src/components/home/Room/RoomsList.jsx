@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { Button } from "react-day-picker";
 import { Link, useSearchParams } from "react-router-dom";
+import RoomsLoader from "./RoomsLoader";
 
 function RoomsList({ status = "" }) {
   const queryParams = new URLSearchParams();
@@ -29,7 +30,7 @@ function RoomsList({ status = "" }) {
     },
   });
 
-  if (isLoading) return "loading";
+  if (isLoading) return <RoomsLoader />;
 
   return (
     <div className="space-y-5">
