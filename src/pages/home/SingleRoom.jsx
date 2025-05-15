@@ -31,6 +31,7 @@ import toast from "react-hot-toast";
 import ActionProtection from "@/router/authentication/action-protection";
 import HomeFooter from "@/components/home/Footer";
 import RoomBookings from "@/components/home/Room/RoomBookings";
+import SingleRoomLoader from "@/components/home/Room/SingleRoomLoader";
 
 function timeToMinutes(timeStr) {
   const [hours, minutes] = timeStr.split(":").map(Number);
@@ -127,7 +128,7 @@ function SingleRoom() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <SingleRoomLoader />;
   }
 
   if (!room) {
@@ -154,8 +155,8 @@ function SingleRoom() {
   };
 
   return (
-    <Page className="sm:space-y-18 sm:pt-10 lg:space-y-24">
-      <Section className="min-h-screen">
+    <Page className="flex min-h-screen flex-col justify-between sm:space-y-18 sm:pt-10 lg:space-y-24">
+      <Section>
         <RoomDetails {...room}>
           <div className="flex w-full justify-end">
             <Dialog className="shadow-none" modal={false}>
