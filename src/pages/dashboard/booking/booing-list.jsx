@@ -1,4 +1,5 @@
 import { DataTable } from "@/components/ui/data-table";
+import ListLoader from "@/components/ui/list-loader";
 import { cn } from "@/lib/utils";
 import { customFetch } from "@/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -18,8 +19,6 @@ function BooingList({
       return response.data.bookings;
     },
   });
-
-  if (isLoading) return "loading";
 
   const bookings = data.map((item) => ({
     ...item,
@@ -95,12 +94,16 @@ function BooingList({
         );
       },
     },
-  ].filter(Boolean); // Remove falsy (e.g. `false`) values if user_email is not present
+  ].filter(Boolean);
 
   return (
     <div className="@container space-y-8">
       <h1 className="text-2xl font-bold">{title}</h1>
-      <DataTable columns={columns} data={bookings} to={to} />
+      {isLoading ? (
+        <ListLoader />
+      ) : (
+        <DataTable columns={columns} data={bookings} to={to} />
+      )}
     </div>
   );
 }

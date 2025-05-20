@@ -120,11 +120,6 @@ const data = {
           icon: Loader,
         },
         {
-          title: "Notifications",
-          url: "/dashboard/bookings/notifications",
-          icon: Bell,
-        },
-        {
           title: "Booking History",
           url: "/dashboard/bookings/booking-history",
           icon: History,

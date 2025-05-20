@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { customFetch } from "@/utils";
+import RoomsLoader from "@/components/home/Room/RoomsLoader";
 
 function RoomsList() {
   const { data: rooms, isLoading } = useQuery({
@@ -14,7 +15,7 @@ function RoomsList() {
     },
   });
 
-  if (isLoading) return "loading";
+  if (isLoading) return <RoomsLoader cols={2} />;
 
   return (
     <div className="space-y-5">

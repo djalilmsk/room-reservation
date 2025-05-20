@@ -12,6 +12,7 @@ import RoomDetails from "@/components/home/Room/RoomDetails";
 import { defaults } from "@/utils/format/toast-styles";
 import toast from "react-hot-toast";
 import RoomBookings from "@/components/home/Room/RoomBookings";
+import SingleRoomLoader from "@/components/home/Room/SingleRoomLoader";
 
 function SingleRoom() {
   const queryClient = useQueryClient();
@@ -57,7 +58,13 @@ function SingleRoom() {
     },
   });
 
-  if (isLoading) return "loading";
+  if (isLoading)
+    return (
+      <SingleRoomLoader
+        className="space-y-0 max-sm:-mt-18 -mt-13 sm:space-y-30 md:pt-0 lg:space-y-0"
+        displayFooter={false}
+      />
+    );
 
   if (!room) {
     return <div>Room not found!</div>;

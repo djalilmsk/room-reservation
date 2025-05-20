@@ -15,7 +15,6 @@ import { ImageForm, ThirdContent } from "@/components/auth/forms/image-form";
 import { formSchema } from "@/utils/forms/update-profile-schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useProfileMutation } from "@/hooks/mutation/useProfileMutation";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";

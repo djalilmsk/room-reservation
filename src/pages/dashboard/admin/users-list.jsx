@@ -16,6 +16,7 @@ import { customFetch } from "@/utils";
 import { DataTable } from "@/components/ui/data-table";
 import toast from "react-hot-toast";
 import { defaults } from "@/utils/format/toast-styles";
+import ListLoader from "@/components/ui/list-loader";
 
 const ManagmentMenu = ({
   userId,
@@ -207,18 +208,14 @@ function UsersList() {
     deleteUser(userId);
   };
 
-  if (isLoading) {
-    return <div>Loading users...</div>;
-  }
-
-  if (isError) {
-    return <div>Error loading users: {error.message}</div>;
-  }
-
   return (
     <div className="@container mx-auto space-y-8">
       <h1 className="text-2xl font-bold">Users List</h1>
-      <DataTable columns={columns} data={users || []} />
+      {isLoading ? (
+        <ListLoader />
+      ) : (
+        <DataTable columns={columns} data={users || []} />
+      )}
     </div>
   );
 }

@@ -2,10 +2,16 @@ import { Page } from "@/components/ui/page";
 import RoomBookingLoader from "./RoomBookingLoader";
 import HomeFooter from "../Footer";
 import { Section } from "@/components/ui/section";
+import { cn } from "@/lib/utils";
 
-function SingleRoomLoader() {
+function SingleRoomLoader({ className, displayFooter = true }) {
   return (
-    <Page className="flex min-h-screen flex-col justify-between sm:space-y-18 sm:pt-10 lg:space-y-24">
+    <Page
+      className={cn(
+        "flex min-h-screen flex-col justify-between sm:space-y-18 sm:pt-10 lg:space-y-24",
+        className,
+      )}
+    >
       <Section>
         <div className="flex gap-5 max-lg:flex-col">
           <div className="bg-secondary-foreground/16 h-60 w-full animate-pulse rounded-lg object-cover max-lg:h-60 lg:h-96 lg:w-1/2" />
@@ -54,7 +60,7 @@ function SingleRoomLoader() {
         </div>
         <RoomBookingLoader />
       </Section>
-      <HomeFooter />
+      {displayFooter && <HomeFooter />}
     </Page>
   );
 }

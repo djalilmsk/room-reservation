@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { BookingDetails } from "../dashboard/booking/single-booking";
 import { Page } from "@/components/ui/page";
 import { Section } from "@/components/ui/section";
+import { cn } from "@/lib/utils";
 
 function SingleNotification() {
   const { id } = useParams();
@@ -61,15 +62,41 @@ function SingleNotification() {
   return (
     <Page className="space-y-6 max-sm:pt-18 sm:space-y-30 md:pt-0">
       <Section className="@container space-y-2 xl:space-y-5">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold">Booking ID: {bookingID}</h1>
-            <div className="text-secondary-foreground flex gap-2">
-              user id: <p className="w-50 truncate">{user_email}</p>
+        {isLoadingBooking ? (
+          <div
+            className={cn(
+              "h-14 w-full rounded-lg",
+              "bg-secondary-foreground/16 animate-pulse",
+            )}
+          />
+        ) : (
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold">Booking ID: {bookingID}</h1>
+              <div className="text-secondary-foreground flex gap-2">
+                user id: <p className="w-50 truncate">{user_email}</p>
+              </div>
             </div>
           </div>
-        </div>
-        <BookingDetails roomLink={`/rooms/${room_id}`} {...bookingDetail} />
+        )}
+        {isLoadingBooking ? (
+          <div className="flex h-[80%] w-full items-center justify-center gap-4 max-sm:flex-col">
+            <div
+              className={cn(
+                "mt-1 h-80 w-full rounded-xl",
+                "bg-secondary-foreground/16 animate-pulse",
+              )}
+            />
+            <div
+              className={cn(
+                "mt-1 h-80 w-full rounded-xl",
+                "bg-secondary-foreground/16 animate-pulse",
+              )}
+            />
+          </div>
+        ) : (
+          <BookingDetails roomLink={`/rooms/${room_id}`} {...bookingDetail} />
+        )}
       </Section>
     </Page>
   );

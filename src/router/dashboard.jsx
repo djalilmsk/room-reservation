@@ -97,11 +97,6 @@ export const dashboard = {
           // errorElement: <ErrorElement />,
         },
         {
-          path: "/dashboard/bookings/notifications",
-          element: <>not implemented</>, // TODO: implement booking notifications page
-          // errorElement: <ErrorElement />,
-        },
-        {
           path: "/dashboard/bookings/booking-history",
           element: <BookingList status="other" title="Booking History" />,
           // errorElement: <ErrorElement />,

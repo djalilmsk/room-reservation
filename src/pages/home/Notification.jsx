@@ -1,3 +1,4 @@
+import ListLoader from "@/components/ui/list-loader";
 import { Page } from "@/components/ui/page";
 import { Section, SectionTitle } from "@/components/ui/section";
 import { Separator } from "@/components/ui/separator";
@@ -73,7 +74,7 @@ const NotificationItem = ({ notification }) => {
 function Notification() {
   const queryClient = useQueryClient();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["notifications"],
     queryFn: async () => {
       const res = await customFetch.get("/notifications");
@@ -108,27 +109,31 @@ function Notification() {
 
   return (
     <Page className="space-y-6 max-sm:pt-18 sm:space-y-26 md:pt-0 xl:space-y-32">
-      <Section>
-        {data?.length !== 0 ? (
-          data?.map((notification) => (
-            <Link
-              onClick={() =>
-                handleReadNotification(notification.notification_id)
-              }
-              key={notification.notification_id}
-              to={`/notifications/${notification.bookingId}`}
-            >
-              <NotificationItem notification={notification} />
-            </Link>
-          ))
-        ) : (
-          <div className="flex h-24 items-center justify-center">
-            <h2 className="text-secondary-foreground text-base">
-              No notifications available
-            </h2>
-          </div>
-        )}
-      </Section>
+      {isLoading ? (
+        <ListLoader height={20} nbr={10} />
+      ) : (
+        <Section>
+          {data?.length !== 0 ? (
+            data?.map((notification) => (
+              <Link
+                onClick={() =>
+                  handleReadNotification(notification.notification_id)
+                }
+                key={notification.notification_id}
+                to={`/notifications/${notification.bookingId}`}
+              >
+                <NotificationItem notification={notification} />
+              </Link>
+            ))
+          ) : (
+            <div className="flex h-24 items-center justify-center">
+              <h2 className="text-secondary-foreground text-base">
+                No notifications available
+              </h2>
+            </div>
+          )}
+        </Section>
+      )}
     </Page>
   );
 }

@@ -5,7 +5,7 @@ import { CheckCircle, Edit, XCircle } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import RoomCard from "../rooms/room-card";
 import { Separator } from "@/components/ui/separator";
-import React from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { buttonLabel } from "@/components/ui/button-label";
 import { defaults } from "@/utils/format/toast-styles";
@@ -34,6 +34,25 @@ export function BookingDetails({
     { label: "status", value: status },
   ];
 
+  if (isLoadingRoom) {
+    return (
+      <div className="flex h-[80%] w-full items-center justify-center gap-4 max-sm:flex-col">
+        <div
+          className={cn(
+            "mt-1 h-80 w-full rounded-xl",
+            "bg-secondary-foreground/16 animate-pulse",
+          )}
+        />
+        <div
+          className={cn(
+            "mt-1 h-80 w-full rounded-xl",
+            "bg-secondary-foreground/16 animate-pulse",
+          )}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col-reverse gap-3 @xl:grid @xl:grid-cols-2">
       <Link to={roomLink} className="w-full">
@@ -44,7 +63,7 @@ export function BookingDetails({
         <div className="flex h-[80%] flex-col justify-between gap-4">
           {bookingDetails.map(({ label, value }, idx) => (
             <div key={label}>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between pb-4">
                 <p className="flex-shrink-0 capitalize">{label}</p>
                 <p
                   className={cn(
@@ -73,6 +92,7 @@ export function BookingDetails({
 }
 
 function SingleBooking() {
+  const [buttonClicked, setButtonClicked] = useState();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -168,9 +188,11 @@ function SingleBooking() {
         style: defaults,
       });
 
+      setButtonClicked(undefined);
       navigate(`/dashboard/bookings/${id}`, { replace: true });
     },
     onError: () => {
+      setButtonClicked(undefined);
       toast.error("Failed to update booking.", {
         style: defaults,
       });
@@ -178,80 +200,118 @@ function SingleBooking() {
   });
 
   const handleUpdate = (data) => {
+    setButtonClicked(data.status);
     update(data);
   };
 
   return (
     <div className="@container space-y-8">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Booking ID: {bookingID}</h1>
-          <div className="text-secondary-foreground flex gap-2">
-            user id: <p className="w-50 truncate">{user_email}</p>
-          </div>
-        </div>
-        <Button
-          variant="secondary"
-          onClick={() => navigate(`/dashboard/bookings/edit-booking/${id}`)}
-        >
-          <Edit className="h-5 w-5" />
-          <p className="max-sm:hidden">Edit Booking</p>
-        </Button>
-      </div>
-      <BookingDetails
-        roomLink={`/dashboard/rooms/${room_id}`}
-        {...bookingDetail}
-      />
-      <div
-        className={cn(
-          "flex w-full items-center justify-between",
-          status === "Pending" || "justify-center",
-        )}
-      >
-        <Button
-          variant="destructive_secondary"
-          className="hover:bg-destructive/20 bg-transparent"
-          onClick={handleDelete}
-          disabled={isUpdating || isPending}
-        >
-          {buttonLabel(
-            isPending,
-            <>
-              <XCircle className="size-4" /> Delete Booking
-            </>,
-          )}
-        </Button>
-        {status === "Pending" && (
-          <div className="space-x-1">
-            <Button
-              variant="destructive_secondary"
-              className="hover:bg-destructive/20 bg-transparent"
-              onClick={() => handleUpdate({ status: "Canceled" })}
-              disabled={isUpdating || isPending}
-            >
-              {buttonLabel(
-                isUpdating,
-                <>
-                  <XCircle className="size-4" /> Cancel Booking
-                </>,
-              )}
-            </Button>
+        {isLoadingBooking ? (
+          <div
+            className={cn(
+              "h-14 w-full rounded-lg",
+              "bg-secondary-foreground/16 animate-pulse",
+            )}
+          />
+        ) : (
+          <>
+            <div>
+              <h1 className="text-2xl font-bold">Booking ID: {bookingID}</h1>
+              <div className="text-secondary-foreground flex gap-2">
+                user id: <p className="w-50 truncate">{user_email}</p>
+              </div>
+            </div>
             <Button
               variant="secondary"
-              className="hover:bg-primary/20 bg-transparent"
-              onClick={() => handleUpdate({ status: "Confirmed" })}
-              disabled={isUpdating}
+              onClick={() => navigate(`/dashboard/bookings/edit-booking/${id}`)}
             >
-              {buttonLabel(
-                isUpdating || isPending,
-                <>
-                  <CheckCircle className="size-4" /> Accept Booking
-                </>,
-              )}
+              <Edit className="h-5 w-5" />
+              <p className="max-sm:hidden">Edit Booking</p>
             </Button>
-          </div>
+          </>
         )}
       </div>
+      {isLoadingBooking ? (
+        <div className="flex h-[80%] w-full items-center justify-center gap-4 max-sm:flex-col">
+          <div
+            className={cn(
+              "mt-1 h-80 w-full rounded-xl",
+              "bg-secondary-foreground/16 animate-pulse",
+            )}
+          />
+          <div
+            className={cn(
+              "mt-1 h-80 w-full rounded-xl",
+              "bg-secondary-foreground/16 animate-pulse",
+            )}
+          />
+        </div>
+      ) : (
+        <BookingDetails
+          roomLink={`/dashboard/rooms/${room_id}`}
+          {...bookingDetail}
+        />
+      )}
+      {isLoadingBooking ? (
+        <div
+          className={cn(
+            "h-14 w-full rounded-lg",
+            "bg-secondary-foreground/16 animate-pulse",
+          )}
+        />
+      ) : (
+        <div
+          className={cn(
+            "flex w-full items-center justify-between",
+            status === "Pending" || "justify-center",
+          )}
+        >
+          <Button
+            variant="destructive_secondary"
+            className="hover:bg-destructive/20 bg-transparent"
+            onClick={handleDelete}
+            disabled={isUpdating || isPending}
+          >
+            {buttonLabel(
+              isPending,
+              <>
+                <XCircle className="size-4" /> Delete Booking
+              </>,
+            )}
+          </Button>
+          {status === "Pending" && (
+            <div className="space-x-1">
+              <Button
+                variant="destructive_secondary"
+                className="hover:bg-destructive/20 bg-transparent"
+                onClick={() => handleUpdate({ status: "Canceled" })}
+                disabled={isUpdating || isPending}
+              >
+                {buttonLabel(
+                  isUpdating && buttonClicked === "Canceled",
+                  <>
+                    <XCircle className="size-4" /> Cancel Booking
+                  </>,
+                )}
+              </Button>
+              <Button
+                variant="secondary"
+                className="hover:bg-primary/20 bg-transparent"
+                onClick={() => handleUpdate({ status: "Confirmed" })}
+                disabled={isUpdating}
+              >
+                {buttonLabel(
+                  isUpdating && buttonClicked === "Confirmed",
+                  <>
+                    <CheckCircle className="size-4" /> Accept Booking
+                  </>,
+                )}
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
