@@ -2,6 +2,8 @@ import Footer from "@/components/auth/auth-footer";
 import logo from "@/assets/Logo.svg";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { ModeToggle } from "../ui/mode-toggle";
 
 export const Copyright = () => (
   <div className="relative mt-10 flex w-full justify-center py-4 md:mt-16">
@@ -12,11 +14,11 @@ export const Copyright = () => (
   </div>
 );
 
-function HomeFooter() {
+function HomeFooter({ className }) {
   return (
-    <footer className="relative">
+    <footer className={cn("relative", className)}>
       <div className="bg-muted-foreground/5 absolute top-0 left-1/2 grid h-full w-dvw -translate-x-1/2" />
-      <div className="flex grid-cols-1 flex-wrap gap-10 pt-10 md:grid md:grid-cols-5 md:gap-4 md:pt-16">
+      <div className="flex grid-cols-1 flex-wrap gap-10 pt-10 md:grid md:grid-cols-6 md:gap-4 md:pt-16">
         <div className="col-span-2 max-md:w-full">
           <img src={logo} alt="ROOM" className="mb-4 w-24 text-center" />
         </div>
@@ -94,6 +96,7 @@ function HomeFooter() {
             </Link>
           </div>
         </div>
+        <ModeToggle />
       </div>
       <Copyright />
     </footer>
