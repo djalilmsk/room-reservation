@@ -3,15 +3,21 @@ import { Button } from "@/components/ui/button";
 import { Section, SectionTitle } from "@/components/ui/section";
 
 import { useExpendAnimation } from "@/hooks/use-expand-animation";
-import { Copyright } from "../Footer";
+
+import room1 from "@/assets/rooms/room1.jfif";
+import room2 from "@/assets/rooms/room2.jfif";
+import room3 from "@/assets/rooms/room3.jfif";
+import room4 from "@/assets/rooms/room4.jfif";
+import room5 from "@/assets/rooms/room5.jfif";
+import room6 from "@/assets/rooms/room6.jfif";
 
 const rooms = [
-  { image: "https://picsum.photos/200/600" },
-  { image: "https://picsum.photos/200/700" },
-  { image: "https://picsum.photos/200/800" },
-  { image: "https://picsum.photos/200/900" },
-  { image: "https://picsum.photos/200/1000" },
-  { image: "https://picsum.photos/200/1100" },
+  { image: room1 },
+  { image: room2 },
+  { image: room3 },
+  { image: room4 },
+  { image: room5 },
+  { image: room6 },
 ];
 
 const getGridClass = (index) => {
@@ -31,13 +37,16 @@ const getImageClass = (index) => {
 function RoomCard({ room, index }) {
   const { image } = room;
   return (
-    <div className={getGridClass(index)}>
+    <Link to='/auth/signup' className={getGridClass(index)}>
       <img
         src={image}
         alt={`Meeting room ${index + 1}`}
         className={getImageClass(index)}
       />
-    </div>
+      <div className="absolute inset-0 flex cursor-pointer items-center justify-center bg-black/50 text-lg font-semibold text-white opacity-0 transition-all duration-300 hover:opacity-100">
+        Meeting Room {index + 1}
+      </div>
+    </Link>
   );
 }
 
