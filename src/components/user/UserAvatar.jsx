@@ -9,8 +9,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useEffect } from "react";
-import { socket } from "@/utils";
 
 function IconLabel({ className, to, children, content }) {
   return (
@@ -45,9 +43,6 @@ function UserAvatar({ className, moreLinks = true }) {
     <div className="flex items-center justify-between gap-2">
       {moreLinks && (
         <>
-          <IconLabel to={"/saved"} content="Wish list">
-            <Bookmark className="p-1" />
-          </IconLabel>
           <IconLabel to={"/notifications"} content="Notification">
             <Bell className="p-1" />
           </IconLabel>

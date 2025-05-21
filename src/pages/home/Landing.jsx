@@ -20,7 +20,7 @@ function Guest() {
 }
 
 function Landing() {
-  const { data, token } = useUser();
+  const { data } = useUser();
   const isGuest = data === undefined ? true : false;
 
   return (

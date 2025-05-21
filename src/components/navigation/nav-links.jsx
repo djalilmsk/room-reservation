@@ -1,7 +1,4 @@
-import { ChevronDown } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import { ModeToggle } from "../ui/mode-toggle";
-import { Button } from "../ui/button";
 
 const NAV_LINKS = [
   { id: 1, to: "/#", label: "Home" },
@@ -24,11 +21,6 @@ function NavLinks({
           <li>{label}</li>
         </NavLink>
       ))}
-      <li className={oneLinkClasses}>
-        <ModeToggle>
-          <p className={`flex cursor-pointer`}>Theme</p>
-        </ModeToggle>
-      </li>
     </ul>
   );
 }

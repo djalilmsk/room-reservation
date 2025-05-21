@@ -6,8 +6,8 @@ import SingleRoom from "@/pages/home/SingleRoom";
 import About from "@/pages/home/About";
 import RouteProtection from "./authentication/route-protection";
 import SingleNotification from "@/pages/home/SingleNotification";
-import BooingList from "@/pages/dashboard/booking/booing-list";
 import CurrentBookings from "@/components/home/Bookings/BookingList";
+import ContactUs from "@/components/home/about/ContactUs";
 
 export const home = {
   path: "/",
@@ -32,6 +32,11 @@ export const home = {
     {
       path: "/about",
       element: <About />,
+      // errorElement: <ErrorElement />,
+    },
+    {
+      path: "/contact",
+      element: <ContactUs />,
       // errorElement: <ErrorElement />,
     },
     {

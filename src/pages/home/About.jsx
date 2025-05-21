@@ -1,3 +1,4 @@
+import CallToAction from "@/components/home/about/CallToAction";
 import Hero from "@/components/home/about/Hero";
 import MissionVision from "@/components/home/about/MissionVision";
 import HomeFooter from "@/components/home/Footer";
@@ -8,6 +9,7 @@ function About() {
     <Page>
       <Hero />
       <MissionVision />
+      <CallToAction />
       <HomeFooter />
     </Page>
   );
