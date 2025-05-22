@@ -42,9 +42,9 @@ export const formSchema = z.object({
     .refine(
       (file) => {
         if (!file) return true;
-        return file.size <= 1024 * 1024;
+        return file.size <= 10 * 1024 * 1024;
       },
-      { message: "Image must be less than 1MB" },
+      { message: "Image must be less than 10MB" },
     ),
 
   profession: z

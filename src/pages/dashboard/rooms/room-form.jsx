@@ -36,7 +36,7 @@ const FileUpload = ({ form }) => {
 
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
-    const maxSize = 1024 * 1024;
+    const maxSize = 10 * 1024 * 1024;
     const validTypes = ["image/png", "image/jpeg", "image/jpg"];
 
     const validFiles = selectedFiles.filter((file) => {
