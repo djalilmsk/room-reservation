@@ -126,7 +126,7 @@ function ReviewsList() {
     queryKey: ["room-reviews", id, rating],
     queryFn: async () => {
       const res = await customFetch.get(
-        `/reviews?room=${id}${rating ? (rating !== "all" ? `&rating=${rating}` : "") : ""}`,
+        `/reviews/rooms/${id}${rating ? (rating !== "all" ? `?rating=${rating}` : "") : ""}`,
       );
       return res.data.reviews;
     },
