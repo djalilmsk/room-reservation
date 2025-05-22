@@ -32,6 +32,7 @@ import ActionProtection from "@/router/authentication/action-protection";
 import HomeFooter from "@/components/home/Footer";
 import RoomBookings from "@/components/home/Room/RoomBookings";
 import SingleRoomLoader from "@/components/home/Room/SingleRoomLoader";
+import RoomReview from "@/components/home/Room/RoomReview";
 
 function timeToMinutes(timeStr) {
   const [hours, minutes] = timeStr.split(":").map(Number);
@@ -191,6 +192,7 @@ function SingleRoom() {
           </div>
         </RoomDetails>
         <RoomBookings />
+        <RoomReview />
       </Section>
 
       <HomeFooter />
