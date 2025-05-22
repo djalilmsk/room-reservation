@@ -27,12 +27,13 @@ function CardFooter({ children }) {
         <p className="text-secondary-foreground text-sm">{children}</p>
       ) : (
         <>
-          <Link className="w-full" to={"http://localhost:3000/api/v1/auth/google"}>
-            <Button
-              variant="secondary"
-              type="button"
-              className="w-full"
-            >
+          <Link
+            className="w-full"
+            to={
+              "https://meeting-room-reservatiom-sys.onrender.com/api/v1/auth/google"
+            }
+          >
+            <Button variant="secondary" type="button" className="w-full">
               <img src={google} alt="google icon" className="w-5" />
               Continue with Google
             </Button>
