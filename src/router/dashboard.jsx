@@ -14,6 +14,7 @@ import UsersList from "@/pages/dashboard/admin/users-list";
 import BookingList from "@/pages/dashboard/booking/booing-list";
 import EditBooking from "@/pages/dashboard/booking/edit-booking";
 import SingleBooking from "@/pages/dashboard/booking/single-booking";
+import FeedBackList from "@/pages/dashboard/FeedBackList";
 
 export const dashboard = {
   path: "/dashboard",
@@ -120,6 +121,11 @@ export const dashboard = {
         {
           path: "/dashboard/users",
           element: <UsersList />,
+          // errorElement: <ErrorElement />,
+        },
+        {
+          path: "/dashboard/feedback",
+          element: <FeedBackList />,
           // errorElement: <ErrorElement />,
         },
       ],
