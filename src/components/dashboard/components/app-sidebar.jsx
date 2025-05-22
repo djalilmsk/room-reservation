@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 
 import { NavMain } from "./nav-main";
-import { NavProjects } from "./nav-projects";
 import {
   Sidebar,
   SidebarContent,
@@ -137,6 +136,11 @@ const data = {
           title: "Users",
           url: "/dashboard/users",
           icon: Users2,
+        },
+        {
+          title: "Feedback",
+          url: "/dashboard/feedback",
+          icon: MessageCircleMore,
         },
       ],
     },
