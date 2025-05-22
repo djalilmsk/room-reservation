@@ -132,6 +132,8 @@ function ReviewsList() {
     },
   });
 
+  console.log(data);
+
   return (
     <div className="bg-card h-[30rem] rounded-lg p-5 not-dark:shadow-sm lg:col-span-2">
       <div className="flex items-start justify-between">
