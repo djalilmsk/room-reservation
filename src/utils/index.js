@@ -1,14 +1,14 @@
 import axios from "axios";
 import { io } from "socket.io-client";
 
-const url = "http://localhost:3000/api/v1/";
+const url = "https://meeting-room-reservatiom-sys.onrender.com/api/v1/";
 
 export const customFetch = axios.create({
   baseURL: url,
   withCredentials: true,
 });
 
-export const socket = io.connect("http://localhost:3000", {
+export const socket = io.connect("https://meeting-room-reservatiom-sys.onrender.com", {
   autoConnect: true,
   withCredentials: true,
   transports: ["websocket"],
