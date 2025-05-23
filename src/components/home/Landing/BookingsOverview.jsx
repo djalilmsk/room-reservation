@@ -8,9 +8,9 @@ import { useState } from "react";
 
 function ToggleGroupState({ setState }) {
   return (
-    <ToggleGroup type="single" onValueChange={setState} defaultValue="Today">
+    <ToggleGroup type="single" onValueChange={setState} defaultValue="today">
       <ToggleGroupItem
-        value="Today"
+        value="today"
         aria-label="Toggle Today"
         className="hover:text-primary data-[state=on]:text-primary cursor-pointer p-0 hover:bg-transparent data-[state=on]:bg-transparent"
         variant="ghost"
@@ -19,7 +19,7 @@ function ToggleGroupState({ setState }) {
       </ToggleGroupItem>
       <Dot />
       <ToggleGroupItem
-        value="Tomorrow"
+        value="tomorrow"
         aria-label="Toggle Tomorrow"
         className="hover:text-primary data-[state=on]:text-primary cursor-pointer hover:bg-transparent data-[state=on]:bg-transparent"
         variant="ghost"
