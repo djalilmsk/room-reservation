@@ -8,7 +8,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useState } from "react";
 
 function ImagesList({ images }) {
   return (
@@ -37,9 +36,9 @@ function ImagesList({ images }) {
           className="text-primary right-0 h-full rounded-l-none rounded-r-xl px-5"
         />
       </Carousel>
-      <div className="absolute right-4 z-10 bottom-4 rounded-full bg-black/50 px-3 py-2 text-sm text-white">
-        {images.length} photos
-      </div>
+      {/* <div className="absolute right-4 z-10 bottom-4 rounded-lg bg-black/50 px-3 py-2 text-sm text-white">
+        {images.length} pictures
+      </div> */}
     </div>
   );
 }

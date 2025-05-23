@@ -35,9 +35,10 @@ const renderStars = (rating) => {
 };
 
 function DeleteReview({ reviewId }) {
+  console.log(reviewId);
   const queryClient = useQueryClient();
 
-  const { mutate: deleteReview } = useMutation({
+  const { mutate: deleteReview, isPending } = useMutation({
     mutationFn: async () => {
       const res = await customFetch.delete(`/reviews/${reviewId}`);
       return res.data;
@@ -54,6 +55,7 @@ function DeleteReview({ reviewId }) {
     <div className="relative mt-3 flex w-full items-center border-t-1 pt-3">
       <Button
         onClick={deleteReview}
+        disabled={isPending}
         size="sm"
         variant="link"
         className="text-destructive flex h-4 items-center justify-center"
@@ -65,26 +67,27 @@ function DeleteReview({ reviewId }) {
   );
 }
 
-function RoleBaseAccess({ id }) {
+function RoleBaseAccess({ id, children }) {
   const { data } = useUser();
   const isAdmin = data?.role_name === "Admin";
   const isOwner = data?.id === id;
 
   if (isAdmin || isOwner) {
-    return <DeleteReview />;
+    return children;
   }
   return <></>;
 }
 
 function ReviewCard({ review }) {
   dayjs.extend(relativeTime);
+  console.log(review.id);
 
   return (
     <div className="h-fit w-full rounded-xl border-1 p-3">
       <div className="flex w-full items-start justify-between">
         <div className="flex items-center gap-2">
           <img
-            src={review.user.avatar || "/default-avatar.png"}
+            src={review.user.image || "/default-avatar.png"}
             alt={review.user.name}
             className="h-10 w-10 rounded-full object-cover"
           />
