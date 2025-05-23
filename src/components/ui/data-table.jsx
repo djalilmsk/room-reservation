@@ -17,7 +17,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
-export function DataTable({ columns, data = [], to = "" }) {
+export function DataTable({ columns, data = [], to = "", classNames = {} }) {
   const navigate = useNavigate();
   const table = useReactTable({
     data,
@@ -61,7 +61,10 @@ export function DataTable({ columns, data = [], to = "" }) {
               }}
             >
               {row.getVisibleCells().map((cell) => (
-                <TableCell className="px-4 py-3 font-light" key={cell.id}>
+                <TableCell
+                  className={cn("px-4 py-3 font-light", classNames?.bodyCell)}
+                  key={cell.id}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
