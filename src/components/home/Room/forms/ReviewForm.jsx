@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
+import ActionProtection from "@/router/authentication/action-protection";
 import { customFetch } from "@/utils";
 import { defaults } from "@/utils/format/toast-styles";
 import { useMutation } from "@tanstack/react-query";
@@ -129,15 +130,26 @@ function ReviewForm() {
             </FormItem>
           )}
         />
-        <Button disabled={isPending} className="w-full" type="submit">
-          {buttonLabel(
-            isPending,
-            <>
-              <Send className="h-4 w-4" />
-              Submit Review
-            </>,
-          )}
-        </Button>
+        <ActionProtection
+          guest={
+            <Button
+              variant="link"
+              className="text-secondary-foreground hover:text-primary h-4 w-full"
+            >
+              Sign up to submit your review!
+            </Button>
+          }
+        >
+          <Button disabled={isPending} className="w-full" type="submit">
+            {buttonLabel(
+              isPending,
+              <>
+                <Send className="h-4 w-4" />
+                Submit Review
+              </>,
+            )}
+          </Button>
+        </ActionProtection>
       </form>
     </Form>
   );
