@@ -2,10 +2,13 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Dot } from "lucide-react";
+import { customFetch } from "@/utils";
+import ListLoader from "@/components/ui/list-loader";
+import { useState } from "react";
 
-function ToggleGroupState() {
+function ToggleGroupState({ setState }) {
   return (
-    <ToggleGroup type="single">
+    <ToggleGroup type="single" onValueChange={setState} defaultValue="Today">
       <ToggleGroupItem
         value="Today"
         aria-label="Toggle Today"
@@ -27,7 +30,7 @@ function ToggleGroupState() {
       <ToggleGroupItem
         className="hover:text-primary data-[state=on]:text-primary cursor-pointer hover:bg-transparent data-[state=on]:bg-transparent"
         variant="ghost"
-        value="Thisweek"
+        value="ThisWeek"
         aria-label="Toggle This Week"
       >
         This Week
@@ -36,72 +39,50 @@ function ToggleGroupState() {
   );
 }
 
-const data = [
-  {
-    room: "Conference Room A",
-    time: "9:00 AM - 10:30 AM",
-    event: "Team Standup",
-    attendees: 8,
-  },
-  {
-    room: "Board Room",
-    time: "11:00 AM - 12:00 PM",
-    event: "Client Meeting",
-    attendees: 4,
-  },
-  {
-    room: "Training Room",
-    time: "2:00 PM - 4:00 PM",
-    event: "Product Training",
-    attendees: 12,
-  },
-  {
-    room: "Training Room",
-    time: "2:00 PM - 4:00 PM",
-    event: "Product Training",
-    attendees: 12,
-  },
-  {
-    room: "Training Room",
-    time: "2:00 PM - 4:00 PM",
-    event: "Product Training",
-    attendees: 12,
-  },
-];
-
 function BookingsOverview({ className }) {
+  const [state, setState] = useState("Today");
   const { data: bookings, isLoading } = useQuery({
     queryKey: ["bookings-overview"],
     queryFn: async () => {
       const res = await customFetch.get(
-        `/bookings/overviewBookings?period=${""}`,
+        `/bookings/overviewBookings?period=${state}`,
       );
-      return res.data;
+      return res.data.bookings;
     },
   });
 
   return (
     <div className={cn(className, "space-y-2")}>
-      <ToggleGroupState />
+      <ToggleGroupState setState={setState} />
       <div className="max-h-[400px] overflow-y-auto">
         <div className="overflow-x-auto">
           <table className="w-full">
             <tbody>
-              {false ? (
+              {isLoading ? (
                 <tr>
-                  <td colSpan="4" className="p-4 text-center">
-                    Loading...
-                  </td>
+                  <ListLoader />
                 </tr>
               ) : (
-                data?.map((booking, index) => (
+                bookings?.map((booking, index) => (
                   <tr key={index} className="border-t">
-                    <td className="p-3 whitespace-nowrap">{booking.room}</td>
-                    <td className="p-3 whitespace-nowrap">{booking.time}</td>
-                    <td className="p-3 whitespace-nowrap">{booking.event}</td>
                     <td className="p-3 whitespace-nowrap">
-                      {booking.attendees}
+                      Room Number : {booking.room_id}
                     </td>
+                    <td className="p-3 whitespace-nowrap">
+                      Start :{" "}
+                      {new Date(booking.start_time).toLocaleTimeString(
+                        "en-US",
+                        { hour: "2-digit", minute: "2-digit" },
+                      )}
+                    </td>
+                    <td className="p-3 whitespace-nowrap">
+                      End :{" "}
+                      {new Date(booking.end_time).toLocaleTimeString("en-US", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </td>
+                    <td className="p-3 whitespace-nowrap">{booking.status}</td>
                   </tr>
                 ))
               )}
