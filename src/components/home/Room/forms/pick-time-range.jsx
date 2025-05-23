@@ -71,7 +71,7 @@ export function CustomTimePicker({ form, name, label }) {
                 </div>
               </PopoverTrigger>
 
-              <PopoverContent className="w-32 p-0">
+              <PopoverContent className="pointer-events-auto w-32 p-0">
                 <div className="max-h-60 overflow-y-auto">
                   {timeOptions.map((time) => (
                     <button

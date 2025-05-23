@@ -72,7 +72,10 @@ export function CalendarField({
                 </div>
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
+            <PopoverContent
+              className="pointer-events-auto z-[9999] w-auto p-0"
+              align="start"
+            >
               <Calendar
                 mode={mode}
                 selected={date}
