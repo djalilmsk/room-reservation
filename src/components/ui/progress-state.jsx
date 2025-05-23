@@ -3,29 +3,29 @@ import React from "react";
 function ProgressState({ max, value }) {
   const normalizedValue = Math.min(Math.max(value, 0), max);
 
-  const steps = Array.from({ length: max }, (_, index) => {
-    const stepNumber = index + 1;
-    return (
+  const items = [];
+  for (let i = 0; i < max; i++) {
+    const stepNumber = i + 1;
+    items.push(
       <Step
-        key={"step" + index}
+        key={"step" + i}
         isActive={stepNumber === 1 || stepNumber <= normalizedValue + 1}
         stepNumber={stepNumber}
       />
     );
-  });
-
-  const connectors = Array.from({ length: max - 1 }, (_, index) => (
-    <Connector key={"connector" + index} isActive={index < normalizedValue} />
-  ));
+    if (i < max - 1) {
+      items.push(
+        <Connector
+          key={"connector" + i}
+          isActive={i < normalizedValue}
+        />
+      );
+    }
+  }
 
   return (
-    <div className="flex items-center justify-between gap-2">
-      {steps.map((step, index) => (
-        <div key={"step-connector-" + index}>
-          {step}
-          {index < connectors.length && connectors[index]}
-        </div>
-      ))}
+    <div className="flex w-full items-center gap-4 justify-between">
+      {items}
     </div>
   );
 }
