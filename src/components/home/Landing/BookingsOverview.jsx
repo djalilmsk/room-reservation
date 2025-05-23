@@ -13,15 +13,30 @@ function ToggleGroupState({ setState }) {
 
   return (
     <ToggleGroup type="single" onValueChange={setState} defaultValue="today">
-      <ToggleGroupItem value="today" aria-label="Toggle Today" variant="ghost" className={cn(toggleItemClass, "p-0")}>
+      <ToggleGroupItem
+        value="today"
+        aria-label="Toggle Today"
+        variant="ghost"
+        className={cn(toggleItemClass, "p-0")}
+      >
         Today
       </ToggleGroupItem>
       <Dot />
-      <ToggleGroupItem value="tomorrow" aria-label="Toggle Tomorrow" variant="ghost" className={toggleItemClass}>
+      <ToggleGroupItem
+        value="tomorrow"
+        aria-label="Toggle Tomorrow"
+        variant="ghost"
+        className={toggleItemClass}
+      >
         Tomorrow
       </ToggleGroupItem>
       <Dot />
-      <ToggleGroupItem value="thisweek" aria-label="Toggle This Week" variant="ghost" className={toggleItemClass}>
+      <ToggleGroupItem
+        value="thisweek"
+        aria-label="Toggle This Week"
+        variant="ghost"
+        className={toggleItemClass}
+      >
         This Week
       </ToggleGroupItem>
     </ToggleGroup>
@@ -34,16 +49,24 @@ function BookingsOverview({ className }) {
   const { data: bookings, isLoading } = useQuery({
     queryKey: ["bookings-overview", state],
     queryFn: async () => {
-      const res = await customFetch.get(`/bookings/overviewBookings?period=${state}`);
+      const res = await customFetch.get(
+        `/bookings/overviewBookings?period=${state}`,
+      );
       return res.data.bookings;
     },
   });
 
   const formatTime = (time) =>
-    new Date(time).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+    new Date(time).toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
   const formatDate = (date) =>
-    new Date(date).toLocaleDateString("en-US", { day: "2-digit", month: "long" });
+    new Date(date).toLocaleDateString("en-US", {
+      day: "2-digit",
+      month: "long",
+    });
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -58,13 +81,27 @@ function BookingsOverview({ className }) {
                     <ListLoader />
                   </td>
                 </tr>
+              ) : bookings?.length === 0 ? (
+                <tr>
+                  <td className="text-secondary-foreground w-full p-3 text-center whitespace-nowrap">
+                    No bookings available.
+                  </td>
+                </tr>
               ) : (
                 bookings?.map((booking, index) => (
                   <tr key={index} className="border-t">
-                    <td className="p-3 whitespace-nowrap">Room Number: {booking?.room_id}</td>
-                    <td className="p-3 whitespace-nowrap">Start: {formatTime(booking?.start_time)}</td>
-                    <td className="p-3 whitespace-nowrap">Date: {formatDate(booking?.start_time)}</td>
-                    <td className="p-3 whitespace-nowrap">End: {formatTime(booking?.end_time)}</td>
+                    <td className="p-3 whitespace-nowrap">
+                      Room Number: {booking?.room_id}
+                    </td>
+                    <td className="p-3 whitespace-nowrap">
+                      Start: {formatTime(booking?.start_time)}
+                    </td>
+                    <td className="p-3 whitespace-nowrap">
+                      Date: {formatDate(booking?.start_time)}
+                    </td>
+                    <td className="p-3 whitespace-nowrap">
+                      End: {formatTime(booking?.end_time)}
+                    </td>
                     <td className="p-3 whitespace-nowrap">{booking?.status}</td>
                   </tr>
                 ))
