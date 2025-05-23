@@ -5,11 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import CardFooter from "./CardFooter";
 import { LoginForm } from "@/components/auth/forms/login-form";
 import { formSchema } from "@/utils/forms/login-schema";
-import { useDispatch } from "react-redux";
-import { login } from "@/utils/redux/user";
-import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { customFetch } from "@/utils";
 import { useLoginMutation } from "@/hooks/mutation/useLoginMutation";
 import { Loader } from "lucide-react";
 

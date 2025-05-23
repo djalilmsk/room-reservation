@@ -77,7 +77,7 @@ function ReviewForm() {
       form.reset();
     },
     onError: (err) => {
-      toast.error("Failed to submit review", {
+      toast.error(err.response.data.message || "Failed to submit review", {
         style: defaults,
       });
     },
