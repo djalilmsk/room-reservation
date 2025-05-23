@@ -17,6 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import toast from "react-hot-toast";
+import { defaults } from "@/utils/format/toast-styles";
 
 const renderStars = (rating) => {
   return Array.from({ length: 5 }, (_, i) => (
@@ -32,32 +34,26 @@ const renderStars = (rating) => {
   ));
 };
 
-function DeleteReview() {
-  const { id } = useParams();
+function DeleteReview({ reviewId }) {
   const queryClient = useQueryClient();
 
   const { mutate: deleteReview } = useMutation({
-    mutationFn: async (reviewId) => {
+    mutationFn: async () => {
       const res = await customFetch.delete(`/reviews/${reviewId}`);
       return res.data;
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["room-reviews"]);
+      toast.success("Review deleted successfully!", {
+        style: defaults,
+      });
+    },
   });
-
-  const handleDelete = (reviewId) => {
-    deleteReview(reviewId, {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["room-reviews"]);
-      },
-      onError: (error) => {
-        console.error("Error deleting review:", error);
-      },
-    });
-  };
 
   return (
     <div className="relative mt-3 flex w-full items-center border-t-1 pt-3">
       <Button
-        onClick={() => handleDelete(id)}
+        onClick={deleteReview}
         size="sm"
         variant="link"
         className="text-destructive flex h-4 items-center justify-center"
@@ -71,7 +67,6 @@ function DeleteReview() {
 
 function RoleBaseAccess({ id }) {
   const { data } = useUser();
-  console.log(data);
   const isAdmin = data?.role_name === "Admin";
   const isOwner = data?.id === id;
 
@@ -112,7 +107,7 @@ function ReviewCard({ review }) {
       <p className="mt-2 text-sm">{review.comment}</p>
 
       <RoleBaseAccess id={review.user_id}>
-        <DeleteReview />
+        <DeleteReview reviewId={review.id} />
       </RoleBaseAccess>
     </div>
   );
@@ -131,8 +126,6 @@ function ReviewsList() {
       return res.data.reviews;
     },
   });
-
-  console.log(data);
 
   return (
     <div className="bg-card h-[30rem] rounded-lg p-5 not-dark:shadow-sm lg:col-span-2">
