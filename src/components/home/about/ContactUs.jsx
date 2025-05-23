@@ -9,12 +9,12 @@ import {
   Instagram,
   Youtube,
   Twitter,
-  Clock,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import HomeFooter from "../Footer";
+import FeedbackForm from "./FeedbackForm";
 
-const ContactUs = () => {
+function ContactUs() {
   return (
     <Page className="space-y-12 max-sm:pt-18 sm:space-y-30 md:pt-10 lg:space-y-22">
       <Section className="flex min-h-screen flex-col justify-between">
@@ -125,12 +125,13 @@ const ContactUs = () => {
               </div>
             </div>
           </div>
+          <FeedbackForm />
         </div>
 
         <HomeFooter />
       </Section>
     </Page>
   );
-};
+}
 
 export default ContactUs;

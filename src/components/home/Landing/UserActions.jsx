@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Copyright } from "../Footer";
 import { cn } from "@/lib/utils";
+import BookingsOverview from "./BookingsOverview";
 
 const actions = [
   {
@@ -49,6 +50,7 @@ function UserActions() {
   return (
     <Section className="@container flex min-h-screen flex-col justify-between">
       <div className="flex gap-5 max-[800px]:flex-col-reverse">
+        {/* <BookingsOverview className="sm:hidden" /> */}
         <div className="flex w-full flex-col gap-2 rounded-lg sm:w-fit">
           <h2 className="text-lg font-bold">Calendar</h2>
           <Calendar
@@ -73,12 +75,17 @@ function UserActions() {
           />
         </div>
 
-        <div className="w-full space-y-2">
-          <h2 className="text-lg font-bold">Quick Actions</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {actions.map((action, index) => (
-              <ActionCard key={index} action={action} />
-            ))}
+        <div className="flex w-full flex-col space-y-6">
+          <div className="w-full space-y-2">
+            <h2 className="text-lg font-bold">Quick Actions</h2>
+            <div className="grid grid-cols-2 gap-3">
+              {actions.map((action, index) => (
+                <ActionCard key={index} action={action} />
+              ))}
+            </div>
+          </div>
+          <div>
+            <BookingsOverview /* className="max-md:hidden" */ />
           </div>
         </div>
       </div>
