@@ -78,7 +78,7 @@ function BookingsOverview({ className }) {
               {isLoading ? (
                 <tr>
                   <td>
-                    <ListLoader />
+                    <ListLoader nbr={2} />
                   </td>
                 </tr>
               ) : bookings?.length === 0 ? (
