@@ -17,7 +17,7 @@ function ImagesList({ images }) {
           {images.map((image, index) => (
             <CarouselItem
               key={index}
-              className={"max-lg:h-90 max-md:h-70 lg:w-1/2"}
+              className={"max-lg:h-90 max-md:h-70 lg:w-30"}
             >
               <img
                 className="h-full w-full rounded-lg object-cover"
