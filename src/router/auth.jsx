@@ -11,6 +11,7 @@ import { OTPForm } from "../components/auth/forms/OTP-form";
 import { ChangePassword } from "../components/auth/forms/change-password";
 import RouteProtection from "./authentication/route-protection";
 import ContinueWithGoogle from "@/pages/auth/ContinueWithGoogle";
+import ErrorBoundary from "@/error/error-boundary";
 
 export const auth = {
   path: "/",
@@ -19,66 +20,66 @@ export const auth = {
       <AuthLayout />
     </RouteProtection>
   ),
-  // errorElement: <Error />,
+  errorElement: <ErrorBoundary />,
   children: [
     {
       path: "/auth/signup",
       element: <SignUp />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
       children: [
         {
           index: true,
           element: <FirstContent />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/auth/signup/password",
           element: <SecondContent />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/auth/signup/profile-picture",
           element: <ThirdContent />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/auth/signup/extra-data",
           element: <FourthContent />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
       ],
     },
     {
       path: "/auth/login",
       element: <LogIn />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/auth/login/forget-password",
       element: <ForgetPassword />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
       children: [
         {
           index: true,
           element: <EmailForm />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/auth/login/forget-password/OTP-confirmation",
           element: <OTPForm />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/auth/login/forget-password/change-password",
           element: <ChangePassword />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
       ],
     },
     {
       path: "/auth/login/continue-with-google",
       element: <ContinueWithGoogle />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
   ],
 };

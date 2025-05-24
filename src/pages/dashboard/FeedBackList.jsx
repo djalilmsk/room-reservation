@@ -1,7 +1,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import { Input } from "@/components/ui/input";
 import ListLoader from "@/components/ui/list-loader";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,12 @@ import { Eye, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { customFetch } from "@/utils";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { defaults } from "@/utils/format/toast-styles";
+import { buttonLabel } from "@/components/ui/button-label";
+import { useDebounce } from "react-haiku";
 
 function RatingStars({ rating }) {
   const filledStars = Array.from({ length: rating }, (_, i) => (
@@ -30,29 +36,55 @@ function RatingStars({ rating }) {
 }
 
 function CheckFeedback({ id, className, children }) {
-  const { data: feedback, isLoading } =
-    /*  useQuery({
-    queryKey: ["feedback"  id],
+  const queryClient = useQueryClient();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) queryClient.invalidateQueries(["feedbacks"]);
+  }, [isOpen]);
+
+  const { data: feedback, isLoading } = useQuery({
+    queryKey: ["feedback-" + id],
     queryFn: async () => {
-      const res = await customFetch.get(`/feedback/${id}`);
+      const res = await customFetch.get(`/feedbacks/${id}`);
       return res.data.data;
     },
-  }); */
-    {
-      data: {
-        userName: "John Do",
-        email: "sarah.j@example.com",
-        date: "24/01/2025",
-        rating: 4,
-        feedback:
-          "The booking process was seamless and the meeting room exceeded our expectations. Will definitely book again!",
-      },
-      isLoading: false,
-    };
+    enabled: isOpen && !!id,
+  });
+
+  const { mutate: markAsSeen } = useMutation({
+    mutationFn: async () => {
+      await customFetch.patch(`/feedbacks/${id}`, { seen: true });
+    },
+    enabled: isOpen && !!id && !feedback?.seen,
+  });
+
+  const { mutate: removeFeedback, isPending } = useMutation({
+    mutationFn: async () => {
+      await customFetch.delete(`/feedbacks/${id}`);
+    },
+    onSuccess: () => {
+      toast.success("Feedback removed successfully", {
+        style: defaults,
+      });
+      queryClient.invalidateQueries(["feedbacks"]);
+      setIsOpen(false);
+    },
+    onError: () => {
+      toast.error("Failed to remove feedback", {
+        style: defaults,
+      });
+    },
+  });
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger
+        onClick={() => {
+          if (!feedback?.seen) {
+            markAsSeen();
+          }
+        }}
         className={cn(
           className,
           "h-full w-full cursor-pointer px-4 py-3 text-left",
@@ -70,7 +102,7 @@ function CheckFeedback({ id, className, children }) {
 
         {isLoading ? (
           <div className="space-y-2">
-            <ListLoader nbr={1} height={50} />
+            <ListLoader nbr={1} height={52} />
             <ListLoader nbr={1} height={30} />
             <ListLoader nbr={1} />
           </div>
@@ -79,35 +111,44 @@ function CheckFeedback({ id, className, children }) {
             <div className="space-y-3 rounded border py-4 text-sm">
               <div className="flex justify-between px-4">
                 <span className="font-medium">Name:</span>
-                <span>{feedback.userName}</span>
+                <span>{feedback?.userName || "anonymous"}</span>
               </div>
               <Separator />
               <div className="flex justify-between px-4">
                 <span className="font-medium">Email:</span>
-                <span>{feedback.email}</span>
+                <span>{feedback?.email || "N/A"}</span>
               </div>
               <Separator />
               <div className="flex justify-between px-4">
                 <span className="font-medium">Date Submitted:</span>
-                <span>{feedback.date}</span>
+                <span>{feedback?.date}</span>
               </div>
               <Separator />
               <div className="flex items-center justify-between px-4">
                 <span className="font-medium">Rating:</span>
-                <RatingStars rating={feedback.rating} />
+                <RatingStars rating={feedback?.rating} />
               </div>
             </div>
 
             <div className="mt-4">
               <label className="mb-1 ml-2 block font-medium">Feedback:</label>
               <div className="dark:bg-card rounded p-4 text-sm not-dark:border">
-                {feedback.feedback}
+                {feedback?.feedback}
               </div>
             </div>
 
             <div className="mt-4 flex justify-end gap-2">
-              <Button variant="destructive">Remove</Button>
-              <DialogClose asChild>
+              <Button
+                variant="destructive"
+                onClick={removeFeedback}
+                disabled={isPending}
+              >
+                {buttonLabel(isPending, "Delete")}
+              </Button>
+              <DialogClose
+                asChild
+                onClick={() => queryClient.invalidateQueries(["feedbacks"])}
+              >
                 <Button variant="outline">Close</Button>
               </DialogClose>
             </div>
@@ -119,61 +160,51 @@ function CheckFeedback({ id, className, children }) {
 }
 
 function FeedBackList() {
-  const { data: feedback, isLoading } =
-    /*  useQuery({
-    queryKey: ["feedback"],
+  const [search, setSearch] = useState("");
+  const searchDebounce = useDebounce(search, 500);
+  const { data: feedback, isLoading } = useQuery({
+    queryKey: ["feedbacks", searchDebounce],
     queryFn: async () => {
-      const res = await customFetch.get("/feedback");
+      const res = await customFetch.get(
+        `/feedbacks${searchDebounce ? `?email=${searchDebounce}` : ""}`,
+      );
       return res.data.data;
     },
-  }); */
-    {
-      data: [
-        {
-          name: "John Doe",
-          email: "johndoe@gmail.com",
-          date: "2023-10-01",
-          seen: true,
-          rating: 4,
-        },
-        {
-          name: "John Doe",
-          email: "johndoe@gmail.com",
-          date: "2023-10-01",
-          seen: false,
-          rating: 4,
-        },
-      ],
-      isLoading: false,
-    };
+  });
 
   const columns = [
     {
       accessorKey: "name",
       header: "Name",
       cell: ({ row }) => (
-        <CheckFeedback>{row.getValue("name") || "N/A"}</CheckFeedback>
+        <CheckFeedback id={row?.original?.id}>
+          {row.getValue("name") || "anonymous"}
+        </CheckFeedback>
       ),
     },
     {
       accessorKey: "email",
       header: "Email",
       cell: ({ row }) => (
-        <CheckFeedback>{row.getValue("email") || "N/A"}</CheckFeedback>
+        <CheckFeedback id={row?.original?.id}>
+          {row.getValue("email") || "N/A"}
+        </CheckFeedback>
       ),
     },
     {
       accessorKey: "date",
       header: "Date",
       cell: ({ row }) => (
-        <CheckFeedback>{row.getValue("date") || "N/A"}</CheckFeedback>
+        <CheckFeedback id={row?.original?.id}>
+          {row.getValue("date") || "N/A"}
+        </CheckFeedback>
       ),
     },
     {
       accessorKey: "rating",
       header: "Rating",
       cell: ({ row }) => (
-        <CheckFeedback>
+        <CheckFeedback id={row?.original?.id}>
           <RatingStars rating={row.getValue("rating") || 0} />
         </CheckFeedback>
       ),
@@ -182,7 +213,7 @@ function FeedBackList() {
       accessorKey: "seen",
       header: "",
       cell: ({ row }) => (
-        <CheckFeedback>
+        <CheckFeedback id={row?.original?.id}>
           {row.getValue("seen") ? (
             <Eye className="fill-primary text-background" />
           ) : (
@@ -197,7 +228,11 @@ function FeedBackList() {
     <div className="@container mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Feedback List</h1>
-        <Input placeholder="find user feedback" className="w-40 sm:w-60" />
+        <Input
+          placeholder="find user feedback"
+          className="w-40 sm:w-60"
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
       {isLoading ? (
         <ListLoader />

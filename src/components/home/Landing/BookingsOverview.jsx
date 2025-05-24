@@ -97,10 +97,10 @@ function BookingsOverview({ className }) {
                       Start: {formatTime(booking?.start_time)}
                     </td>
                     <td className="p-3 whitespace-nowrap">
-                      Date: {formatDate(booking?.start_time)}
+                      End: {formatTime(booking?.end_time)}
                     </td>
                     <td className="p-3 whitespace-nowrap">
-                      End: {formatTime(booking?.end_time)}
+                      Date: {formatDate(booking?.start_time)}
                     </td>
                     <td className="p-3 whitespace-nowrap">{booking?.status}</td>
                   </tr>

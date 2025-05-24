@@ -15,6 +15,7 @@ import BookingList from "@/pages/dashboard/booking/booing-list";
 import EditBooking from "@/pages/dashboard/booking/edit-booking";
 import SingleBooking from "@/pages/dashboard/booking/single-booking";
 import FeedBackList from "@/pages/dashboard/FeedBackList";
+import ErrorBoundary from "@/error/error-boundary";
 
 export const dashboard = {
   path: "/dashboard",
@@ -23,22 +24,22 @@ export const dashboard = {
       <DashboardLayout />
     </RouteProtection>
   ),
-  // errorElement: <Error />,
+  errorElement: <ErrorBoundary />,
   children: [
     {
       path: "/dashboard/profile",
       element: <Profile />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/dashboard/security",
       element: <Security />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/dashboard/general",
       element: <General />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/dashboard/rooms",
@@ -47,27 +48,27 @@ export const dashboard = {
           <RoomsManagement />
         </RouteProtection>
       ),
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
       children: [
         {
           index: true,
           element: <RoomsList />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/dashboard/rooms/:id",
           element: <SingleRoom />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/dashboard/rooms/edit-room/:id",
           element: <EditRoom />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/dashboard/rooms/new-room",
           element: <CreateRoom />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
       ],
     },
@@ -80,32 +81,32 @@ export const dashboard = {
           <BookingManagement />
         </RouteProtection>
       ),
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
       children: [
         {
           index: true,
           element: <BookingList title="Pending Booking" />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/dashboard/bookings/:id",
           element: <SingleBooking />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/dashboard/bookings/edit-booking/:id",
           element: <EditBooking />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/dashboard/bookings/booking-history",
           element: <BookingList status="other" title="Booking History" />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         // {
         //   path: "/dashboard/rooms/new-booking",
         //   element: <></>,
-        //   // errorElement: <ErrorElement />,
+        // errorElement: <ErrorBoundary />,
         // },
       ],
     },
@@ -116,17 +117,17 @@ export const dashboard = {
           <AdminDashboard />
         </RouteProtection>
       ),
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
       children: [
         {
           path: "/dashboard/users",
           element: <UsersList />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
         {
           path: "/dashboard/feedback",
           element: <FeedBackList />,
-          // errorElement: <ErrorElement />,
+          errorElement: <ErrorBoundary />,
         },
       ],
     },

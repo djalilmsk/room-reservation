@@ -8,36 +8,37 @@ import RouteProtection from "./authentication/route-protection";
 import SingleNotification from "@/pages/home/SingleNotification";
 import CurrentBookings from "@/components/home/Bookings/BookingList";
 import ContactUs from "@/components/home/about/ContactUs";
+import ErrorBoundary from "@/error/error-boundary";
 
 export const home = {
   path: "/",
   element: <HomeLayout />,
-  // errorElement: <Error />,
+  errorElement: <ErrorBoundary />,
   children: [
     {
       index: true,
       element: <Landing />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/rooms",
       element: <Rooms />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/rooms/:id",
       element: <SingleRoom />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/about",
       element: <About />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/contact",
       element: <ContactUs />,
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/notifications",
@@ -46,7 +47,7 @@ export const home = {
           <Notification />
         </RouteProtection>
       ),
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/notifications/:id",
@@ -55,7 +56,7 @@ export const home = {
           <SingleNotification />
         </RouteProtection>
       ),
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "current-bookings",
@@ -64,7 +65,7 @@ export const home = {
           <CurrentBookings />
         </RouteProtection>
       ),
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
     {
       path: "/current-bookings/:id",
@@ -73,7 +74,7 @@ export const home = {
           <SingleNotification />
         </RouteProtection>
       ),
-      // errorElement: <ErrorElement />,
+      errorElement: <ErrorBoundary />,
     },
   ],
 };
