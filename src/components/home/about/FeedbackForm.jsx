@@ -26,14 +26,14 @@ function FeedbackForm() {
   const form = useForm();
 
   return (
-    <div className={cn("my-10 space-y-4", isGuest ? "hidden" : "")}>
+    <div className={cn("my-10 w-full space-y-4", isGuest ? "hidden" : "")}>
       <SectionTitle>Share Your ROOM Experience</SectionTitle>
-      <p className="text-secondary-foreground max-sm:text-sm">
+      <p className="text-secondary-foreground @container max-sm:text-sm">
         Your feedback helps us improve our services and create better booking
         experiences for everyone.
       </p>
       <Form {...form}>
-        <form className="bg-card w-full space-y-4 rounded-xl p-6 not-dark:shadow-sm">
+        <form className="bg-card space-y-4 rounded-xl p-6 not-dark:shadow-sm">
           <FormField
             control={form.control}
             name="username"
@@ -56,34 +56,38 @@ function FeedbackForm() {
           />
           <FormField
             control={form.control}
-            name="username"
+            name="satisfied_aspects"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-medium">
                   What aspects of our service were you most satisfied with?
                 </FormLabel>
                 <FormControl>
-                  <ToggleGroup type="multiple" className="gap-2">
+                  <ToggleGroup
+                    className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"
+                    type="multiple"
+                    {...field}
+                  >
                     <ToggleGroupItem
-                      className="hover:bg-secondary/10 hover:text-primary data-[state=on]:text-primary data-[state=on]:bg-secondary/40 px-6"
+                      className="hover:bg-secondary/10 hover:text-primary data-[state=on]:text-primary data-[state=on]:bg-secondary/40 w-full border px-4 text-center sm:w-auto"
                       value="Booking-Process"
                     >
                       Booking Process
                     </ToggleGroupItem>
                     <ToggleGroupItem
-                      className="hover:bg-secondary/10 hover:text-primary data-[state=on]:text-primary data-[state=on]:bg-secondary/40 px-6"
+                      className="hover:bg-secondary/10 hover:text-primary data-[state=on]:text-primary data-[state=on]:bg-secondary/40 w-full border px-4 text-center sm:w-auto"
                       value="Room-Quality"
                     >
                       Room Quality
                     </ToggleGroupItem>
                     <ToggleGroupItem
-                      className="hover:bg-secondary/10 hover:text-primary data-[state=on]:text-primary data-[state=on]:bg-secondary/40 px-6"
+                      className="hover:bg-secondary/10 hover:text-primary data-[state=on]:text-primary data-[state=on]:bg-secondary/40 w-full border px-4 text-center sm:w-auto"
                       value="Amenities"
                     >
                       Amenities
                     </ToggleGroupItem>
                     <ToggleGroupItem
-                      className="hover:bg-secondary/10 hover:text-primary data-[state=on]:text-primary data-[state=on]:bg-secondary/40 px-6"
+                      className="hover:bg-secondary/10 hover:text-primary data-[state=on]:text-primary data-[state=on]:bg-secondary/40 w-full border px-4 text-center sm:w-auto"
                       value="Customer-Service"
                     >
                       Customer Service
