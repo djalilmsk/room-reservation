@@ -71,7 +71,7 @@ function BookingsOverview({ className }) {
   return (
     <div className={cn("space-y-2", className)}>
       <ToggleGroupState setState={setState} />
-      <div className="max-h-[400px] overflow-y-auto">
+      <div className="max-h-[400px] overflow-y-auto ">
         <div className="overflow-x-auto">
           <table className="w-full">
             <tbody>

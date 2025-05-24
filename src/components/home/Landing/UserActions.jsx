@@ -84,7 +84,7 @@ function UserActions() {
               ))}
             </div>
           </div>
-          <div>
+          <div className="@container overflow-x-auto">
             <BookingsOverview /* className="max-md:hidden" */ />
           </div>
         </div>
